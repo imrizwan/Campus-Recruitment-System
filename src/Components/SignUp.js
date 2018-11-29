@@ -1,16 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { URL } from '../Variables';
+import { Link } from "react-router-dom";
+import "./index.css";
 
 //Tabs
 
@@ -20,6 +15,8 @@ import Tab from '@material-ui/core/Tab';
 //TextField
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import "./index.css";
+
 
 function TabContainer(props) {
   return (
@@ -68,26 +65,82 @@ class RenderForm extends React.Component {
       passwordCompany: "",
       nameStudent: "",
       nameCompany: "",
+      passwordStudent2: "",
+      passwordCompany2: "",
+      user: {},
+      errors: {},
+      success: ""
     }
 
     onClick = (value) => {
       //e.preventDefault();
 
-      var formData = new FormData();
+      const { nameStudent, nameCompany,emailCompany, passwordCompany, emailStudent, passwordStudent, passwordStudent2, passwordCompany2 } = this.state;
+
+      // var formData = new FormData();
       if(value === "student"){
-        formData.append('emailStudent', this.state.emailStudent);
-      formData.append('passwordStudent', this.state.passwordStudent);
-    
+
         fetch(URL+"register", {
           method: "POST",
-          mode: "no-cors",
-          body: formData
+          headers: {
+            'Content-Type': 'application/json'
+            },
+          body: JSON.stringify({
+            name: nameStudent,
+            email: emailStudent,
+            password: passwordStudent, 
+            password2: passwordStudent2,
+            userType: value
+          })  
         })     
-        .then(res => console.log(res))
+        .then(res => {  
+          if(res.status === 400){
+            res.json().then(errors => this.setState({ errors, success: "" }))
+          } else if(res.status === 200) {
+            res.json().then(user => this.setState({ 
+              user, 
+              success: "Successfully Signed Up", 
+              errors: {},  
+              nameStudent: "",
+              emailStudent: "",
+              passwordStudent: "", 
+              passwordStudent2: "",
+              userType: ""
+            }))
+          }
+        })
           
       } else if (value === "company"){
-        formData.append('emailCompany', this.state.emailCompany);
-        formData.append('passwordCompany', this.state.passwordCompany);
+
+        fetch(URL+"register", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+            },
+          body: JSON.stringify({
+            name: nameCompany,
+            email: emailCompany,
+            password: passwordCompany, 
+            password2: passwordCompany2,
+            userType: value
+          })  
+        })     
+        .then(res => {  
+          if(res.status === 400){
+            res.json().then(errors => this.setState({ errors, success: "" }))
+          } else if(res.status === 200) {
+            res.json().then(user => this.setState({ 
+              user, 
+              success: "Successfully Signed Up", 
+              errors: {},
+              nameCompany: "",
+              emailCompany: "",
+              passwordCompany: "", 
+              passwordCompany2: "",
+              userType: ""
+            } ))
+          }
+        })
       }
     }
 
@@ -103,6 +156,11 @@ class RenderForm extends React.Component {
       <div>
    <TabContainer>
           <div className={classes.center}>
+
+          {
+              this.state.success ? <div style={{ color: "green", textAlign: "center" }} className="para">Successfully Signed Up</div> : null
+          }
+
           <TextField
               id="name"
               label={value === "student" ? "Name" : "Company Name"}
@@ -113,6 +171,9 @@ class RenderForm extends React.Component {
               variant="outlined"
             />
             <br />
+            {
+              this.state.errors.name ? <div style={{ color: "red" }}>{ this.state.errors.name }</div> : null
+            }
             <br />
             <TextField
               id="outlined-name"
@@ -124,6 +185,9 @@ class RenderForm extends React.Component {
               variant="outlined"
             />
             <br />
+            {
+              this.state.errors.email ? <div style={{ color: "red" }}>{ this.state.errors.email }</div> : null
+            }
             <br />
             <TextField
               id="outlined-password-input"
@@ -137,6 +201,25 @@ class RenderForm extends React.Component {
               variant="outlined"
             />
             <br />
+            {
+              this.state.errors.password ? <div style={{ color: "red" }}>{ this.state.errors.password }</div> : null
+            }
+            <br />
+            <TextField
+              id="outlined-password2-input"
+              label="Confirm Password"
+              className={classes.textField}
+              type="password"
+              autoComplete="current-password"
+              value={value === "student" ? this.state.passwordStudent2: this.state.passwordCompany2}
+              onChange={value === "student" ? this.handleChangeInput('passwordStudent2'): this.handleChangeInput('passwordCompany2')}
+              margin="normal"
+              variant="outlined"
+            />
+            {
+              this.state.errors.password2 ? <div style={{ color: "red" }}>{ this.state.errors.password2 }</div> : null
+            }
+            <br/>
             <Button variant="contained" color="primary" className={classes.button} onClick={() => this.onClick(value)}>
               Sign Up &nbsp;
         <FontAwesomeIcon icon="user-plus" />
@@ -150,75 +233,22 @@ class RenderForm extends React.Component {
 
 class SignUp extends React.Component {
   state = {
-    auth: false,
-    anchorEl: null,
     value: 0,
-  };
-
-  handleChange = event => {
-    this.setState({ auth: event.target.checked });
   };
 
   handleChangeTabs = (event, value) => {
     this.setState({ value });
   };
 
-
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
   render() {
     const { value } = this.state;
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
-    const open = Boolean(anchorEl);
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" className={classes.grow}>
-              Campus Recruitment System - Sign Up
-            </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  aria-owns={open ? 'menu-appbar' : null}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
+      <br/>
+      <Typography variant="display2" className={classes.title}>Sign Up</Typography>
+
         <Tabs
           value={value}
           onChange={this.handleChangeTabs}
@@ -230,8 +260,10 @@ class SignUp extends React.Component {
           <Tab label="Student" icon={<FontAwesomeIcon icon="graduation-cap" />} />
           <Tab label="Company" icon={<FontAwesomeIcon icon="building" />} />
         </Tabs>
+
         {value === 0 && <RenderForm classes={classes} value="student" />}
         {value === 1 && <RenderForm classes={classes} value="company" />}
+        <p className="para">Already have an account? <Link to="/signin">Sign In</Link></p>
       </div>
     );
   }

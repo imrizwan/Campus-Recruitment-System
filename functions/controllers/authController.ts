@@ -9,14 +9,14 @@ import * as validateRegisterInput from "../validation/register";
 import * as validateLoginInput from "../validation/login";
 // Load User model
 import * as User from '../models/User';
-import { userInfo } from "os";
 
 export class AuthController {
 
     public addNewUser(req: Request, res: Response) {
-      const { errors, isValid } = validateRegisterInput(req.body);
       console.log(req.body)
+      const { errors, isValid } = validateRegisterInput(req.body);
       // Check Validation
+
       if (!isValid) {
         return res.status(400).json(errors);
       }
@@ -35,6 +35,7 @@ export class AuthController {
           const newUser = new User({
             name: req.body.name,
             email: req.body.email,
+            userType: req.body.userType,
             avatar,
             password: req.body.password
           });

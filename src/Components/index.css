@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One');
+
+.para, h1 {
+    font-family: 'Fjalla One', sans-serif;
+    text-align: center;
+}

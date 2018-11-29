@@ -7,12 +7,8 @@ export class Routes {
         app.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 
 
-        app.route('/api/register')
-            // POST endpoint
-            .post(this.authController.addNewUser)
-        app.route('/api/login')
-            // POST endpoint
-            .post(this.authController.loginUser)
+        app.post('/api/register', this.authController.addNewUser)
+        app.post('/api/login', this.authController.loginUser)
         app.get('/api/current', passport.authenticate("jwt", { session: false }), this.authController.current)
     }
 }
