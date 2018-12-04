@@ -2,13 +2,15 @@ import React from "react";
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+
+import { connect } from "react-redux";
+import { logoutUser } from "../../Actions/authActions";
 
 function TabContainer(props) {
     return (
@@ -48,14 +50,10 @@ const styles = theme => ({
   });
 
 class Navbar extends React.Component {
+
     
     state = {
-        auth: false,
         anchorEl: null
-      };
-
-      handleChange = event => {
-        this.setState({ auth: event.target.checked });
       };
     
       handleMenu = event => {
@@ -66,9 +64,15 @@ class Navbar extends React.Component {
         this.setState({ anchorEl: null });
       };
 
+      onLogoutClick = (e) => {
+        e.preventDefault();
+        this.setState({ anchorEl: null });
+        this.props.logoutUser();
+      };
+
     render() {
         const { classes } = this.props;
-        const { auth, anchorEl } = this.state;
+        const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
         return(
             <AppBar position="static">
@@ -79,7 +83,7 @@ class Navbar extends React.Component {
             <Typography variant="title" color="inherit" className={classes.grow}>
               Campus Recruitment System
             </Typography>
-            {auth && (
+            {this.props.auth.isAuthenticated && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
@@ -87,7 +91,8 @@ class Navbar extends React.Component {
                   onClick={this.handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  {/* <AccountCircle /> */}
+                  <img  src={this.props.auth.user.avatar} alt={this.props.auth.user.name} title="Gravatar" style={{ width: '25px', borderRadius: '25px' }} />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -103,7 +108,7 @@ class Navbar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
                   <MenuItem onClick={this.handleClose}>My account</MenuItem>
                 </Menu>
               </div>
@@ -116,6 +121,12 @@ class Navbar extends React.Component {
 
 Navbar.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+    logoutUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+  };
 
-export default withStyles(styles)(Navbar)
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { logoutUser })(withStyles(styles)(Navbar));

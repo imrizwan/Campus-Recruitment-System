@@ -9,8 +9,7 @@
     "@material-ui/core": "^3.0.3",
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
+    "concurrently": "^4.1.0",
     "path": "^0.12.7",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
@@ -26,26 +25,10 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "server": "ts-node-dev --respawn --transpileOnly functions/index.ts",
-    "dev": "concurrently \"npm run server\" \"npm run start\""
+    "dev": "concurrently \"cd functions && npm run server\" \"npm run start\""
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "@types/node": "^10.9.4",
-    "bcryptjs": "^2.4.3",
-    "concurrently": "^3.5.1",
-    "cors": "^2.8.4",
-    "crypto": "^1.0.1",
-    "express-session": "^1.15.6",
-    "gravatar": "^1.6.0",
-    "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.2.15",
-    "nodemon": "^1.18.4",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "ts-node": "^7.0.1",
-    "ts-node-dev": "^1.0.0-pre.30",
-    "typescript": "^3.0.3",
-    "validator": "^10.8.0"
+    "jwt-decode": "^2.2.0"
   }
 }

@@ -60,12 +60,24 @@ export class AuthController {
 
       const email = req.body.email;
       const password = req.body.password;
+      const userType = req.body.userType;
+      console.log(req.body);
 
       User.findOne({email})
         .then((user)=>{
           if(!user){
             errors.email = 'User not found';
             return res.status(404).json(errors);
+          }
+
+          if(!userType){
+            errors.userType = 'User type not found';
+            return res.status(404).json(errors);
+          }
+
+          if(user.userType !== userType){
+            errors.userType = 'User type does not match';
+            return res.status(400).json(errors);
           }
 
           bcrypt.compare(password, user.password)

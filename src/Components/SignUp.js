@@ -3,8 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { URL } from '../Variables';
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { registerUser } from "../Actions/authActions";
 import "./index.css";
 
 //Tabs
@@ -69,79 +70,37 @@ class RenderForm extends React.Component {
       passwordCompany2: "",
       user: {},
       errors: {},
-      success: ""
+    }
+  
+    componentWillReceiveProps(nextProps){
+      if(nextProps.errors){
+        this.setState({ errors: nextProps.errors });
+      }
     }
 
-    onClick = (value) => {
-      //e.preventDefault();
+    componentDidMount(){
+      if(this.props.auth.isAuthenticated) {
+        this.props.history.push('/dashboard');
+      }
+    }
 
+    onClick = value => {
       const { nameStudent, nameCompany,emailCompany, passwordCompany, emailStudent, passwordStudent, passwordStudent2, passwordCompany2 } = this.state;
 
-      // var formData = new FormData();
-      if(value === "student"){
-
-        fetch(URL+"register", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-            },
-          body: JSON.stringify({
-            name: nameStudent,
-            email: emailStudent,
-            password: passwordStudent, 
-            password2: passwordStudent2,
-            userType: value
-          })  
-        })     
-        .then(res => {  
-          if(res.status === 400){
-            res.json().then(errors => this.setState({ errors, success: "" }))
-          } else if(res.status === 200) {
-            res.json().then(user => this.setState({ 
-              user, 
-              success: "Successfully Signed Up", 
-              errors: {},  
-              nameStudent: "",
-              emailStudent: "",
-              passwordStudent: "", 
-              passwordStudent2: "",
-              userType: ""
-            }))
-          }
-        })
-          
-      } else if (value === "company"){
-
-        fetch(URL+"register", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-            },
-          body: JSON.stringify({
-            name: nameCompany,
-            email: emailCompany,
-            password: passwordCompany, 
-            password2: passwordCompany2,
-            userType: value
-          })  
-        })     
-        .then(res => {  
-          if(res.status === 400){
-            res.json().then(errors => this.setState({ errors, success: "" }))
-          } else if(res.status === 200) {
-            res.json().then(user => this.setState({ 
-              user, 
-              success: "Successfully Signed Up", 
-              errors: {},
-              nameCompany: "",
-              emailCompany: "",
-              passwordCompany: "", 
-              passwordCompany2: "",
-              userType: ""
-            } ))
-          }
-        })
+      let newUser = value === "student" ? {
+        name: nameStudent,
+        email: emailStudent,
+        password: passwordStudent, 
+        password2: passwordStudent2,
+        userType: value
+      } : {
+        name: nameCompany,
+        email: emailCompany,
+        password: passwordCompany, 
+        password2: passwordCompany2,
+        userType: value
       }
+        this.props.registerUser(newUser, this.props.history);
     }
 
     handleChangeInput = name => event => {
@@ -156,10 +115,6 @@ class RenderForm extends React.Component {
       <div>
    <TabContainer>
           <div className={classes.center}>
-
-          {
-              this.state.success ? <div style={{ color: "green", textAlign: "center" }} className="para">Successfully Signed Up</div> : null
-          }
 
           <TextField
               id="name"
@@ -261,8 +216,8 @@ class SignUp extends React.Component {
           <Tab label="Company" icon={<FontAwesomeIcon icon="building" />} />
         </Tabs>
 
-        {value === 0 && <RenderForm classes={classes} value="student" />}
-        {value === 1 && <RenderForm classes={classes} value="company" />}
+        {value === 0 && <RenderForm classes={classes} value="student" auth={this.props.auth} history={this.props.history} errors={this.props.errors} registerUser={this.props.registerUser} />}
+        {value === 1 && <RenderForm classes={classes} value="company" auth={this.props.auth} history={this.props.history} errors={this.props.errors} registerUser={this.props.registerUser}/>}
         <p className="para">Already have an account? <Link to="/signin">Sign In</Link></p>
       </div>
     );
@@ -271,6 +226,14 @@ class SignUp extends React.Component {
 
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SignUp);
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors
+});
+
+export default connect(mapStateToProps, {registerUser})(withStyles(styles)(SignUp));

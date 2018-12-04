@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
+import { loginUser } from "../Actions/authActions";
+import { connect } from "react-redux";
 
 //Tabs
 
@@ -15,6 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import "./index.css";
+//import { } from '../Variables';
 
 function TabContainer(props) {
   return (
@@ -53,26 +56,118 @@ const styles = theme => ({
   }
 });
 
-class SignIn extends React.Component {
+class RenderForm extends React.Component {
+
   state = {
-    value: 0,
     emailStudent: "",
     passwordStudent: "",
     emailCompany: "",
     passwordCompany: "",
     emailAdmin: "",
-    passwordAdmin: ""
-  };
-
-    handleChangeTabs = (event, value) => {
-    this.setState({ value });
+    passwordAdmin: "",
+    user: "",
+    errors: {}
   };
 
   handleChangeInput = name => event => {
     this.setState({
       [name]: event.target.value,
     });
-    console.log(event.target.value);
+  };
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.auth.isAuthenticated){
+        this.props.history.push('/dashboard');
+    }
+    
+    if(nextProps.errors){
+        this.setState({ errors: nextProps.errors });
+      }
+    }
+
+    
+  componentDidMount(){
+    if(this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
+  onClick = (value) => {
+    const { emailAdmin, emailCompany, emailStudent, passwordStudent, passwordCompany, passwordAdmin } = this.state;
+
+    const newuser = value === "admin" ? {
+      email: emailAdmin,
+      password: passwordAdmin, 
+      userType: value
+    } : value === "student" ? {
+      email: emailStudent,
+      password: passwordStudent, 
+      userType: value
+    } : {
+      email: emailCompany,
+      password: passwordCompany, 
+      userType: value
+    }
+
+    this.props.loginUser(newuser);
+  }
+
+  render() {
+    const { classes, value } = this.props;
+    const { errors } = this.state;
+    return(
+      <TabContainer>
+            <div className={classes.center}>
+            {
+              errors.userType ? <div style={{ color: "red" }}>{ this.state.errors.userType }</div> : null
+            }
+            <TextField
+              id="outlined-name"
+              label="Email"
+              className={classes.textField}
+              value={value === "admin" ? this.state.emailAdmin : value === "student" ? this.state.emailStudent : this.state.emailCompany}
+              onChange={value === "admin" ? this.handleChangeInput('emailAdmin'): value === "student" ? this.handleChangeInput('emailStudent') : this.handleChangeInput('emailCompany')}
+              margin="normal"
+              variant="outlined"
+            />
+            <br />
+            {
+              errors.email ? <div style={{ color: "red" }}>{ this.state.errors.email }</div> : null
+            }
+            <br />
+            <TextField
+              id="outlined-password-input"
+              label="Password"
+              className={classes.textField}
+              type="password"
+              autoComplete="current-password"
+              value={value === "admin" ? this.state.passwordAdmin : value === "student" ? this.state.passwordStudent : this.state.passwordCompany}
+              onChange={value === "admin" ? this.handleChangeInput('passwordAdmin'): value === "student" ? this.handleChangeInput('passwordStudent') : this.handleChangeInput('passwordCompany')}
+              margin="normal"
+              variant="outlined"
+            />
+            <br />
+            {
+              errors.password ? <div style={{ color: "red" }}>{ this.state.errors.password }</div> : null
+            }
+            <br />
+            <Button variant="contained" color="primary" className={classes.button} onClick={ () => this.onClick(value) } >
+              Login &nbsp;
+        <FontAwesomeIcon icon="sign-in-alt" />
+            </Button>
+            </div>
+          </TabContainer>
+    )
+}
+}
+
+class SignIn extends React.Component {
+  state = {
+    value: 0
+  };
+
+    handleChangeTabs = (event, value) => {
+    this.setState({ value });
   };
 
   render() {
@@ -81,7 +176,8 @@ class SignIn extends React.Component {
 
     return (
       <div className={classes.root}>
-        <h1>Sign In</h1>
+        <br/>
+        <Typography variant="display2" className={classes.title}>Sign In</Typography>
         <Tabs
           value={value}
           onChange={this.handleChangeTabs}
@@ -94,100 +190,9 @@ class SignIn extends React.Component {
           <Tab label="Company" icon={<FontAwesomeIcon icon="building" />} />
           <Tab label="Admin" icon={<FontAwesomeIcon icon="lock" />} />
         </Tabs>
-        {value === 0 &&
-          <TabContainer>
-            <div className={classes.center}>
-            <TextField
-              id="outlined-name"
-              label="Email"
-              className={classes.textField}
-              value={this.state.name}
-              onChange={this.handleChangeInput('emailStudent')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            <br />
-            <TextField
-              id="outlined-password-input"
-              label="Password"
-              className={classes.textField}
-              value={this.state.name}
-              type="password"
-              autoComplete="current-password"
-              onChange={this.handleChangeInput('passwordStudent')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            <Button variant="contained" color="primary" className={classes.button}>
-              Login &nbsp;
-        <FontAwesomeIcon icon="sign-in-alt" />
-            </Button>
-            </div>
-          </TabContainer>}
-        {value === 1 && <TabContainer>
-            <div className={classes.center}>
-            <TextField
-              id="outlined-name"
-              label="Email"
-              className={classes.textField}
-              value={this.state.name}
-              onChange={this.handleChangeInput('emailCompany')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            <br />
-            <TextField
-              id="outlined-password-input"
-              label="Password"
-              className={classes.textField}
-              value={this.state.name}
-              type="password"
-              autoComplete="current-password"
-              onChange={this.handleChangeInput('passwordCompany')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            <Button variant="contained" color="primary" className={classes.button}>
-              Login &nbsp;
-        <FontAwesomeIcon icon="sign-in-alt" />
-            </Button>
-            </div>
-          </TabContainer>}
-        {value === 2 && <TabContainer>
-            <div className={classes.center}>
-            <TextField
-              id="outlined-name"
-              label="Email"
-              className={classes.textField}
-              value={this.state.name}
-              onChange={this.handleChangeInput('emailCompany')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            <br />
-            <TextField
-              id="outlined-password-input"
-              label="Password"
-              className={classes.textField}
-              value={this.state.name}
-              type="password"
-              autoComplete="current-password"
-              onChange={this.handleChangeInput('passwordCompany')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            <Button variant="contained" color="primary" className={classes.button}>
-              Login &nbsp;
-        <FontAwesomeIcon icon="sign-in-alt" />
-            </Button>
-            </div>
-          </TabContainer>}
+        {value === 0 && <RenderForm classes={classes} value="student" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser} />}
+        {value === 1 && <RenderForm classes={classes} value="company" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser}/>}
+        {value === 2 && <RenderForm classes={classes} value="admin" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser}/>}
 
           <p className="para">Create an account: <Link to="/signup">Signup</Link></p>
       </div>
@@ -197,6 +202,14 @@ class SignIn extends React.Component {
 
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SignIn);
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { loginUser })(withStyles(styles)(SignIn));

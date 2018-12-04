@@ -6,13 +6,13 @@
         "sourceMap": true,
         "target": "es6",
         "outDir": "./dist",
-        "baseUrl": "./functions",
+        "baseUrl": "./",
         "types": [
           "node"
         ]
     },
     "include": [
-        "functions/**/*.ts"
+        "/*.ts"
     ],
     "exclude": [
         "node_modules"

@@ -1,6 +1,0 @@
-{
-    "watch": ["functions"],
-    "ext": "ts",
-    "ignore": ["functions/**/*.spec.ts"],
-    "exec": "ts-node ./functions/index.ts"
-  }
