@@ -8,7 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 import { logoutUser } from "../../Actions/authActions";
 
@@ -70,6 +70,12 @@ class Navbar extends React.Component {
         this.props.logoutUser();
       };
 
+      redirect = value => {
+        //window.location.href= `/${value}`;
+        this.setState({ anchorEl: null });
+        this.props.history.push(`/${value}`)
+      };
+
     render() {
         const { classes } = this.props;
         const { anchorEl } = this.state;
@@ -83,6 +89,35 @@ class Navbar extends React.Component {
             <Typography variant="title" color="inherit" className={classes.grow}>
               Campus Recruitment System
             </Typography>
+            {!this.props.auth.isAuthenticated && (
+              <div>
+                <IconButton
+                  aria-owns={open ? 'menu-appbar' : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
+                  <FontAwesomeIcon icon="user" />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <MenuItem onClick={() => this.redirect("signup")}>Sign Up</MenuItem>
+                  <MenuItem onClick={() => this.redirect("signin")}>Sign In</MenuItem>
+                </Menu>
+              </div>
+            )}
             {this.props.auth.isAuthenticated && (
               <div>
                 <IconButton
@@ -91,8 +126,7 @@ class Navbar extends React.Component {
                   onClick={this.handleMenu}
                   color="inherit"
                 >
-                  {/* <AccountCircle /> */}
-                  <img  src={this.props.auth.user.avatar} alt={this.props.auth.user.name} title="Gravatar" style={{ width: '25px', borderRadius: '25px' }} />
+                <img  src={this.props.auth.user.avatar} alt={this.props.auth.user.name} title={this.props.auth.user.name} style={{ width: '25px', borderRadius: '25px' }} />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -109,7 +143,7 @@ class Navbar extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  <MenuItem onClick={() => this.redirect("createprofile")}>My Profile</MenuItem>
                 </Menu>
               </div>
             )}
