@@ -1,5 +1,43 @@
 import axios from 'axios';
-import { URL,GET_ERRORS } from "../Variables";
+import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from "../Variables";
+
+// Get profile by handle
+export const getProfileById = id => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get(URL+`user/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: null
+      })
+    );
+};
+
+// Get current profile
+export const getCurrentProfile = () => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get(URL+'profile')
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: {}
+      })
+    );
+};
 
 export const createProfile = (profileData, history) => dispatch => {
     console.log("profileData", profileData);
@@ -38,3 +76,17 @@ export const addExperience = (expData, history) => dispatch => {
         })
       );
   };
+
+  // Profile loading
+export const setProfileLoading = () => {
+  return {
+    type: PROFILE_LOADING
+  };
+};
+
+// Clear profile
+export const clearCurrentProfile = () => {
+  return {
+    type: CLEAR_CURRENT_PROFILE
+  };
+};

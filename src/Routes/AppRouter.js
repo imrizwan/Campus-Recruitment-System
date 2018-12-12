@@ -1,8 +1,11 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
+import Profile from '../Components/Protected/Profile';
+import MyProfile from '../Components/Protected/MyProfile';
 import Dashboard from '../Components/Protected/Dashboard';
 import SignIn from '../Components/SignIn';
 import SignUp from '../Components/SignUp';
+import NotFound from '../Components/NotFound';
 import AddEducation from '../Components/AddEducation';
 import AddExperience from '../Components/AddExperience';
 import CreateProfile from '../Components/CreateProfile';
@@ -45,8 +48,11 @@ export default class AppRouter extends React.Component {
       <Navbar history={history} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/404" component={NotFound} />
+          <Route exact={true} path="/profile/:id" component={Profile} />
       <Switch>
           <PrivateRoute exact={true} path="/dashboard" component={Dashboard} />
+          <PrivateRoute exact={true} path="/profile" component={MyProfile} />
           <PrivateRoute exact={true} path="/createprofile" component={CreateProfile} />
           <PrivateRoute exact={true} path="/addeducation" component={AddEducation} />
           <PrivateRoute exact={true} path="/addexperience" component={AddExperience} />
