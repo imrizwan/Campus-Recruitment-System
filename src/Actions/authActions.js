@@ -28,10 +28,10 @@ export const loginUser = (userInfo, history) => dispatch => {
   axios.post(URL + "login", userInfo)
     .then(res => {
       const { token } = res.data;
-
+   
+      localStorage.setItem('profilecreated', res.data.profilecreated);
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);
-      console.log(token);
       //Decode token to get user
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
@@ -47,6 +47,7 @@ export const setCurrentUser = (decoded) => {
 
 export const logoutUser = () => (dispatch) => {
   //Remove token from the localstorage
+  localStorage.removeItem('profilecreated');
   localStorage.removeItem('jwtToken');
   //Remove auther header for future requests
   setAuthToken(false);

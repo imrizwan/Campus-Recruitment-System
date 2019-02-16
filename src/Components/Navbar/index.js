@@ -144,7 +144,7 @@ class Navbar extends React.Component {
                 >
                   <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
                   <MenuItem onClick={() => this.redirect("profile")}>My Profile</MenuItem>
-                  <MenuItem onClick={() => this.redirect("createprofile")}>Update Profile</MenuItem>
+                  <MenuItem onClick={() => this.redirect("updateprofile")}>Update Profile</MenuItem>
                 </Menu>
               </div>
             )}

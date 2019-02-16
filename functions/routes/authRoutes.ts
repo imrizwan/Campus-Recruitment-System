@@ -17,5 +17,8 @@ export class Routes {
         app.get('/api/username/:username', this.authController.username)
         app.get('/api/all/', this.authController.all)
         app.get('/api/profile', passport.authenticate("jwt", { session: false }), this.authController.currentUserProfile)
+        app.get('/api/profilecreated', passport.authenticate("jwt", { session: false }), this.authController.profilecreated)
+        app.post('/api/confirmation/:token', this.authController.confirmationPost);
+        app.post('/api/resend', this.authController.resendTokenPost);
     }
 }

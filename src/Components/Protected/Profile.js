@@ -5,6 +5,8 @@ import Loader from '../Loader/Loader';
 import { withStyles } from '@material-ui/core/styles';
 import { getProfileById } from "../../Actions/profileActions";
 import ProfileHeader from "./ProfileHeader";
+import ProfileAbout from "./ProfileAbout";
+import ProfileCreds from "./ProfileCreds";
 
 const styles = theme => ({})
 
@@ -31,6 +33,8 @@ class Profile extends Component {
         profileContent = (
         <div>
             <ProfileHeader profile={profile} />
+            <ProfileAbout profile={profile} />
+            <ProfileCreds profile={profile} />
         </div>)
     }
     return (

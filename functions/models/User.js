@@ -3,7 +3,12 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const UserSchema = new Schema({
-  name: {
+  username: {
+    type: String,
+    required: true,
+    max: 20
+  },
+  fullname: {
     type: String,
     required: true
   },
@@ -25,6 +30,10 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  isVerified: { 
+    type: Boolean, 
+    default: false 
   }
 });
 

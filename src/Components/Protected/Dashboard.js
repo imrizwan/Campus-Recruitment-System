@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import Loader from '../Loader/Loader';
 
 class Dashboard extends Component {
 
@@ -14,7 +13,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-          
+          Dashboard
       </div>
     );
   }

@@ -64,8 +64,10 @@ class RenderForm extends React.Component {
       passwordStudent: "",
       emailCompany: "",
       passwordCompany: "",
-      nameStudent: "",
-      nameCompany: "",
+      usernameStudent: "",
+      usernameCompany: "",
+      fullnameStudent: "",
+      fullnameCompany: "",
       passwordStudent2: "",
       passwordCompany2: "",
       user: {},
@@ -85,21 +87,26 @@ class RenderForm extends React.Component {
     }
 
     onClick = value => {
-      const { nameStudent, nameCompany,emailCompany, passwordCompany, emailStudent, passwordStudent, passwordStudent2, passwordCompany2 } = this.state;
+      const { usernameStudent, usernameCompany, fullnameStudent, fullnameCompany,emailCompany, passwordCompany, emailStudent, passwordStudent, passwordStudent2, passwordCompany2 } = this.state;
+
+      console.log("nameStudent",fullnameStudent)
 
       let newUser = value === "student" ? {
-        name: nameStudent,
+        username: usernameStudent,
+        fullname: fullnameStudent,
         email: emailStudent,
         password: passwordStudent, 
         password2: passwordStudent2,
         userType: value
       } : {
-        name: nameCompany,
+        username: usernameCompany,
+        fullname: fullnameCompany,
         email: emailCompany,
         password: passwordCompany, 
         password2: passwordCompany2,
         userType: value
       }
+      console.log(newUser);
         this.props.registerUser(newUser, this.props.history);
     }
 
@@ -115,19 +122,32 @@ class RenderForm extends React.Component {
       <div>
    <TabContainer>
           <div className={classes.center}>
-
           <TextField
-              id="name"
-              label={value === "student" ? "Name" : "Company Name"}
+              id="username"
+              label={value === "student" ? "Username" : "Company Username"}
               className={classes.textField}
-              value={value === "student" ? this.state.nameStudent: this.state.nameCompany}
-              onChange={value === "student" ? this.handleChangeInput('nameStudent'): this.handleChangeInput('nameCompany')}
+              value={value === "student" ? this.state.usernameStudent: this.state.usernameCompany}
+              onChange={value === "student" ? this.handleChangeInput('usernameStudent'): this.handleChangeInput('usernameCompany')}
               margin="normal"
               variant="outlined"
             />
             <br />
             {
-              this.state.errors.name ? <div style={{ color: "red" }}>{ this.state.errors.name }</div> : null
+              this.state.errors.username ? <div style={{ color: "red" }}>{ this.state.errors.username }</div> : null
+            }
+            <br />
+          <TextField
+              id="fullname"
+              label={value === "student" ? "Full Name" : "Company Full Name"}
+              className={classes.textField}
+              value={value === "student" ? this.state.fullnameStudent: this.state.fullnameCompany}
+              onChange={value === "student" ? this.handleChangeInput('fullnameStudent'): this.handleChangeInput('fullnameCompany')}
+              margin="normal"
+              variant="outlined"
+            />
+            <br />
+            {
+              this.state.errors.fullname ? <div style={{ color: "red" }}>{ this.state.errors.fullname }</div> : null
             }
             <br />
             <TextField

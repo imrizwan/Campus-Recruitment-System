@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addExperience } from '../Actions/profileActions';
+import { addExperience, getCurrentProfile } from '../Actions/profileActions';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -60,6 +60,15 @@ class AddExperience extends Component {
         let disabled = !this.state.disabled;
         this.setState({ [name]: event.target.checked, disabled });
       };
+
+      componentWillMount() {
+        var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+        if (this.props.auth.isAuthenticated) {
+            if(!profilecreatedVar){
+                this.props.history.push('/createprofile');
+            }
+        }
+    }
 
     handleChangeInput = name => event => {
         this.setState({
@@ -198,15 +207,18 @@ class AddExperience extends Component {
 AddExperience.propTypes = {
     addExperience: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired,
+    getCurrentProfile: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
   };
   
   const mapStateToProps = state => ({
     profile: state.profile,
-    errors: state.errors
+    errors: state.errors,
+    auth: state.auth
   });
 
-export default connect(mapStateToProps, { addExperience })(
+export default connect(mapStateToProps, { addExperience, getCurrentProfile })(
     withRouter(withStyles(styles)(AddExperience))
   );
   

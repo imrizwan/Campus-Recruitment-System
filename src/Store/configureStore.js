@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import AuthReducer from '../Reducers/AuthReducer';
 import errorReducer from '../Reducers/errorReducer';
 import profileReducer from '../Reducers/profileReducer';
+import profileCreatedReducer from '../Reducers/profileCreatedReducer';
  
 
 const initialState = {};
@@ -13,7 +14,8 @@ const store = createStore(
   combineReducers({
     auth: AuthReducer,
     errors: errorReducer,
-    profile : profileReducer
+    profile : profileReducer,
+    profilecreated: profileCreatedReducer
   }),
   initialState,
   compose (

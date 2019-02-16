@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from "../Variables";
+import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
 
 // Get profile by handle
 export const getProfileById = id => dispatch => {
@@ -18,6 +18,19 @@ export const getProfileById = id => dispatch => {
         payload: null
       })
     );
+};
+export const getProfileCreated = () => dispatch => {
+  //dispatch(setProfileLoading());
+  axios
+    .get(URL+`profilecreated`)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE_CREATED,
+        payload: res.data
+      })
+    }
+    )
+    .catch(err => console.log(err));
 };
 
 // Get current profile
@@ -40,10 +53,16 @@ export const getCurrentProfile = () => dispatch => {
 };
 
 export const createProfile = (profileData, history) => dispatch => {
-    console.log("profileData", profileData);
     axios
     .post(URL+'createprofile', profileData)
-    .then(res => history.push('/dashboard'))
+    .then(res => {
+      const profilecreated = JSON.parse(localStorage.getItem('profilecreated'));
+      if(!profilecreated){
+        localStorage.setItem('profilecreated', !profilecreated);
+      }
+      
+      history.push('/profile')
+      })
     .catch(err =>
         dispatch({
           type: GET_ERRORS,

@@ -9,6 +9,7 @@ import NotFound from '../Components/NotFound';
 import AddEducation from '../Components/AddEducation';
 import AddExperience from '../Components/AddExperience';
 import CreateProfile from '../Components/CreateProfile';
+import UpdateProfile from '../Components/UpdateProfile';
 import Navbar from "../Components/Navbar";
 import jwt_decode from "jwt-decode";
 import store from "../Store/configureStore";
@@ -54,6 +55,7 @@ export default class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/dashboard" component={Dashboard} />
           <PrivateRoute exact={true} path="/profile" component={MyProfile} />
           <PrivateRoute exact={true} path="/createprofile" component={CreateProfile} />
+          <PrivateRoute exact={true} path="/updateprofile" component={UpdateProfile} />
           <PrivateRoute exact={true} path="/addeducation" component={AddEducation} />
           <PrivateRoute exact={true} path="/addexperience" component={AddExperience} />
       </Switch>

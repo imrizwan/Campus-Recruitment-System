@@ -5,8 +5,10 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import { createProfile, getProfileCreated } from "../Actions/profileActions";
+import { createProfile, getCurrentProfile, getProfileCreated } from "../Actions/profileActions";
 import { connect } from "react-redux";
+import Loader from './Loader/Loader';
+import isEmpty from '../validation/is-empty';
 
 const styles = theme => ({
     root: {
@@ -42,6 +44,7 @@ const styles = theme => ({
 class CreateProfile extends React.Component {
 
     state = {
+        username: this.props.auth.user.username,
         company: '',
         website: '',
         location: '',
@@ -55,29 +58,75 @@ class CreateProfile extends React.Component {
         youtube: '',
         instagram: '',
         errors: {},
-        displaySocialInputs: false,
-    }
-
-    componentDidMount(){
-        if (this.props.auth.isAuthenticated) {
-            this.props.getProfileCreated(this.props.history, this.props.match.url);            
-        }
-    }
-
-    componentWillMount() {
-        let profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            if(profilecreatedVar){
-                this.props.history.push('/updateprofile');
-            }
-        }
+        displaySocialInputs: false
     }
     
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
+
+        // when componentWillReceiveProps
+        if (nextProps.profile.profile) {
+            // we are gonna check the profile
+            const profile = nextProps.profile.profile;
+            
+            // we are turning the skills array back into string
+            let skillsCSV
+            if(profile.skills){
+                skillsCSV = profile.skills.join(',');
+            }
+            // if profile fields does not exist, make it empty
+            profile.company = !isEmpty(profile.company) ? profile.company : '';
+            profile.website = !isEmpty(profile.website) ? profile.website : '';
+            profile.location = !isEmpty(profile.location) ? profile.location : '';
+            profile.githubusername = !isEmpty(profile.githubusername) ? profile.githubusername : '';
+            profile.bio = !isEmpty(profile.bio) ? profile.bio : '';
+            profile.social = !isEmpty(profile.social) ? profile.social : {};
+            profile.twitter = !isEmpty(profile.social.twitter) ? profile.social.twitter : '';
+            profile.facebook = !isEmpty(profile.social.facebook) ? profile.social.facebook : '';
+            profile.linkedin = !isEmpty(profile.social.linkedin) ? profile.social.linkedin : '';
+            profile.youtube = !isEmpty(profile.social.youtube) ? profile.social.youtube : '';
+            profile.instagram = !isEmpty(profile.social.instagram) ? profile.social.instagram : '';
+        
+            // set State for field form
+
+            this.setState({ 
+                username: profile.username,
+                company: profile.company,
+                website: profile.website,
+                location: profile.location,
+                status: profile.status,
+                skills: skillsCSV,
+                githubusername: profile.githubusername,
+                bio: profile.bio,
+                twitter: profile.twitter,
+                facebook: profile.facebook,
+                linkedin: profile.linkedin,
+                youtube: profile.youtube,
+                instagram: profile.instagram,
+             });
+        }
     }
+
+    componentDidMount() {
+        //its gonna fetch the profile
+        if (this.props.auth.isAuthenticated) {
+          this.props.getCurrentProfile();
+        }
+      }
+
+      componentWillMount(){
+        
+        var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+        if (this.props.auth.isAuthenticated) {
+            // this.props.getProfileCreated(this.props.history, this.props.match.url);      
+            if(!profilecreatedVar){
+                this.props.history.push('/createprofile');
+            }
+        }
+
+      }
     
     handleChange = name => event => {
         this.setState({
@@ -88,7 +137,6 @@ class CreateProfile extends React.Component {
     onClick = (e) => {
         e.preventDefault();
         const profileData = {
-            username: this.props.auth.user.username,
             company: this.state.company,
             website: this.state.website,
             location: this.state.location,
@@ -100,7 +148,7 @@ class CreateProfile extends React.Component {
             facebook: this.state.facebook,
             linkedin: this.state.linkedin,
             youtube: this.state.youtube,
-            instagram: this.state.instagram,
+            instagram: this.state.instagram
         };
         
         this.props.createProfile(profileData, this.props.history);
@@ -110,7 +158,6 @@ class CreateProfile extends React.Component {
         const { classes } = this.props;
         const { errors, displaySocialInputs } = this.state;
     let socialInputs;
-
 
     if (displaySocialInputs) {
       socialInputs = (
@@ -177,14 +224,20 @@ class CreateProfile extends React.Component {
                 }
         </div>
       );
-    } 
+    }
+        const { profile, loading } = this.props.profile;
+        if (profile === null || loading) {
+                return(
+                    <Loader />
+                )
+          } else { 
         return(
             <div>
                 <div className={classes.root}>
                 <br/>
                 <div className={classes.center}>   
-                <Typography variant="display2">Create Profile</Typography>
-                {!JSON.parse(localStorage.getItem('profilecreated')) ? <Typography variant="display3">Create your profile first</Typography> : null}
+                <Typography variant="display2">Update Profile</Typography>
+
                 <TextField
                 id="outlined-username"
                 label="Username"
@@ -193,12 +246,12 @@ class CreateProfile extends React.Component {
                 variant="outlined"
                 value={this.props.auth.user.username}
                 onChange={this.handleChange('username')}
-                placeholder="A unique username for your profile URL. Your full name, company name, nickname"
+                placeholder="A unique handle for your profile URL. Your full name, company name, nickname"
                 disabled
                 />
-                {
+                {/* {
                     errors.username ? <div style={{ color: "red" }}>{ errors.username }</div> : null
-                }
+                } */}
                 <TextField
                 id="outlined-company"
                 label="Company"
@@ -241,7 +294,7 @@ class CreateProfile extends React.Component {
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    value={this.state.handle}
+                    value={this.state.website}
                     onChange={this.handleChange('website')}
                     placeholder="Could be your own website or a company one"
                     multiline
@@ -253,7 +306,7 @@ class CreateProfile extends React.Component {
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    value={this.state.handle}
+                    value={this.state.location}
                     onChange={this.handleChange('location')}
                     placeholder="City or city &amp; state suggested (eg. Karachi, Sindh)"
                     multiline
@@ -265,7 +318,7 @@ class CreateProfile extends React.Component {
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    value={this.state.handle}
+                    value={this.state.skills}
                     onChange={this.handleChange('skills')}
                     placeholder="Please use comma separated values (eg.
                         HTML,CSS,JavaScript,PHP"
@@ -329,20 +382,25 @@ class CreateProfile extends React.Component {
             </div>
             </div>
         )
+        }
     }
 }
 
 CreateProfile.propTypes = {
     getProfileCreated: PropTypes.func.isRequired,
+    getCurrentProfile: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired,
+    profile: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
 };
 
   const mapStateToProps = state => ({
     errors: state.errors,
-    auth: state.auth,
-    profilecreated: state.profilecreated.profilecreated,
+    //we will access the profile throughout the component
+    profile: state.profile,
+    auth: state.auth
   });
 
-export default connect(mapStateToProps, { createProfile, getProfileCreated })(withStyles(styles)(CreateProfile));
+// and then we are getting current profile
+export default connect(mapStateToProps, { createProfile, getCurrentProfile, getProfileCreated })(withStyles(styles)(CreateProfile));

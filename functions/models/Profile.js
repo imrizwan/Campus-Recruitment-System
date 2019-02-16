@@ -7,11 +7,6 @@ const StudentProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  username: {
-    type: String,
-    required: true,
-    max: 40
-  },
   company: {
     type: String
   },
