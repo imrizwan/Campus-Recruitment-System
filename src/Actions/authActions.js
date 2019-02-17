@@ -16,8 +16,9 @@ export const registerUser = (userInfo, history) => dispatch => {
           if(res.status === 400){
             res.json().then(errors => dispatch({ type: GET_ERRORS, payload: errors }))
           } else if(res.status === 200) {
-            res.json().then(user => {
-              history.push("/signin"); 
+            res.json().then(res => {
+              dispatch({ type: GET_ERRORS, payload: res })
+              // history.push("/signin"); 
             })
           }
         });
@@ -44,6 +45,20 @@ export const setCurrentUser = (decoded) => {
     payload: decoded
   }
 }
+
+export const confirmUser = (userInfo, token) => dispatch => {
+    axios.post(URL+`confirmation/${token}`, userInfo)
+    .then(res => {
+      dispatch({ type: GET_ERRORS, payload: res.data })
+    }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))
+}
+export const resend = (email) => dispatch => {
+    axios.post(URL+`resend`, email)
+    .then(res => {
+      dispatch({ type: GET_ERRORS, payload: res.data })
+    }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))
+}
+
 
 export const logoutUser = () => (dispatch) => {
   //Remove token from the localstorage

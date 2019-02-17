@@ -134,6 +134,9 @@ class RenderForm extends React.Component {
             {
               errors.email ? <div style={{ color: "red" }}>{ this.state.errors.email }</div> : null
             }
+             {
+              errors.resend ? <div style={{ color: "black" }}><Link to="/resend">{ this.state.errors.resend }</Link></div> : null
+            }
             <br />
             <TextField
               id="outlined-password-input"

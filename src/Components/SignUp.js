@@ -53,6 +53,10 @@ const styles = theme => ({
   center: {
     margin: "0 auto",
     width: "40%"
+  },
+  success: {
+      color: "#4BB543",
+      fontSize: 20
   }
 });
 
@@ -118,10 +122,14 @@ class RenderForm extends React.Component {
   
   render(){
     const { classes, value } = this.props;
+    console.log(this.state.errors)
     return(
       <div>
    <TabContainer>
           <div className={classes.center}>
+          {
+              this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
+          }
           <TextField
               id="username"
               label={value === "student" ? "Username" : "Company Username"}

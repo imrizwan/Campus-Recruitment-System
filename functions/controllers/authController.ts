@@ -17,6 +17,7 @@ import * as validateProfileInput from "../validation/profile";
 import * as validateEducationInput from "../validation/education";
 import * as validateExperienceInput from "../validation/experience";
 import * as validateResend from "../validation/resend";
+import * as validateConfirmToken from "../validation/validateConfirmToken";
 
 // Load User model
 import * as User from '../models/User';
@@ -83,23 +84,27 @@ export class AuthController {
                 // Create a verification token for this user
                 var token = new Token({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
 
-                verify.save()
-                  .then((created) => {
-                    token.save()
+
+                token.save()
                       .then(()=>{
-                        var transporter = nodemailer.createTransport({ service: 'Sendgrid', auth: { user: "rizwanshaikh", pass: "Hello12345" } });
-                        var mailOptions = { from: 'no-reply@localhost.com', to: user.email, subject: 'Account Verification Token', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/api\/confirmation\/' + token.token + '.\n' };
+                        var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: "immrizwanss@gmail.com", pass: "Hello@123" } });
+                        var mailOptions = { 
+                          from: 'no-reply@rizwanshaikh.me', 
+                          to: user.email, 
+                          subject: 'Account Verification Token', 
+                          text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n' };
                         transporter.sendMail(mailOptions, function (err) {
                             if (err) { return res.status(500).send({ msg: err.message }); }
-                            return res.status(200).send('A verification email has been sent to ' + user.email + '.');
-                        });
-                      })
-                      .catch((err)=>{
-                        console.log("Error from token", err);
-                  });
+                            //profilecreated verification
+                            verify.save()
+                            .then((created) => console.log(created))
+                            .catch((err)=> console.log("Error from Verify: ", err))
 
-                  
-                  });
+                            return res.status(200).send({success: 'A verification email has been sent to ' + user.email + '.'});
+                }).catch((err)=>{
+                  console.log("Error from token", err);
+                    });
+                });
 
                 // return res.json(user);
               })
@@ -137,7 +142,9 @@ export class AuthController {
 
         // Make sure the user has been verified
         if (!user.isVerified) {
-          return res.status(401).send({ type: 'not-verified', msg: 'Your account has not been verified.' }); 
+          errors.email = "Your email has not been verified.";
+          errors.resend = "Resend Verification Email";
+          return res.status(401).send(errors); 
         }
         
 
@@ -317,11 +324,11 @@ export class AuthController {
   }
 
   public confirmationPost(req: Request, res: Response) {
-    const { errors } = validateLoginInput(req.body);
+    const { errors } = validateConfirmToken(req.body);
 
     const email = req.body.email;
     const password = req.body.password;
-    const userType = req.body.userType;
+    // const userType = req.body.userType;
 
     User.findOne({ email })
       .then((user) => {
@@ -330,15 +337,15 @@ export class AuthController {
           return res.status(404).json(errors);
         }
 
-        if (!userType) {
-          errors.userType = 'User type not found';
-          return res.status(404).json(errors);
-        }
+        // if (!userType) {
+        //   errors.userType = 'User type not found';
+        //   return res.status(404).json(errors);
+        // }
 
-        if (user.userType !== userType) {
-          errors.userType = 'User type does not match';
-          return res.status(400).json(errors);
-        }
+        // if (user.userType !== userType) {
+        //   errors.userType = 'User type does not match';
+        //   return res.status(400).json(errors);
+        // }
 
         // Make sure the user has been verified
         // if (!user.isVerified) {
@@ -350,15 +357,15 @@ export class AuthController {
           .then(isMatch => {
             if (isMatch) {
               //User Matched
-              const payload = { id: user.id, fullname: user.fullname, avatar: user.avatar, username: user.username }
+              // const payload = { id: user.id, fullname: user.fullname, avatar: user.avatar, username: user.username }
               //Sign Token
-              jwt.sign(
-                payload,
-                keys.secretOrKey,
-                { expiresIn: 3600 },
-                (err, tokenjwt) => {
-                  Verify.findOne({ user: user.id })
-                  .then((data) => { 
+              // jwt.sign(
+              //   payload,
+              //   keys.secretOrKey,
+              //   { expiresIn: 3600 },
+              //   (err, tokenjwt) => {
+              //     Verify.findOne({ user: user.id })
+              //     .then((data) => { 
 
                     Token.findOne({ token: req.params.token }, function (err, token) {
                       if (!token) return res.status(400).send({ type: 'not-verified', msg: 'We were unable to find a valid token. Your token my have expired.' });
@@ -372,7 +379,7 @@ export class AuthController {
                           user.isVerified = true;
                           user.save(function (err) {
                               if (err) { return res.status(500).send({ msg: err.message }); }
-                              res.status(200).send("The account has been verified. Please log in.");
+                              return res.status(200).send({ type: 'verified', success: "The account has been verified." });
                           });
                       });
                   });
@@ -381,8 +388,8 @@ export class AuthController {
                     //   profilecreated: data.profilecreated,
                     //   token: "Bearer " + tokenjwt
                     // });
-                  });
-                })
+                  // });
+                // })
             } else {
               errors.password = 'Password incorrect';
               return res.status(404).json(errors);
@@ -393,11 +400,11 @@ export class AuthController {
 
   public resendTokenPost(req: Request, res: Response) {
 
-    const { errors } = validateLoginInput(req.body);
+    const { errors } = validateResend(req.body);
     
     User.findOne({ email: req.body.email }, function (err, user) {
         if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
-        if (user.isVerified) return res.status(400).send({ msg: 'This account has already been verified. Please log in.' });
+        if (user.isVerified) return res.status(400).send({ msg: 'This account has already been verified.' });
  
         // Create a verification token, save it, and send email
         var token = new Token({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
@@ -407,11 +414,17 @@ export class AuthController {
             if (err) { return res.status(500).send({ msg: err.message }); }
  
             // Send the email
-            var transporter = nodemailer.createTransport({ service: 'Sendgrid', auth: { user: 'rizwanshaikh', pass: 'Hello12345' } });
-            var mailOptions = { from: 'no-reply@codemoto.io', to: user.email, subject: 'Account Verification Token', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/api\/confirmation\/' + token.token + '.\n' };
+            var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'immrizwanss@gmail.com', pass: 'Hello@123' } });
+            var mailOptions = { 
+              from: 'no-reply@localhost.com', 
+              to: user.email, 
+              subject: 'Account Verification Token', 
+              text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '.\n' 
+              };
             transporter.sendMail(mailOptions, function (err) {
                 if (err) { return res.status(500).send({ msg: err.message }); }
-                res.status(200).send('A verification email has been sent to ' + user.email + '.');
+                
+                res.status(200).send({ success: 'A verification email has been sent to ' + user.email + '.' });
             });
         });
  
