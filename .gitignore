@@ -7,7 +7,12 @@
 /coverage
 
 #keys
-/functions/config 
+/functions/config/keys.ts
+
+
+#keys
+/config/keys.ts
+
 
 # production
 /build
