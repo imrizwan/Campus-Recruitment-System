@@ -6,11 +6,11 @@
 # testing
 /coverage
 
-# production
-/build
-
 #keys
 /functions/config
+
+# production
+/build
 
 # misc
 .DS_Store
