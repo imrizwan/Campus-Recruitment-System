@@ -6,12 +6,7 @@
 # testing
 /coverage
 
-#keys
-/functions/config/keys.ts
 
-
-#keys
-/config/keys.ts
 
 
 # production
@@ -27,3 +22,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#keys
+/functions/config/keys.ts
+
+
+#keys
+/config/keys.ts
