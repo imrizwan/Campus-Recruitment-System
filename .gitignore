@@ -7,7 +7,7 @@
 /coverage
 
 #keys
-/functions/config
+/functions/config 
 
 # production
 /build
