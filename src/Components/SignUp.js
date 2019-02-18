@@ -81,6 +81,20 @@ class RenderForm extends React.Component {
     componentWillReceiveProps(nextProps){
       if(nextProps.errors){
         this.setState({ errors: nextProps.errors });
+        if(nextProps.errors.success){
+          this.setState({
+            emailStudent: "",
+            passwordStudent: "",
+            emailCompany: "",
+            passwordCompany: "",
+            usernameStudent: "",
+            usernameCompany: "",
+            fullnameStudent: "",
+            fullnameCompany: "",
+            passwordStudent2: "",
+            passwordCompany2: ""
+          })
+        }
       }
     }
 
@@ -93,7 +107,6 @@ class RenderForm extends React.Component {
     onClick = value => {
       const { usernameStudent, usernameCompany, fullnameStudent, fullnameCompany,emailCompany, passwordCompany, emailStudent, passwordStudent, passwordStudent2, passwordCompany2 } = this.state;
 
-      console.log("nameStudent",fullnameStudent)
 
       let newUser = value === "student" ? {
         username: usernameStudent,
@@ -110,8 +123,8 @@ class RenderForm extends React.Component {
         password2: passwordCompany2,
         userType: value
       }
-      console.log(newUser);
         this.props.registerUser(newUser, this.props.history);
+       
     }
 
     handleChangeInput = name => event => {
@@ -122,7 +135,6 @@ class RenderForm extends React.Component {
   
   render(){
     const { classes, value } = this.props;
-    console.log(this.state.errors)
     return(
       <div>
    <TabContainer>

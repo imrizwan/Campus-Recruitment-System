@@ -198,6 +198,7 @@ class SignIn extends React.Component {
         {value === 2 && <RenderForm classes={classes} value="admin" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser}/>}
 
           <p className="para">Create an account: <Link to="/signup">Signup</Link></p>
+          <p className="para"><Link to="/forgotpassword">Forgot Password?</Link></p>
       </div>
     );
   }

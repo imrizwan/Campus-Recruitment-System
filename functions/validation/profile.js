@@ -4,17 +4,17 @@ const isEmpty = require('./is-empty');
 module.exports = function validateProfileInput(data) {
   let errors = {};
 
-  data.username = !isEmpty(data.username) ? data.username : '';
+  // data.username = !isEmpty(data.username) ? data.username : '';
   data.status = !isEmpty(data.status) ? data.status : '';
   data.skills = !isEmpty(data.skills) ? data.skills : '';
 
-  if (!Validator.isLength(data.username, { min: 2, max: 40 })) {
-    errors.username = 'Username needs to between 2 and 4 characters';
-  }
+  // if (!Validator.isLength(data.username, { min: 2, max: 40 })) {
+  //   errors.username = 'Username needs to between 2 and 4 characters';
+  // }
 
-  if (Validator.isEmpty(data.username)) {
-    errors.username = 'Profile username is required';
-  }
+  // if (Validator.isEmpty(data.username)) {
+  //   errors.username = 'Profile username is required';
+  // }
 
   if (Validator.isEmpty(data.status)) {
     errors.status = 'Status field is required';

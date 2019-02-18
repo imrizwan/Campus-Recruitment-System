@@ -4,6 +4,12 @@ import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
+// Company
+
+// CompanyEnd
+
+// Student
+
 export const registerUser = (userInfo, history) => dispatch => {
     fetch(URL+"register", {
           method: "POST",
@@ -52,8 +58,23 @@ export const confirmUser = (userInfo, token) => dispatch => {
       dispatch({ type: GET_ERRORS, payload: res.data })
     }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))
 }
+
+export const changePassword = (password) => dispatch => {
+    axios.post(URL+`changepassword`, password)
+    .then(res => {
+      dispatch({ type: GET_ERRORS, payload: res.data })
+    }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))
+}
+
 export const resend = (email) => dispatch => {
     axios.post(URL+`resend`, email)
+    .then(res => {
+      dispatch({ type: GET_ERRORS, payload: res.data })
+    }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))
+}
+
+export const forgotPasswordEmail = (email) => dispatch => {
+    axios.post(URL+`forgotpasswordemail`, email)
     .then(res => {
       dispatch({ type: GET_ERRORS, payload: res.data })
     }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))

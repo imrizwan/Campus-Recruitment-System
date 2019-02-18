@@ -5,7 +5,9 @@ import MyProfile from '../Components/Protected/MyProfile';
 import Dashboard from '../Components/Protected/Dashboard';
 import SignIn from '../Components/SignIn';
 import Resend from '../Components/Resend';
+import ForgotPasswordEmail from '../Components/ForgotPasswordEmail';
 import Confirmation from '../Components/Confirmation';
+import ChangePassword from '../Components/ChangePassword';
 import SignUp from '../Components/SignUp';
 import NotFound from '../Components/NotFound';
 import AddEducation from '../Components/AddEducation';
@@ -51,7 +53,9 @@ export default class AppRouter extends React.Component {
       <Navbar history={history} />
           <Route path="/signin" component={SignIn} />
           <Route path="/resend" component={Resend} />
+          <Route path="/forgotpassword" component={ForgotPasswordEmail} />
           <Route path="/confirmation/:token" component={Confirmation} />
+          <Route path="/changepassword/:token" component={ChangePassword} />
           <Route path="/signup" component={SignUp} />
           <Route path="/404" component={NotFound} />
           <Route exact={true} path="/profile/:id" component={Profile} />

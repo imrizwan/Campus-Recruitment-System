@@ -8,8 +8,6 @@ import * as keys from '../config/keys.ts';
 import * as crypto from 'crypto';
 import * as nodemailer from 'nodemailer';
 
-
-//import passport from 'passport';
 // Load Input Validation
 import * as validateRegisterInput from "../validation/register";
 import * as validateLoginInput from "../validation/login";
@@ -18,13 +16,18 @@ import * as validateEducationInput from "../validation/education";
 import * as validateExperienceInput from "../validation/experience";
 import * as validateResend from "../validation/resend";
 import * as validateConfirmToken from "../validation/validateConfirmToken";
+import * as validateChangePassword from "../validation/changepassword";
 
 // Load User model
 import * as User from '../models/User';
 // Load Profile Model
 const Profile = require('../models/Profile');
+// Load User Profile Verification Model
 const Verify = require('../models/Verify');
+// Load Verification Token Model
 const Token = require('../models/Token');
+// Load Password Token Model
+const PasswordToken = require('../models/PasswordToken');
 
 export class AuthController {
 
@@ -84,10 +87,9 @@ export class AuthController {
                 // Create a verification token for this user
                 var token = new Token({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
 
-
                 token.save()
                       .then(()=>{
-                        var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: "immrizwanss@gmail.com", pass: "Hello@123" } });
+                        var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
                         var mailOptions = { 
                           from: 'no-reply@rizwanshaikh.me', 
                           to: user.email, 
@@ -97,14 +99,15 @@ export class AuthController {
                             if (err) { return res.status(500).send({ msg: err.message }); }
                             //profilecreated verification
                             verify.save()
-                            .then((created) => console.log(created))
+                            .then((done) => console.log(done))
                             .catch((err)=> console.log("Error from Verify: ", err))
 
                             return res.status(200).send({success: 'A verification email has been sent to ' + user.email + '.'});
-                }).catch((err)=>{
-                  console.log("Error from token", err);
+                })
+                })
+                .catch((err)=>{
+                  console.log("Error from token.save", err);
                     });
-                });
 
                 // return res.json(user);
               })
@@ -337,37 +340,10 @@ export class AuthController {
           return res.status(404).json(errors);
         }
 
-        // if (!userType) {
-        //   errors.userType = 'User type not found';
-        //   return res.status(404).json(errors);
-        // }
-
-        // if (user.userType !== userType) {
-        //   errors.userType = 'User type does not match';
-        //   return res.status(400).json(errors);
-        // }
-
-        // Make sure the user has been verified
-        // if (!user.isVerified) {
-        //   return res.status(401).send({ type: 'not-verified', msg: 'Your account has not been verified.' }); 
-        // }
-        
-
-        bcrypt.compare(password, user.password)
+      bcrypt.compare(password, user.password)
           .then(isMatch => {
             if (isMatch) {
-              //User Matched
-              // const payload = { id: user.id, fullname: user.fullname, avatar: user.avatar, username: user.username }
-              //Sign Token
-              // jwt.sign(
-              //   payload,
-              //   keys.secretOrKey,
-              //   { expiresIn: 3600 },
-              //   (err, tokenjwt) => {
-              //     Verify.findOne({ user: user.id })
-              //     .then((data) => { 
-
-                    Token.findOne({ token: req.params.token }, function (err, token) {
+              Token.findOne({ token: req.params.token }, function (err, token) {
                       if (!token) return res.status(400).send({ type: 'not-verified', msg: 'We were unable to find a valid token. Your token my have expired.' });
               
                       // If we found a token, find a matching user
@@ -383,13 +359,6 @@ export class AuthController {
                           });
                       });
                   });
-                    // return res.json({
-                    //   success: true,
-                    //   profilecreated: data.profilecreated,
-                    //   token: "Bearer " + tokenjwt
-                    // });
-                  // });
-                // })
             } else {
               errors.password = 'Password incorrect';
               return res.status(404).json(errors);
@@ -414,12 +383,12 @@ export class AuthController {
             if (err) { return res.status(500).send({ msg: err.message }); }
  
             // Send the email
-            var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'immrizwanss@gmail.com', pass: 'Hello@123' } });
+            var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
             var mailOptions = { 
               from: 'no-reply@localhost.com', 
               to: user.email, 
               subject: 'Account Verification Token', 
-              text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '.\n' 
+              text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n' 
               };
             transporter.sendMail(mailOptions, function (err) {
                 if (err) { return res.status(500).send({ msg: err.message }); }
@@ -431,6 +400,97 @@ export class AuthController {
     });
   }
 
+
+  public changePassword(req: Request, res: Response) {
+    const { errors } = validateChangePassword(req.body);
+
+    let password = req.body.password;
+    // const password2 = req.body.password2;
+    console.log(req.body)
+    PasswordToken.findOne({ token: req.body.token })
+      .then((tokenFound) => {
+        if (!tokenFound) {
+          errors.tokenerror = 'Request is invalid';
+          return res.status(404).json(errors);
+        }
+
+        if (tokenFound.passwordchanged) {
+          errors.tokenerror = 'This request has already been used';
+          return res.status(404).json(errors);
+        }
+        // if token found then search user
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(password, salt, (err, hash) => {
+            if (err) throw err;
+            password = hash;
+
+
+            User.findOneAndUpdate(
+              { _id: tokenFound.user },
+              { $set: { password } },
+              { new: true }
+              )
+              .then((user)=>{
+              if (!user) {
+              errors.tokenerror = 'User not found';
+              return res.status(404).json(errors);
+              }
+            // if user found then change his password
+              PasswordToken.findOneAndUpdate(
+                { token: req.body.token },
+                { passwordchanged: true },
+                { token: req.body.token }
+                )
+                .then((done)=>console.log(done))
+                .catch((err)=>console.log("Error from Password Change Update: ", err))
+              return res.status(200).json({ success: "Password Changed Successfully"});
+
+              })
+              .catch((err)=>console.log("Error from Password Update: ", err));
+            });
+        });
+
+
+        
+      
+  })
+  .catch((err)=> console.log("Error from Password Token: ", err));
+
+  }
+
+
+  public forgotPasswordEmail(req: Request, res: Response) {
+    const { errors } = validateResend(req.body);
+    
+    User.findOne({ email: req.body.email }, function (err, user) {
+        if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
+        // if (!user.isVerified) res.status(400).send({ msg: 'This account has not been verified.' });
+ 
+      // Create a verification token, save it, and send email
+      var passwordtoken = new PasswordToken({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
+ 
+      // Save the token
+      passwordtoken.save(function (err) {
+          if (err) { return res.status(500).send({ msg: err.message }); }
+
+          // Send the email
+          var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
+          var mailOptions = { 
+            from: 'no-reply@localhost.com', 
+            to: user.email, 
+            subject: 'Change Password', 
+            text: 'Hello,\n\n' + 'Please change your account password by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/changepassword\/' + passwordtoken.token + '.\n' 
+            };
+          transporter.sendMail(mailOptions, function (err) {
+              if (err) { return res.status(500).send({ msg: err.message }); }
+              
+              res.status(200).send({ success: 'An email has been sent to ' + user.email + '.' });
+          });
+      });
+ 
+    });
+  }
 
   public profilecreated(req: Request, res: Response) {
 
@@ -452,7 +512,7 @@ export class AuthController {
 
     // Get fields
     profileFields.user = req.user.id;
-    if (req.body.username) profileFields.username = req.body.username;
+    // if (req.body.username) profileFields.username = req.body.username;
     if (req.body.company) profileFields.company = req.body.company;
     if (req.body.website) profileFields.website = req.body.website;
     if (req.body.location) profileFields.location = req.body.location;
@@ -484,13 +544,6 @@ export class AuthController {
       } else {
         // Create
 
-        // Check if username exists
-        //Profile.findOne({ username: profileFields.username }).then(profile => {
-        //  if (profile) {
-        //    errors.username = 'That username already exists';
-        //    res.status(400).json(errors);
-        //  }
-
         // Save Profile
         new Profile(profileFields).save().then(profile => {
 
@@ -502,7 +555,6 @@ export class AuthController {
             ).then(success => res.json(profile));
           }
         });
-        //});
       }
     });
   }

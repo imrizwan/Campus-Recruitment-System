@@ -20,5 +20,7 @@ export class Routes {
         app.get('/api/profilecreated', passport.authenticate("jwt", { session: false }), this.authController.profilecreated)
         app.post('/api/confirmation/:token', this.authController.confirmationPost);
         app.post('/api/resend', this.authController.resendTokenPost);
+        app.post('/api/forgotpasswordemail', this.authController.forgotPasswordEmail);
+        app.post('/api/changepassword', this.authController.changePassword);
     }
 }
