@@ -5,37 +5,24 @@ import PropTypes from "prop-types";
 import { getProfileCreated } from "../Actions/profileActions";
 
 
-const PrivateRoute = ({ component: Component, auth, profilecreated, ...rest }) => { 
-
-    // if(profilecreated){
-    //     var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-    //     console.log(profilecreatedVar, rest.path)
-    // }
+const PrivateRoute = ({ component: Component, auth, userType, ...rest }) => {
+    console.log(auth.user.userType === userType)
     return (
-    <Route 
-        { ...rest} 
-        render={props => {
-            if(auth.isAuthenticated === true){
-                return <Component {...props} />
-            } else {
-                return <Redirect to='/signin'/>
+        <Route
+            {...rest}
+            render={props => {
+                if (auth.isAuthenticated === true && auth.user.userType === userType) {
+                    return <Component {...props} />
+                } else if(auth.isAuthenticated === true && auth.user.userType !== userType) {
+                    return <Redirect to='/unauthorized' />
+                } else if(auth.isAuthenticated === false) {
+                    return <Redirect to='/signin' />
+                }
             }
-        // }
-            // auth.isAuthenticated === true ? 
-            // profilecreatedVar === true ? 
-            // profilecreatedVar && rest.path === "/createprofile" ? 
-            // <Redirect to="/updateprofile" /> 
-            // : <Component { ...props} /> 
-            // : rest.path==="/createprofile" 
-            // ? <Component { ...props} /> 
-            // : <Redirect to="/createprofile" />
-            // : (
-            //     <Redirect to="/signin" />
-            // )
-        }
-        }
-    />
-)};
+            }
+        />
+    )
+};
 
 PrivateRoute.proptypes = {
     auth: PropTypes.object.isRequired,
@@ -45,6 +32,6 @@ PrivateRoute.proptypes = {
 const mapStateToProps = (state) => ({
     auth: state.auth,
     profilecreated: state.profilecreated.profilecreated
-  });
+});
 
 export default connect(mapStateToProps, { getProfileCreated })(PrivateRoute);

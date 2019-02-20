@@ -76,8 +76,10 @@ class RenderForm extends React.Component {
   };
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.auth.isAuthenticated){
+    if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "student"){
         this.props.history.push('/dashboard');
+    } else if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "company"){
+      this.props.history.push('/companydashboard');
     }
     
     if(nextProps.errors){
@@ -87,9 +89,11 @@ class RenderForm extends React.Component {
 
     
   componentDidMount(){
-    if(this.props.auth.isAuthenticated) {
+    if(this.props.auth.isAuthenticated && this.props.auth.user.userType === "student"){
       this.props.history.push('/dashboard');
-    }
+  } else if(this.props.auth.isAuthenticated && this.props.auth.user.userType === "company"){
+    this.props.history.push('/companydashboard');
+  }
   }
 
   onClick = (value) => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
-class Dashboard extends Component {
+class MyCompanyProfile extends Component {
 
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) {
@@ -13,13 +13,13 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-          Dashboard
+          MyCompanyProfile
       </div>
     );
   }
 }
 
-Dashboard.propTypes = {
+MyCompanyProfile.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
@@ -27,4 +27,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps)(MyCompanyProfile);

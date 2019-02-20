@@ -5,8 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { forgotPasswordEmail } from "../Actions/authActions";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-
 
 //Tabs
 

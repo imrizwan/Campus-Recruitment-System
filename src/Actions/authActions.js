@@ -81,7 +81,7 @@ export const forgotPasswordEmail = (email) => dispatch => {
 }
 
 
-export const logoutUser = () => (dispatch) => {
+export const logoutUser = (history) => (dispatch) => {
   //Remove token from the localstorage
   localStorage.removeItem('profilecreated');
   localStorage.removeItem('jwtToken');
@@ -89,4 +89,6 @@ export const logoutUser = () => (dispatch) => {
   setAuthToken(false);
   // set current user to emty object
   dispatch(setCurrentUser({}));
+
+  history.push("/signin"); 
 };

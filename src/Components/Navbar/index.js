@@ -67,7 +67,7 @@ class Navbar extends React.Component {
       onLogoutClick = (e) => {
         e.preventDefault();
         this.setState({ anchorEl: null });
-        this.props.logoutUser();
+        this.props.logoutUser(this.props.history);
       };
 
       redirect = value => {
@@ -143,8 +143,8 @@ class Navbar extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
-                  <MenuItem onClick={() => this.redirect("profile")}>My Profile</MenuItem>
-                  <MenuItem onClick={() => this.redirect("updateprofile")}>Update Profile</MenuItem>
+                  <MenuItem onClick={() => this.props.auth.user.userType === "student" ? this.redirect("profile") : this.redirect("companyprofile")}>My Profile</MenuItem>
+                  <MenuItem onClick={() => this.props.auth.user.userType === "student" ? this.redirect("updateprofile") : this.redirect("updatecompanyprofile")}>Update Profile</MenuItem>
                 </Menu>
               </div>
             )}

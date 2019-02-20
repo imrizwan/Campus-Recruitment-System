@@ -111,7 +111,7 @@ export class AuthController {
 
                 // return res.json(user);
               })
-              .catch(err => console.log(err));
+              .catch((err)=>console.log("Error from addnewuser", err));
           });
         });
       }
@@ -155,7 +155,7 @@ export class AuthController {
           .then(isMatch => {
             if (isMatch) {
               //User Matched
-              const payload = { id: user.id, fullname: user.fullname, avatar: user.avatar, username: user.username }
+              const payload = { id: user.id, fullname: user.fullname, avatar: user.avatar, username: user.username, userType: user.userType }
               //Sign Token
               jwt.sign(
                 payload,
@@ -169,13 +169,15 @@ export class AuthController {
                         profilecreated: data.profilecreated,
                         token: "Bearer " + token
                       });
-                    } );
+                    })
+                    .catch((err)=>console.log("Error from loginUser", err));
                 })
             } else {
               errors.password = 'Password incorrect';
               return res.status(404).json(errors);
             }
           })
+          .catch((err)=>console.log("Error from loginUser", err));
       })
   }
 
@@ -204,7 +206,8 @@ export class AuthController {
         }
         res.json(profile);
       })
-      .catch(err => res.status(404).json(err));
+      .catch((err)=>console.log("Error from currentUserProfile", err));
+
   }
   // @route   GET api/profile/all
   // @desc    Get all profiles
@@ -243,7 +246,7 @@ export class AuthController {
 
         res.json(profile);
       })
-      .catch(err => res.status(404).json(err));
+      .catch((err)=>console.log("Error from username", err));
   }
 
   // @route   GET api/profile/user/:user_id
@@ -294,8 +297,12 @@ export class AuthController {
       // Add to exp array
       profile.experience.unshift(newExp);
 
-      profile.save().then(profile => res.json(profile));
-    });
+      profile.save()
+      .then(profile => res.json(profile))
+      .catch((err)=>console.log("Error from experience", err));
+    })
+    .catch((err)=>console.log("Error from experience", err));
+
   }
   // education
 
@@ -322,8 +329,11 @@ export class AuthController {
       // Add to exp array
       profile.education.unshift(newEdu);
 
-      profile.save().then(profile => res.json(profile));
-    });
+      profile.save()
+      .then(profile => res.json(profile))
+      .catch((err)=>console.log("Error from education", err));
+    })
+    .catch((err)=>console.log("Error from education", err));
   }
 
   public confirmationPost(req: Request, res: Response) {
@@ -344,10 +354,12 @@ export class AuthController {
           .then(isMatch => {
             if (isMatch) {
               Token.findOne({ token: req.params.token }, function (err, token) {
+                      if (err) { return res.status(500).send({ msg: err.message }); }
                       if (!token) return res.status(400).send({ type: 'not-verified', msg: 'We were unable to find a valid token. Your token my have expired.' });
               
                       // If we found a token, find a matching user
                       User.findOne({ _id: token.user, email: req.body.email }, function (err, user) {
+                          if (err) { return res.status(500).send({ msg: err.message }); }
                           if (!user) return res.status(400).send({ msg: 'We were unable to find a user for this token.' });
                           if (user.isVerified) return res.status(400).send({ type: 'already-verified', msg: 'This user has already been verified.' });
               
@@ -364,7 +376,9 @@ export class AuthController {
               return res.status(404).json(errors);
             }
           })
+          .catch((err)=>console.log("Error from confirmationPost", err));
       })
+      .catch((err)=>console.log("Error from confirmationPost", err));
   }
 
   public resendTokenPost(req: Request, res: Response) {
@@ -372,6 +386,7 @@ export class AuthController {
     const { errors } = validateResend(req.body);
     
     User.findOne({ email: req.body.email }, function (err, user) {
+        if (err) { return res.status(500).send({ msg: err.message }); }
         if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
         if (user.isVerified) return res.status(400).send({ msg: 'This account has already been verified.' });
  
@@ -495,7 +510,8 @@ export class AuthController {
   public profilecreated(req: Request, res: Response) {
 
     Verify.findOne({ user: req.user.id })
-      .then((data) => res.json(data));
+      .then((data) => res.json(data))
+      .catch((err)=>console.log("Error from create Profile: ",err));
   }
 
   // createprofile
@@ -540,7 +556,8 @@ export class AuthController {
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
-        ).then(profile => res.json(profile));
+        ).then(profile => res.json(profile))
+        .catch((err)=>console.log("Error from create Profile: ",err));
       } else {
         // Create
 
@@ -552,9 +569,11 @@ export class AuthController {
               { user: req.user.id },
               { $set: { profilecreated: true } },
               { new: true }
-            ).then(success => res.json(profile));
+            ).then(success => res.json(profile))
+            .catch((err)=>console.log("Error from verify: ",err));
           }
-        });
+        })
+        .catch((err)=>console.log("Error from create Profile: ",err));
       }
     });
   }

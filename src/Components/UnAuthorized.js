@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
-class Dashboard extends Component {
+class UnAuthorized extends Component {
 
-  componentDidMount() {
-    if (!this.props.auth.isAuthenticated) {
+  componentDidMount(){
+    if(!this.props.auth.isAuthenticated){
       this.props.history.push('/signin');
-    }
+    } 
   }
 
   render() {
     return (
-      <div>
-          Dashboard
-      </div>
+      <h1>
+          You have no access to this page
+      </h1>
     );
   }
 }
 
-Dashboard.propTypes = {
+UnAuthorized.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
@@ -27,4 +27,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps)(UnAuthorized);
