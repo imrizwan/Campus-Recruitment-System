@@ -1,8 +1,10 @@
 import { AuthController } from '../controllers/authController';
+import { CompanyAuthController } from '../controllers/companyController';
 import * as passport from 'passport';
 
 export class Routes {
     public authController: AuthController = new AuthController();
+    public companycontroller: CompanyAuthController = new CompanyAuthController();
     public routes(app): void {
         app.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 
@@ -22,5 +24,7 @@ export class Routes {
         app.post('/api/resend', this.authController.resendTokenPost);
         app.post('/api/forgotpasswordemail', this.authController.forgotPasswordEmail);
         app.post('/api/changepassword', this.authController.changePassword);
+        // Company Routes
+        app.post('/api/createcompanyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.createcompanyprofile)
     }
 }

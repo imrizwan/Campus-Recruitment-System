@@ -6,7 +6,6 @@ import { getProfileCreated } from "../Actions/profileActions";
 
 
 const PrivateRoute = ({ component: Component, auth, userType, ...rest }) => {
-    console.log(auth.user.userType === userType)
     return (
         <Route
             {...rest}
