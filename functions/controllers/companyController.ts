@@ -9,6 +9,8 @@ import * as crypto from 'crypto';
 import * as nodemailer from 'nodemailer';
 // Load Input Validation
 import * as validateCompanyProfileInput from "../validation/companyprofile";
+import * as validateCompanyProjectInput from "../validation/companyproject";
+import * as validateCompanyVaccancyInput from "../validation/companyvaccancy";
 // Load User model
 import * as CompanyProfile from '../models/CompanyProfile';
 import * as Verify from '../models/Verify';
@@ -31,6 +33,7 @@ export class CompanyAuthController {
         if (req.body.location) profileFields.location = req.body.location;
         if (req.body.industrytype) profileFields.industrytype = req.body.industrytype;
         if (req.body.description) profileFields.description = req.body.description;
+        if (req.body.numberofemployee) profileFields.numberofemployee = req.body.numberofemployee;
         if (req.body.githubusername) profileFields.githubusername = req.body.githubusername;
     
         // Social
@@ -69,4 +72,86 @@ export class CompanyAuthController {
           }
         });
       }
+
+       // @route   GET api/profile
+  // @desc    Get current users profile
+  // @access  Private
+
+  public currentCompanyProfile(req: Request, res: Response) {
+    const errors = {};
+
+    CompanyProfile.findOne({ user: req.user.id })
+      .populate('user', ['fullname', 'avatar'])
+      .then(profile => {
+        if (!profile) {
+          errors.noprofile = 'There is no profile for this user';
+          return res.status(404).json(errors);
+        }
+        res.json(profile);
+      })
+      .catch((err)=>console.log("Error from currentUserProfile", err));
+
+  }
+
+  public project(req: Request, res: Response) {
+    const { errors, isValid } = validateCompanyProjectInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    CompanyProfile.findOne({ user: req.user.id }).then(companyprofile => {
+      const proData = {
+        title: req.body.title,
+        client: req.body.client,
+        clientlocation: req.body.clientlocation,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description,
+        skills: req.body.skills
+      };
+
+      // Add to exp array
+      companyprofile.project.unshift(proData);
+
+      companyprofile.save()
+      .then(profile => res.json(profile))
+      .catch((err)=>console.log("Error from project", err));
+    })
+    .catch((err)=>console.log("Error from project", err));
+  }
+
+
+
+  public vaccancy(req: Request, res: Response) {
+    const { errors, isValid } = validateCompanyVaccancyInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    CompanyProfile.findOne({ user: req.user.id }).then(companyprofile => {
+      const vaccancyData = {
+        position: req.body.position,
+        degreerequired: req.body.degreerequired,
+        skillsrequired: req.body.skillsrequired,
+        jobtype: req.body.jobtype,
+        description: req.body.description,
+        contactno: req.body.contactno
+      };
+
+      // Add to exp array
+      companyprofile.vaccancy.unshift(vaccancyData);
+
+      companyprofile.save()
+      .then(profile => res.json(profile))
+      .catch((err)=>console.log("Error from vaccancy", err));
+    })
+    .catch((err)=>console.log("Error from vaccancy", err));
+  }
 }

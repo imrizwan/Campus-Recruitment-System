@@ -90,5 +90,7 @@ export const logoutUser = (history) => (dispatch) => {
   // set current user to emty object
   dispatch(setCurrentUser({}));
 
-  history.push("/signin"); 
+  if(history){
+    history.push("/signin"); 
+  }
 };

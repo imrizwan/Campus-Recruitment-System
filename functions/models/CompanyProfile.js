@@ -77,19 +77,18 @@ const CompanyProfileSchema = new Schema({
         type: [String],
         required: true
       },
-      from: {
-        type: Date,
+      jobtype: {
+        type: String, 
+        // enum: ['Full time', 'Part time', 'Contract', 'Intern'],
         required: true
       },
-      to: {
-        type: Date
-      },
-      current: {
-        type: Boolean,
-        default: false
-      },
       description: {
-        type: String
+        type: String,
+        require: true
+      },
+      contactno: {
+        type: String,
+        require: true
       }
     }
   ],

@@ -120,14 +120,22 @@ class Navbar extends React.Component {
             )}
             {this.props.auth.isAuthenticated && (
               <div>
-                <IconButton
+                <p>Hello {this.props.auth.user.fullname}<IconButton
+                  aria-owns={open ? 'menu-appbar' : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
+                  <FontAwesomeIcon icon="user" />
+                </IconButton></p>
+                {/* <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
                   aria-haspopup="true"
                   onClick={this.handleMenu}
                   color="inherit"
                 >
                 <img  src={this.props.auth.user.avatar} alt={this.props.auth.user.name} title={this.props.auth.user.name} style={{ width: '25px', borderRadius: '25px' }} />
-                </IconButton>
+                </IconButton> */}
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
@@ -145,6 +153,14 @@ class Navbar extends React.Component {
                   <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
                   <MenuItem onClick={() => this.props.auth.user.userType === "student" ? this.redirect("profile") : this.redirect("companyprofile")}>My Profile</MenuItem>
                   <MenuItem onClick={() => this.props.auth.user.userType === "student" ? this.redirect("updateprofile") : this.redirect("updatecompanyprofile")}>Update Profile</MenuItem>
+                  {this.props.auth.user.userType === "student" ? 
+                    <MenuItem onClick={()=> this.redirect("addeducation")}>Add Education</MenuItem> :
+                    <MenuItem onClick={()=> this.redirect("addvaccancy")}>Add Vaccancy</MenuItem>
+                  }
+                  {this.props.auth.user.userType === "student" ? 
+                    <MenuItem onClick={()=> this.redirect("addexperience")}>Add Experience</MenuItem> :
+                    <MenuItem onClick={()=> this.redirect("addproject")}>Add Project</MenuItem>
+                  }
                 </Menu>
               </div>
             )}

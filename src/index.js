@@ -5,12 +5,12 @@ import App from './App';
 import {Provider} from 'react-redux';
 import store from './Store/configureStore';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faGraduationCap, faBuilding, faLock, faSignInAlt, faUserPlus, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faGraduationCap, faBuilding, faLock, faSignInAlt, faUserPlus, faUser, fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import registerServiceWorker from './registerServiceWorker';
 
 //const store = configureStore();
 
-library.add(fab, faGraduationCap, faBuilding, faLock, faSignInAlt, faUserPlus, faUser);
+library.add(fab, fas, faGraduationCap, faBuilding, faLock, faSignInAlt, faUserPlus, faUser);
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();
