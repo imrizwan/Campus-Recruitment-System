@@ -10,7 +10,6 @@ import MyCompanyProfile from '../Components/Company/MyCompanyProfile';
 import AddProject from '../Components/Company/AddProject';
 import AddVaccancy from '../Components/Company/AddVaccancy';
 import SignIn from '../Components/SignIn';
-import Redirect from '../Redirect';
 import Resend from '../Components/Resend';
 import ForgotPasswordEmail from '../Components/ForgotPasswordEmail';
 import Confirmation from '../Components/Confirmation';
@@ -75,7 +74,7 @@ export default class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/createcompanyprofile" userType="company" component={CreateCompanyProfile} />
           <PrivateRoute exact={true} path="/addproject" userType="company" component={AddProject} />
           <PrivateRoute exact={true} path="/addvaccancy" userType="company" component={AddVaccancy} />
-          <PrivateRoute exact={true} path="/dashboard" userType="student" component={Dashboard} />
+          <PrivateRoute exact={true} path="/studentdashboard" userType="student" component={Dashboard} />
           <PrivateRoute exact={true} path="/profile" userType="student" component={MyProfile} />
           <PrivateRoute exact={true} path="/createprofile" userType="student" component={CreateProfile} />
           <PrivateRoute exact={true} path="/updateprofile" userType="student" component={UpdateProfile} />

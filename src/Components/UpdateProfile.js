@@ -9,6 +9,8 @@ import { createProfile, getCurrentProfile, getProfileCreated } from "../Actions/
 import { connect } from "react-redux";
 import Loader from './Loader/Loader';
 import isEmpty from '../validation/is-empty';
+import { Link } from "react-router-dom";
+
 
 const styles = theme => ({
     root: {
@@ -118,13 +120,13 @@ class CreateProfile extends React.Component {
 
       componentWillMount(){
         
-        var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            // this.props.getProfileCreated(this.props.history, this.props.match.url);      
-            if(!profilecreatedVar){
-                this.props.history.push('/createprofile');
-            }
-        }
+        // var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+        // if (this.props.auth.isAuthenticated) {
+        //     // this.props.getProfileCreated(this.props.history, this.props.match.url);      
+        //     if(!profilecreatedVar){
+        //         this.props.history.push('/createprofile');
+        //     }
+        // }
 
       }
     
@@ -227,6 +229,28 @@ class CreateProfile extends React.Component {
     }
         const { profile, loading } = this.props.profile;
         if (profile === null || loading) {
+                if(this.state.errors){
+                    if(this.state.errors.noprofile){
+                        return (
+                            <div>
+                                <h1 style={{ color: "red" }}>
+                                    <br />
+                                    {this.state.errors.noprofile}
+                                </h1>
+                                <br />
+                                <Link to="/createprofile">
+                                    <h3 style={{ fontSize: "10", textAlign: "center" }} >
+                                        Please Create Your Profile First
+                             </h3>
+                                </Link>
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <Loader/>
+                        )
+                    }
+                }
                 return(
                     <Loader />
                 )
@@ -399,7 +423,8 @@ CreateProfile.propTypes = {
     errors: state.errors,
     //we will access the profile throughout the component
     profile: state.profile,
-    auth: state.auth
+    auth: state.auth,
+    profilecreated: state.profilecreated.profilecreated
   });
 
 // and then we are getting current profile

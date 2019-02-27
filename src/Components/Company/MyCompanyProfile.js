@@ -64,7 +64,8 @@ MyCompanyProfile.propTypes = {
 
 const mapStateToProps = state => ({
     profile: state.profile,
-    auth: state.auth
+    auth: state.auth,
+    profilecreated: this.state.profilecreated.profilecreated
 });
 
 export default connect(mapStateToProps, { getCurrentCompanyProfile, getProfileCreated })(withStyles(styles)(MyCompanyProfile));

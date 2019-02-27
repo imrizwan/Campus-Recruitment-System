@@ -1,0 +1,9 @@
+.navbar-light {
+    background: #ff5500!important;
+}
+.btnLogout {
+    border: 0px!important;
+}
+.btnLogout:hover {
+    color: white!important;
+}
