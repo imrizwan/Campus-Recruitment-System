@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../Actions/authActions";
 import "./index.css";
+import Loader from "./Loader/Loader";
 
 //Tabs
 
@@ -76,11 +77,12 @@ class RenderForm extends React.Component {
       passwordCompany2: "",
       user: {},
       errors: {},
+      loader: false
     }
   
     componentWillReceiveProps(nextProps){
       if(nextProps.errors){
-        this.setState({ errors: nextProps.errors });
+        this.setState({ errors: nextProps.errors, loader: false });
         if(nextProps.errors.success){
           this.setState({
             emailStudent: "",
@@ -92,7 +94,8 @@ class RenderForm extends React.Component {
             fullnameStudent: "",
             fullnameCompany: "",
             passwordStudent2: "",
-            passwordCompany2: ""
+            passwordCompany2: "",
+            loader: false
           })
         }
       }
@@ -124,7 +127,7 @@ class RenderForm extends React.Component {
         userType: value
       }
         this.props.registerUser(newUser, this.props.history);
-       
+        this.setState({loader: true});
     }
 
     handleChangeInput = name => event => {
@@ -140,6 +143,7 @@ class RenderForm extends React.Component {
    <TabContainer>
           <div className={classes.center}>
           {
+              this.state.loader ? <Loader/> : 
               this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
           }
           <TextField

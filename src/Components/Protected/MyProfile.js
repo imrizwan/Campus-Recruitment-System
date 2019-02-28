@@ -60,7 +60,20 @@ class MyProfile extends Component {
     return (
       <div>
         {
-          this.state.errors ? <div><h1 style={{ color: "red" }}><br/>{ this.state.errors.noprofile }</h1><br/><Link to="/createprofile"><h3 style={{ fontSize: "10", textAlign: "center" }} >Please Create Your Profile First</h3></Link></div> : null 
+          this.state.errors ? 
+          this.state.errors.noprofile ?
+          <div>
+              <h1 style={{ color: "red" }}>
+              <br/>
+              { this.state.errors.noprofile }
+              </h1>
+              <br/>
+              <Link to="/createprofile">
+              <h3 style={{ fontSize: "10", textAlign: "center" }} >
+              Please Create Your Profile First
+              </h3>
+              </Link>
+            </div> : null : null 
         }
           {profileContent}
       </div>

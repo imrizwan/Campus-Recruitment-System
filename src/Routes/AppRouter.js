@@ -1,5 +1,9 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
+import Loader from "../Components/Loader/Loader";
+import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import { getProfileCreated } from "../Actions/profileActions";
 import Profile from '../Components/Protected/Profile';
 import MyProfile from '../Components/Protected/MyProfile';
 import Dashboard from '../Components/Protected/Dashboard';
@@ -51,13 +55,39 @@ if(localStorage.jwtToken){
   }
 }
 
-export default class AppRouter extends React.Component {
+class AppRouter extends React.Component {
+
+  state= {
+    errors: {},
+    profilecreated: {}
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+        this.setState({ errors: nextProps.errors });
+    }
+    if (nextProps.profilecreated) {
+      this.setState({ profilecreated: nextProps.profilecreated });
+  }
+  }
+  componentWillMount() {
+    //its gonna fetch the profile
+    if (this.props.auth.isAuthenticated) {
+      this.props.getProfileCreated();
+    }
+  }
+
   render() {
+    if(this.props.auth.isAuthenticated){
+            if(!this.state.profilecreated){
+              return <Loader />;
+            }
+       }
     return (
       <div>
       <Router history={history}>
         <div>
-      <Navbar history={history} />
+      <Navbar history={history} profilecreated={this.state.profilecreated} />
           <Route path="/signin" component={SignIn} />
           <Route path="/resend" component={Resend} />
           <Route path="/forgotpassword" component={ForgotPasswordEmail} />
@@ -87,3 +117,15 @@ export default class AppRouter extends React.Component {
     );
   }
 }
+
+AppRouter.propTypes = {
+  getProfileCreated: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+auth: state.auth,
+profilecreated: state.profilecreated.profilecreated
+});
+
+export default connect(mapStateToProps, { getProfileCreated })(AppRouter);

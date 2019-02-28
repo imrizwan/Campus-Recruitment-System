@@ -42,6 +42,7 @@ export const loginUser = (userInfo, history) => dispatch => {
       //Decode token to get user
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
+      window.location.reload();
     }).catch(errors => dispatch({ type: GET_ERRORS, payload: errors.response.data }))
 }
 

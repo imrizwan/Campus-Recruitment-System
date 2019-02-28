@@ -2,14 +2,15 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { logoutUser } from "../../Actions/authActions";
-import { getProfileCreated } from "../../Actions/profileActions";
+// import { getProfileCreated } from "../../Actions/profileActions";
 import "./Navbar.css";
 import Loader from "../Loader/Loader";
 
 class Navbar extends React.Component {
 
     state= {
-      errors: {}
+      errors: {},
+      // profilecreated: {}
     }
 
       onLogoutClick = (e) => {
@@ -26,22 +27,24 @@ class Navbar extends React.Component {
         if (nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
+      //   if (nextProps.profilecreated) {
+      //     this.setState({ profilecreated: nextProps.profilecreated });
+      // }
       }
-      componentWillMount() {
-        //its gonna fetch the profile
-        if (this.props.auth.isAuthenticated) {
-          this.props.getProfileCreated();
-        }
-      }
+      // componentWillMount() {
+      //   //its gonna fetch the profile
+      //   if (this.props.auth.isAuthenticated) {
+      //     this.props.getProfileCreated();
+      //   }
+      // }
+      
 
     render() {
-      console.log(this.props.profilecreated) 
-      if(this.props.auth.user.isAuthenticated){
+      if(this.props.auth.isAuthenticated){
             if(!this.props.profilecreated){
               return <Loader />;
             }
        }
-        
         return(
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
           { 
@@ -90,7 +93,7 @@ class Navbar extends React.Component {
                 ) : null }
                {this.props.profilecreated && this.props.auth.isAuthenticated && this.props.auth.user.userType === "student" ? (
                         !this.props.profilecreated.profilecreated ? null :<a className="nav-item nav-link" onClick={()=> this.redirect("addeducation")}>Add Education</a>
-                  ) : this.props.profilecreated && this.props.auth.isAuthenticated ? (
+                  ) : this.state.profilecreated && this.props.auth.isAuthenticated ? (
                         !this.props.profilecreated.profilecreated ? null :<a className="nav-item nav-link" onClick={()=> this.redirect("addproject")}>Add Project</a>
                 ) : null }
                {this.props.auth.isAuthenticated && (
@@ -105,13 +108,11 @@ class Navbar extends React.Component {
 
 Navbar.propTypes = {
     logoutUser: PropTypes.func.isRequired,
-    getProfileCreated: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
   };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  profilecreated: state.profilecreated.profilecreated
 });
 
-export default connect(mapStateToProps, { logoutUser, getProfileCreated })(Navbar);
+export default connect(mapStateToProps, { logoutUser })(Navbar);
