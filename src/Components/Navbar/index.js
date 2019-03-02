@@ -93,7 +93,7 @@ class Navbar extends React.Component {
                 ) : null }
                {this.props.profilecreated && this.props.auth.isAuthenticated && this.props.auth.user.userType === "student" ? (
                         !this.props.profilecreated.profilecreated ? null :<a className="nav-item nav-link" onClick={()=> this.redirect("addeducation")}>Add Education</a>
-                  ) : this.state.profilecreated && this.props.auth.isAuthenticated ? (
+                  ) : this.props.profilecreated && this.props.auth.isAuthenticated ? (
                         !this.props.profilecreated.profilecreated ? null :<a className="nav-item nav-link" onClick={()=> this.redirect("addproject")}>Add Project</a>
                 ) : null }
                {this.props.auth.isAuthenticated && (

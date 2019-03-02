@@ -57,14 +57,14 @@ class AddProject extends Component {
         }
       }
 
-      componentWillMount() {
-        var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            if(!profilecreatedVar){
-                this.props.history.push('/createcompanyprofile');
-            }
-        }
-    }
+    //   componentWillMount() {
+    //     var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+    //     if (this.props.auth.isAuthenticated) {
+    //         if(!profilecreatedVar){
+    //             this.props.history.push('/createcompanyprofile');
+    //         }
+    //     }
+    // }
 
       handleChangeCheckbox = name => event => {
         let disabled = !this.state.disabled;

@@ -71,7 +71,8 @@ class RenderForm extends React.Component {
     email: "",
     password: "",
     user: "",
-    errors: {}
+    errors: {},
+    loader: false
   };
 
   handleChangeInput = name => event => {
@@ -81,21 +82,24 @@ class RenderForm extends React.Component {
   };
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.auth.isAuthenticated){
-        this.props.history.push('/dashboard');
-    }
+    // if(nextProps.auth.isAuthenticated){
+    //     this.props.history.push('/dashboard');
+    // }
     
     if(nextProps.errors){
-        this.setState({ errors: nextProps.errors });
+        this.setState({ errors: nextProps.errors, loader: false });
+        if(nextProps.errors.success){
+          this.setState({ email: "", password: "", loader: false });
+        }
       }
     }
 
     
-  componentDidMount(){
-    if(this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
-  }
+  // componentDidMount(){
+  //   if(this.props.auth.isAuthenticated) {
+  //     this.props.history.push('/dashboard');
+  //   }
+  // }
 
   onClick = () => {
     const { email, password } = this.state;
@@ -105,7 +109,7 @@ class RenderForm extends React.Component {
       password
     }
     this.props.confirmUser(newuser, this.props.token)
-    
+    this.setState({ loader: true });
   }
 
   render() {
@@ -117,8 +121,14 @@ class RenderForm extends React.Component {
               errors.msg ? <Typography variant="display3" className={classes.rederrortitle}>{ this.state.errors.msg }</Typography> : null
            }
            {
-              errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }. <Link to="/signin">Please Sign In</Link></Typography> : null
-           }
+              this.state.loader ? 
+              <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+              </div>
+              : this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.  <Link to="/signin">Please Sign In</Link></Typography> : null
+          }
 
             <div className={classes.center}>
             <TextField

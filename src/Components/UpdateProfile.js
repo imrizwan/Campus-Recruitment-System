@@ -229,32 +229,10 @@ class CreateProfile extends React.Component {
     }
         const { profile, loading } = this.props.profile;
         if (profile === null || loading) {
-                if(this.state.errors){
-                    if(this.state.errors.noprofile){
-                        return (
-                            <div>
-                                <h1 style={{ color: "red" }}>
-                                    <br />
-                                    {this.state.errors.noprofile}
-                                </h1>
-                                <br />
-                                <Link to="/createprofile">
-                                    <h3 style={{ fontSize: "10", textAlign: "center" }} >
-                                        Please Create Your Profile First
-                             </h3>
-                                </Link>
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <Loader/>
-                        )
-                    }
-                }
                 return(
                     <Loader />
                 )
-          } else { 
+        } else { 
         return(
             <div>
                 <div className={classes.root}>

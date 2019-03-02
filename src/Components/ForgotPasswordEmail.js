@@ -67,7 +67,8 @@ class RenderForm extends React.Component {
 
   state = {
     email: "",
-    errors: {}
+    errors: {},
+    loader: false
   };
 
   handleChangeInput = name => event => {
@@ -77,15 +78,16 @@ class RenderForm extends React.Component {
   };
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.auth.isAuthenticated){
-        this.props.history.push('/dashboard');
-    }
+    // if(nextProps.auth.isAuthenticated){
+    //     this.props.history.push('/dashboard');
+    // }
     
     if(nextProps.errors){
-        this.setState({ errors: nextProps.errors });
+        this.setState({ errors: nextProps.errors, loader: false });
         if(nextProps.errors.success){
             this.setState({
-                email: ""
+                email: "",
+                loader: false
             });
         }
       }
@@ -94,7 +96,11 @@ class RenderForm extends React.Component {
     
   componentDidMount(){
     if(this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+      if(this.props.auth.user.userType === "student"){
+        this.props.history.push('/studentdashboard');
+      } else if(this.props.auth.user.userType === "company"){
+        this.props.history.push('/companydashboard');
+      }
     }
   }
 
@@ -105,7 +111,7 @@ class RenderForm extends React.Component {
       email
     }
     this.props.forgotPasswordEmail(user)
-    
+    this.setState({ loader: true });
   }
 
   render() {
@@ -117,8 +123,14 @@ class RenderForm extends React.Component {
               errors.msg ? <Typography variant="display3" className={classes.rederrortitle}>{ this.state.errors.msg }</Typography> : null
            }
            {
-              errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
-           }
+              this.state.loader ? 
+              <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+              </div>
+              : this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
+          }
 
             <div className={classes.center}>
             <TextField

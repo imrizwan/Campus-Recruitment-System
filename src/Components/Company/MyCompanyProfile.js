@@ -19,16 +19,16 @@ class MyCompanyProfile extends Component {
         }
       }
 
-      componentWillMount(){
+      // componentWillMount(){
 
-        var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            // this.props.getProfileCreated(this.props.history, this.props.match.url);      
-            if(!profilecreatedVar){
-                this.props.history.push('/createcompanyprofile');
-            }
-        }
-      }
+      //   var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+      //   if (this.props.auth.isAuthenticated) {
+      //       // this.props.getProfileCreated(this.props.history, this.props.match.url);      
+      //       if(!profilecreatedVar){
+      //           this.props.history.push('/createcompanyprofile');
+      //       }
+      //   }
+      // }
 
   render() {
     const { profile, loading } = this.props.profile;
@@ -65,7 +65,7 @@ MyCompanyProfile.propTypes = {
 const mapStateToProps = state => ({
     profile: state.profile,
     auth: state.auth,
-    profilecreated: this.state.profilecreated.profilecreated
+    profilecreated: state.profilecreated.profilecreated
 });
 
 export default connect(mapStateToProps, { getCurrentCompanyProfile, getProfileCreated })(withStyles(styles)(MyCompanyProfile));

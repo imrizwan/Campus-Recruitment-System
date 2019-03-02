@@ -98,18 +98,18 @@ class AppRouter extends React.Component {
           <Route path="/unauthorized" component={UnAuthorized} />
           <Route exact={true} path="/profile/:id" component={Profile} />
       <Switch>
-          <PrivateRoute exact={true} path="/companydashboard" userType="company" component={CompanyDashboard} />
-          <PrivateRoute exact={true} path="/updatecompanyprofile" userType="company" component={UpdateCompanyProfile} />
-          <PrivateRoute exact={true} path="/companyprofile" userType="company" component={MyCompanyProfile} />
-          <PrivateRoute exact={true} path="/createcompanyprofile" userType="company" component={CreateCompanyProfile} />
-          <PrivateRoute exact={true} path="/addproject" userType="company" component={AddProject} />
-          <PrivateRoute exact={true} path="/addvaccancy" userType="company" component={AddVaccancy} />
-          <PrivateRoute exact={true} path="/studentdashboard" userType="student" component={Dashboard} />
-          <PrivateRoute exact={true} path="/profile" userType="student" component={MyProfile} />
-          <PrivateRoute exact={true} path="/createprofile" userType="student" component={CreateProfile} />
-          <PrivateRoute exact={true} path="/updateprofile" userType="student" component={UpdateProfile} />
-          <PrivateRoute exact={true} path="/addeducation" userType="student" component={AddEducation} />
-          <PrivateRoute exact={true} path="/addexperience" userType="student" component={AddExperience} />
+          <PrivateRoute exact={true} path="/companydashboard" userType="company" profilecreated={this.state.profilecretaed} component={CompanyDashboard} />
+          <PrivateRoute exact={true} path="/updatecompanyprofile" userType="company" profilecreated={this.state.profilecretaed} component={UpdateCompanyProfile} />
+          <PrivateRoute exact={true} path="/companyprofile" userType="company" profilecreated={this.state.profilecretaed} component={MyCompanyProfile} />
+          <PrivateRoute exact={true} path="/createcompanyprofile" userType="company" profilecreated={this.state.profilecretaed} component={CreateCompanyProfile} />
+          <PrivateRoute exact={true} path="/addproject" userType="company" profilecreated={this.state.profilecretaed} component={AddProject} />
+          <PrivateRoute exact={true} path="/addvaccancy" userType="company"  profilecreated={this.state.profilecretaed} component={AddVaccancy} />
+          <PrivateRoute exact={true} path="/studentdashboard" userType="student" profilecreated={this.state.profilecretaed} component={Dashboard} />
+          <PrivateRoute exact={true} path="/profile" userType="student" profilecreated={this.state.profilecretaed} component={MyProfile} />
+          <PrivateRoute exact={true} path="/createprofile" userType="student" profilecreated={this.state.profilecretaed} component={CreateProfile} />
+          <PrivateRoute exact={true} path="/updateprofile" userType="student" profilecreated={this.state.profilecretaed} component={UpdateProfile} />
+          <PrivateRoute exact={true} path="/addeducation" userType="student" profilecreated={this.state.profilecretaed} component={AddEducation} />
+          <PrivateRoute exact={true} path="/addexperience" userType="student" profilecreated={this.state.profilecretaed} component={AddExperience} />
       </Switch>
       </div>
       </Router>

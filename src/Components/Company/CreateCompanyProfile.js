@@ -265,14 +265,14 @@ class CreateCompanyProfile extends React.Component {
         }
     }
 
-    componentWillMount() {
-        let profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            if(profilecreatedVar){
-                this.props.history.push('/updatecompanyprofile');
-            }
-        }
-    }
+    // componentWillMount() {
+    //     let profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+    //     if (this.props.auth.isAuthenticated) {
+    //         if(profilecreatedVar){
+    //             this.props.history.push('/updatecompanyprofile');
+    //         }
+    //     }
+    // }
     
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
@@ -384,8 +384,7 @@ class CreateCompanyProfile extends React.Component {
                 <div className={classes.root}>
                 <br/>
                 <div className={classes.center}>   
-                <Typography variant="display2">Create Profile</Typography>
-                {!JSON.parse(localStorage.getItem('profilecreated')) ? <Typography variant="display3">Create your profile first</Typography> : null}
+                <Typography variant="display3">Create your profile first</Typography>
                 <TextField
                 id="outlined-username"
                 label="Username"

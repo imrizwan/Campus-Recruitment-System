@@ -7,7 +7,6 @@ import { getCurrentProfile, getProfileCreated } from "../../Actions/profileActio
 import ProfileHeader from "./ProfileHeader";
 import ProfileAbout from "./ProfileAbout";
 import ProfileCreds from "./ProfileCreds";
-import { Link } from "react-router-dom";
 
 const styles = theme => ({})
 
@@ -27,28 +26,16 @@ class MyProfile extends Component {
         if (this.props.auth.isAuthenticated) {
           this.props.getCurrentProfile();
         }
-        // console.log(this.state.errors);
-        // var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        // if (this.props.auth.isAuthenticated) {
-        //     // this.props.getProfileCreated(this.props.history, this.props.match.url);      
-        //     if(!profilecreatedVar){
-        //         this.props.history.push('/createprofile');
-        //     }
-        // }
       }
 
   render() {
     const { profile, loading } = this.props.profile;
     let profileContent;
-    // if(!this.props.profile) {
-    //    this.props.history.push('/createprofile');
-    //   }
-    if (profile === null || loading) {
-      if (!this.state.errors) {
-        profileContent = <Loader />;
-      }
-      console.log(this.state.errors)
-    } else { 
+        if (profile === null || loading) {
+                return(
+                    <Loader />
+                )
+          } else { 
         profileContent = (
         <div>
             <ProfileHeader profile={profile} fullname={this.props.auth.user.fullname} />
@@ -59,22 +46,6 @@ class MyProfile extends Component {
     }
     return (
       <div>
-        {
-          this.state.errors ? 
-          this.state.errors.noprofile ?
-          <div>
-              <h1 style={{ color: "red" }}>
-              <br/>
-              { this.state.errors.noprofile }
-              </h1>
-              <br/>
-              <Link to="/createprofile">
-              <h3 style={{ fontSize: "10", textAlign: "center" }} >
-              Please Create Your Profile First
-              </h3>
-              </Link>
-            </div> : null : null 
-        }
           {profileContent}
       </div>
     );

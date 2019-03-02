@@ -312,17 +312,17 @@ class CreateCompanyProfile extends React.Component {
         }
       }
 
-      componentWillMount(){
+    //   componentWillMount(){
         
-        var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            // this.props.getProfileCreated(this.props.history, this.props.match.url);      
-            if(!profilecreatedVar){
-                this.props.history.push('/createcompanyprofile');
-            }
-        }
+    //     var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+    //     if (this.props.auth.isAuthenticated) {
+    //         // this.props.getProfileCreated(this.props.history, this.props.match.url);      
+    //         if(!profilecreatedVar){
+    //             this.props.history.push('/createcompanyprofile');
+    //         }
+    //     }
 
-      }
+    //   }
     
     handleChange = name => event => {
         this.setState({

@@ -143,8 +143,13 @@ class RenderForm extends React.Component {
    <TabContainer>
           <div className={classes.center}>
           {
-              this.state.loader ? <Loader/> : 
-              this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
+              this.state.loader ? 
+              <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+              </div>
+              : this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
           }
           <TextField
               id="username"

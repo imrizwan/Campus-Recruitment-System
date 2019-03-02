@@ -71,7 +71,8 @@ class RenderForm extends React.Component {
     password: "",
     password2: "",
     user: "",
-    errors: {}
+    errors: {},
+    loader: false
   };
 
   handleChangeInput = name => event => {
@@ -81,14 +82,14 @@ class RenderForm extends React.Component {
   };
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.auth.isAuthenticated){
-        this.props.history.push('/dashboard');
-    }
+    // if(nextProps.auth.isAuthenticated){
+    //     this.props.history.push('/dashboard');
+    // }
     
     if(nextProps.errors){
-        this.setState({ errors: nextProps.errors });
+        this.setState({ errors: nextProps.errors, loader: false });
         if(nextProps.errors.success){
-          this.setState({ password: "", password2: "" });
+          this.setState({ password: "", password2: "", loader: false });
         }
       }
     }
@@ -96,7 +97,11 @@ class RenderForm extends React.Component {
     
   componentDidMount(){
     if(this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+      if(this.props.auth.user.userType === "student"){
+        this.props.history.push('/studentdashboard');
+      } else if(this.props.auth.user.userType === "company"){
+        this.props.history.push('/companydashboard');
+      }
     }
   }
 
@@ -108,7 +113,7 @@ class RenderForm extends React.Component {
       token: this.props.token
     }
     this.props.changePassword(newPassword)
-    
+    this.setState({ loader: true });
   }
 
   render() {
@@ -119,9 +124,19 @@ class RenderForm extends React.Component {
            {
               errors.tokenerror ? <Typography variant="display3" className={classes.rederrortitle}>{ this.state.errors.tokenerror }</Typography> : null
            }
-           {
+           {/* {
               errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }. <Link to="/signin">Please Sign In</Link></Typography> : null
-           }
+           } */}
+            {
+              this.state.loader ? 
+              <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+              </div>
+              : this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.  <Link to="/signin">Please Sign In</Link></Typography> : null
+          }
+
 
             <div className={classes.center}>
             <TextField
