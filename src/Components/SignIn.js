@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
 import { loginUser } from "../Actions/authActions";
 import { connect } from "react-redux";
-
+import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose'
 //Tabs
 
 import Tabs from '@material-ui/core/Tabs';
@@ -184,7 +185,8 @@ class SignIn extends React.Component {
     return (
       <div className={classes.root}>
         <br/>
-        <Typography variant="display2" className={classes.title}>Sign In</Typography>
+        {/* <Typography variant="display2" className={classes.title}>Sign In</Typography> */}
+        <h1>Sign In</h1>
         <Tabs
           value={value}
           onChange={this.handleChangeTabs}
@@ -220,4 +222,8 @@ const mapStateToProps = (state) => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { loginUser })(withStyles(styles)(SignIn));
+// export default connect(mapStateToProps, { loginUser })(withStyles(styles)(SignIn));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { loginUser })
+)(withRouter(SignIn))

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose'
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
@@ -229,7 +230,12 @@ AddVaccancy.propTypes = {
     auth: state.auth
   });
 
-export default connect(mapStateToProps, { addVaccancy, getCurrentCompanyProfile })(
-    withRouter(withStyles(styles)(AddVaccancy))
-  );
+// export default connect(mapStateToProps, { addVaccancy, getCurrentCompanyProfile })(
+//     withRouter(withStyles(styles)(AddVaccancy))
+//   );
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { addVaccancy, getCurrentCompanyProfile })
+)(withRouter(AddVaccancy))
   

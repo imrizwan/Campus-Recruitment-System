@@ -6,6 +6,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { getProfileCreated } from "../../Actions/profileActions";
 import { getCurrentCompanyProfile } from "../../Actions/companyProfileActions";
 import ProfileHeader from "./ProfileHeader";
+import compose from 'recompose/compose'
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   
@@ -68,4 +70,8 @@ const mapStateToProps = state => ({
     profilecreated: state.profilecreated.profilecreated
 });
 
-export default connect(mapStateToProps, { getCurrentCompanyProfile, getProfileCreated })(withStyles(styles)(MyCompanyProfile));
+// export default connect(mapStateToProps, { getCurrentCompanyProfile, getProfileCreated })(withStyles(styles)(MyCompanyProfile));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { getCurrentCompanyProfile, getProfileCreated })
+)(withRouter(MyCompanyProfile))

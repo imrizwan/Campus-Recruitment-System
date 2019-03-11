@@ -10,6 +10,8 @@ import { getProfileCreated } from "../../Actions/profileActions";
 import { connect } from "react-redux";
 import Loader from '../Loader/Loader';
 import isEmpty from '../../validation/is-empty';
+import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose'
 
 const styles = theme => ({
     root: {
@@ -616,4 +618,8 @@ CreateCompanyProfile.propTypes = {
   });
 
 // and then we are getting current profile
-export default connect(mapStateToProps, { createCompanyProfile, getCurrentCompanyProfile, getProfileCreated })(withStyles(styles)(CreateCompanyProfile));
+// export default connect(mapStateToProps, { createCompanyProfile, getCurrentCompanyProfile, getProfileCreated })(withStyles(styles)(CreateCompanyProfile));
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, { createCompanyProfile, getCurrentCompanyProfile, getProfileCreated })
+  )(withRouter(CreateCompanyProfile))

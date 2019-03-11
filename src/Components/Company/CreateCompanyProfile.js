@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import { createCompanyProfile } from "../../Actions/companyProfileActions";
 import { getProfileCreated } from "../../Actions/profileActions";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose'
 
 const styles = theme => ({
     root: {
@@ -563,4 +565,8 @@ CreateCompanyProfile.propTypes = {
     profilecreated: state.profilecreated.profilecreated,
   });
 
-export default connect(mapStateToProps, { createCompanyProfile, getProfileCreated })(withStyles(styles)(CreateCompanyProfile));
+// export default connect(mapStateToProps, { createCompanyProfile, getProfileCreated })(withStyles(styles)(CreateCompanyProfile));
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, { createCompanyProfile, getProfileCreated })
+  )(withRouter(CreateCompanyProfile))

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import compose from 'recompose/compose'
 import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -242,7 +243,12 @@ AddProject.propTypes = {
     auth: state.auth
   });
 
-export default connect(mapStateToProps, { addProject, getCurrentCompanyProfile })(
-    withRouter(withStyles(styles)(AddProject))
-  );
+// export default connect(mapStateToProps, { addProject, getCurrentCompanyProfile })(
+//     withRouter(withStyles(styles)(AddProject))
+//   );
+
+  export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, { addProject, getCurrentCompanyProfile })
+  )(withRouter(AddProject))
   

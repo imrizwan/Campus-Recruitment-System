@@ -7,3 +7,14 @@
 .btnLogout:hover {
     color: white!important;
 }
+
+.active {
+    color: white!important;
+}
+
+.btns {
+    border: 0px!important;
+}
+.btns:hover {
+    color: white!important;
+}

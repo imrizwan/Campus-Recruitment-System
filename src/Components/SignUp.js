@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { registerUser } from "../Actions/authActions";
 import "./index.css";
 import Loader from "./Loader/Loader";
+import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose'
 
 //Tabs
 
@@ -285,4 +287,8 @@ const mapStateToProps = (state) => ({
     errors: state.errors
 });
 
-export default connect(mapStateToProps, {registerUser})(withStyles(styles)(SignUp));
+// export default connect(mapStateToProps, {registerUser})(withStyles(styles)(SignUp));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { registerUser })
+)(withRouter(SignUp))
