@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../Actions/authActions";
 import "./index.css";
-import Loader from "./Loader/Loader";
 import { withRouter } from 'react-router-dom';
 import compose from 'recompose/compose'
 

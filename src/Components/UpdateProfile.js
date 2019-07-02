@@ -9,8 +9,6 @@ import { createProfile, getCurrentProfile, getProfileCreated } from "../Actions/
 import { connect } from "react-redux";
 import Loader from './Loader/Loader';
 import isEmpty from '../validation/is-empty';
-import { Link } from "react-router-dom";
-
 
 const styles = theme => ({
     root: {
