@@ -7,6 +7,8 @@ import { getProfileById } from "../../Actions/profileActions";
 import ProfileHeader from "./ProfileHeader";
 import ProfileAbout from "./ProfileAbout";
 import ProfileCreds from "./ProfileCreds";
+import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
 
 const styles = theme => ({})
 
@@ -54,4 +56,8 @@ const mapStateToProps = state => ({
     profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getProfileById })(withStyles(styles)(Profile));
+// export default connect(mapStateToProps, { getProfileById })(withStyles(styles)(Profile));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { getProfileById })
+)(withRouter(Profile))

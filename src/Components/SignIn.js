@@ -78,7 +78,7 @@ class RenderForm extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "student"){
-        this.props.history.push('/dashboard');
+        this.props.history.push('/studentdashboard');
     } else if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "company"){
       this.props.history.push('/companydashboard');
     }
@@ -91,7 +91,7 @@ class RenderForm extends React.Component {
     
   componentDidMount(){
     if(this.props.auth.isAuthenticated && this.props.auth.user.userType === "student"){
-      this.props.history.push('/dashboard');
+      this.props.history.push('/studentdashboard');
   } else if(this.props.auth.isAuthenticated && this.props.auth.user.userType === "company"){
     this.props.history.push('/companydashboard');
   }

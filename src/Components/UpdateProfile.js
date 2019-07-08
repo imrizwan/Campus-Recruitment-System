@@ -9,6 +9,8 @@ import { createProfile, getCurrentProfile, getProfileCreated } from "../Actions/
 import { connect } from "react-redux";
 import Loader from './Loader/Loader';
 import isEmpty from '../validation/is-empty';
+import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
 
 const styles = theme => ({
     root: {
@@ -58,7 +60,7 @@ class CreateProfile extends React.Component {
         youtube: '',
         instagram: '',
         errors: {},
-        displaySocialInputs: false
+        displaySocialInputs: false,
     }
     
     componentWillReceiveProps(nextProps) {
@@ -114,10 +116,20 @@ class CreateProfile extends React.Component {
         if (this.props.auth.isAuthenticated) {
           this.props.getCurrentProfile();
         }
+
+        if (this.props.auth.isAuthenticated) {
+            this.props.getProfileCreated();   
+            if(!isEmpty(this.props.profilecreated)){
+                if(!this.props.profilecreated.profilecreated){
+                    if(this.props.auth.user.userType === "student"){
+                        this.props.history.push("/updateprofile")
+                    } else this.props.history.push("/updatecompanyprofile")
+                }
+            }         
+        }
       }
 
       componentWillMount(){
-        
         // var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
         // if (this.props.auth.isAuthenticated) {
         //     // this.props.getProfileCreated(this.props.history, this.props.match.url);      
@@ -226,7 +238,7 @@ class CreateProfile extends React.Component {
       );
     }
         const { profile, loading } = this.props.profile;
-        if (profile === null || loading) {
+        if (profile === null || loading || isEmpty(this.props.profilecreated)) {
                 return(
                     <Loader />
                 )
@@ -404,4 +416,8 @@ CreateProfile.propTypes = {
   });
 
 // and then we are getting current profile
-export default connect(mapStateToProps, { createProfile, getCurrentProfile, getProfileCreated })(withStyles(styles)(CreateProfile));
+// export default connect(mapStateToProps, { createProfile, getCurrentProfile, getProfileCreated })(withStyles(styles)(CreateProfile));
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, { createProfile, getCurrentProfile, getProfileCreated })
+ )(withRouter(CreateProfile))

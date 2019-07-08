@@ -7,6 +7,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import { createProfile, getProfileCreated } from "../Actions/profileActions";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
+import isEmpty from "../validation/is-empty"
+import Loader from "./Loader/Loader"
 
 const styles = theme => ({
     root: {
@@ -59,19 +63,27 @@ class CreateProfile extends React.Component {
     }
 
     componentDidMount(){
+        
         if (this.props.auth.isAuthenticated) {
-            this.props.getProfileCreated(this.props.history, this.props.match.url);            
+            this.props.getProfileCreated();   
+            if(!isEmpty(this.props.profilecreated)){
+                if(!this.props.profilecreated.profilecreated){
+                    if(this.props.auth.user.userType === "student"){
+                        this.props.history.push("/createprofile")
+                    } else this.props.history.push("/createcompanyprofile")
+                }
+            }         
         }
     }
 
-    componentWillMount() {
-        let profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        if (this.props.auth.isAuthenticated) {
-            if(profilecreatedVar){
-                this.props.history.push('/updateprofile');
-            }
-        }
-    }
+    // componentWillMount() {
+        // let profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
+        // if (this.props.auth.isAuthenticated) {
+        //     if(profilecreatedVar){
+        //         this.props.history.push('/updateprofile');
+        //     }
+        // }
+    // }
     
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
@@ -110,8 +122,6 @@ class CreateProfile extends React.Component {
         const { classes } = this.props;
         const { errors, displaySocialInputs } = this.state;
     let socialInputs;
-
-
     if (displaySocialInputs) {
       socialInputs = (
         <div>
@@ -178,157 +188,160 @@ class CreateProfile extends React.Component {
         </div>
       );
     } 
-        return(
-            <div>
-                <div className={classes.root}>
-                <br/>
-                <div className={classes.center}>   
-                <Typography variant="display2">Create Profile</Typography>
-                {!JSON.parse(localStorage.getItem('profilecreated')) ? <Typography variant="display3">Create your profile first</Typography> : null}
-                <TextField
-                id="outlined-username"
-                label="Username"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-                value={this.props.auth.user.username}
-                onChange={this.handleChange('username')}
-                placeholder="A unique username for your profile URL. Your full name, company name, nickname"
-                disabled
-                />
-                {
-                    errors.username ? <div style={{ color: "red" }}>{ errors.username }</div> : null
-                }
-                <TextField
-                id="outlined-company"
-                label="Company"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-                value={this.state.company}
-                onChange={this.handleChange('company')}
-                placeholder="Could be your own company or one you work for"
-                multiline
-                />
-                
-                <TextField
-                    id="select-status"
-                    select
-                    label="Select"
-                    className={classes.textField}
-                    value={this.state.status}
-                    onChange={this.handleChange('status')}
-                    SelectProps={{
-                        MenuProps: {
-                        className: classes.menu,
-                        },
-                    }}
-                    helperText="Please select your status"
-                    margin="normal"
-                    >
-                    {status.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                        </MenuItem>
-                    ))}
-                    </TextField>
-                    {
-                        errors.status ? <div style={{ color: "red" }}>{ errors.status }</div> : null
-                    }
+    if(isEmpty(this.props.profilecreated)) { return <Loader/> }
+    else {
+        return (
+                <div>
+                    <div className={classes.root}>
+                    <br/>
+                    <div className={classes.center}>   
+                    {!isEmpty(this.props.profilecreated) && this.props.profilecreated.profilecreated ? <Typography variant="display2">Create Profile</Typography> : null}
+                    {!isEmpty(this.props.profilecreated) && !this.props.profilecreated.profilecreated ? <Typography variant="display1">Create your profile first</Typography> : null}
                     <TextField
-                    id="outlined-website"
-                    label="Website"
+                    id="outlined-username"
+                    label="Username"
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    value={this.state.handle}
-                    onChange={this.handleChange('website')}
-                    placeholder="Could be your own website or a company one"
-                    multiline
-                    />
-
-                     <TextField
-                    id="outlined-location"
-                    label="Location"
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    value={this.state.handle}
-                    onChange={this.handleChange('location')}
-                    placeholder="City or city &amp; state suggested (eg. Karachi, Sindh)"
-                    multiline
-                    />
-
-                     <TextField
-                    id="outlined-skills"
-                    label="Skills"
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    value={this.state.handle}
-                    onChange={this.handleChange('skills')}
-                    placeholder="Please use comma separated values (eg.
-                        HTML,CSS,JavaScript,PHP"
-                    multiline
+                    value={this.props.auth.user.username}
+                    onChange={this.handleChange('username')}
+                    placeholder="A unique username for your profile URL. Your full name, company name, nickname"
+                    disabled
                     />
                     {
-                        errors.skills ? <div style={{ color: "red" }}>{ errors.skills }</div> : null
+                        errors.username ? <div style={{ color: "red" }}>{ errors.username }</div> : null
                     }
-
                     <TextField
-                    id="outlined-githubusername"
-                    label="Github Username"
+                    id="outlined-company"
+                    label="Company"
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    value={this.state.githubusername}
-                    onChange={this.handleChange('githubusername')}
-                    placeholder="If you want your latest repos and a Github link, include your username"
+                    value={this.state.company}
+                    onChange={this.handleChange('company')}
+                    placeholder="Could be your own company or one you work for"
                     multiline
                     />
-
-                     <TextField
-                    id="outlined-bio"
-                    label="Short Bio"
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    value={this.state.bio}
-                    onChange={this.handleChange('bio')}
-                    placeholder="Tell us a little about yourself"
-                    multiline
-                    />
-                    <br/>
-                    <br/>
-                    <Button 
-                    variant="contained" 
-                    className={classes.button}
-                    onClick={() => {
-                      this.setState(prevState => ({
-                        displaySocialInputs: !prevState.displaySocialInputs
-                      }));
-                    }}
-                    >
-                        Add Social Network Links
-                    </Button>
-                    <span>Optional</span>
-                    {socialInputs}
-                    <br/>
-                    <br/>
-                    <Button 
-                    variant="contained" 
-                    color="primary" 
-                    className={classes.button}
-                    onClick={this.onClick}
-                    >
-                        Submit
-                    </Button>
-                    <br/>
-                    <br/>
+                    
+                    <TextField
+                        id="select-status"
+                        select
+                        label="Select"
+                        className={classes.textField}
+                        value={this.state.status}
+                        onChange={this.handleChange('status')}
+                        SelectProps={{
+                            MenuProps: {
+                            className: classes.menu,
+                            },
+                        }}
+                        helperText="Please select your status"
+                        margin="normal"
+                        >
+                        {status.map(option => (
+                            <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                        {
+                            errors.status ? <div style={{ color: "red" }}>{ errors.status }</div> : null
+                        }
+                        <TextField
+                        id="outlined-website"
+                        label="Website"
+                        className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        value={this.state.handle}
+                        onChange={this.handleChange('website')}
+                        placeholder="Could be your own website or a company one"
+                        multiline
+                        />
+    
+                         <TextField
+                        id="outlined-location"
+                        label="Location"
+                        className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        value={this.state.handle}
+                        onChange={this.handleChange('location')}
+                        placeholder="City or city &amp; state suggested (eg. Karachi, Sindh)"
+                        multiline
+                        />
+    
+                         <TextField
+                        id="outlined-skills"
+                        label="Skills"
+                        className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        value={this.state.handle}
+                        onChange={this.handleChange('skills')}
+                        placeholder="Please use comma separated values (eg.
+                            HTML,CSS,JavaScript,PHP"
+                        multiline
+                        />
+                        {
+                            errors.skills ? <div style={{ color: "red" }}>{ errors.skills }</div> : null
+                        }
+    
+                        <TextField
+                        id="outlined-githubusername"
+                        label="Github Username"
+                        className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        value={this.state.githubusername}
+                        onChange={this.handleChange('githubusername')}
+                        placeholder="If you want your latest repos and a Github link, include your username"
+                        multiline
+                        />
+    
+                         <TextField
+                        id="outlined-bio"
+                        label="Short Bio"
+                        className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        value={this.state.bio}
+                        onChange={this.handleChange('bio')}
+                        placeholder="Tell us a little about yourself"
+                        multiline
+                        />
+                        <br/>
+                        <br/>
+                        <Button 
+                        variant="contained" 
+                        className={classes.button}
+                        onClick={() => {
+                          this.setState(prevState => ({
+                            displaySocialInputs: !prevState.displaySocialInputs
+                          }));
+                        }}
+                        >
+                            Add Social Network Links
+                        </Button>
+                        <span>Optional</span>
+                        {socialInputs}
+                        <br/>
+                        <br/>
+                        <Button 
+                        variant="contained" 
+                        color="primary" 
+                        className={classes.button}
+                        onClick={this.onClick}
+                        >
+                            Submit
+                        </Button>
+                        <br/>
+                        <br/>
+                    </div>
                 </div>
-            </div>
-            </div>
+                </div>
         )
+    }
     }
 }
 
@@ -345,4 +358,8 @@ CreateProfile.propTypes = {
     profilecreated: state.profilecreated.profilecreated,
   });
 
-export default connect(mapStateToProps, { createProfile, getProfileCreated })(withStyles(styles)(CreateProfile));
+// export default connect(mapStateToProps, { createProfile, getProfileCreated })(withStyles(styles)(CreateProfile));
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, { createProfile, getProfileCreated })
+ )(withRouter(CreateProfile))

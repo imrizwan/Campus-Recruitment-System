@@ -556,7 +556,7 @@ export class AuthController {
           { $set: profileFields },
           { new: true }
         ).then(profile => res.json(profile))
-        .catch((err)=>console.log("Error from create Profile: ",err));
+        .catch((err)=>console.log("Error from create Profile 1: ",err));
       } else {
         // Create
 
@@ -572,8 +572,9 @@ export class AuthController {
             .catch((err)=>console.log("Error from verify: ",err));
           }
         })
-        .catch((err)=>console.log("Error from create Profile: ",err));
+        .catch((err)=>console.log("Error from create Profile 2: ",err));
       }
-    });
+    })
+    .catch((err)=>console.log("Error from create Profile 3: ",err));
   }
 }

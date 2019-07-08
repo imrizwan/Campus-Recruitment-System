@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { forgotPasswordEmail } from "../Actions/authActions";
 import { connect } from "react-redux";
+import compose from 'recompose/compose'
+import { withRouter } from 'react-router-dom'
 
 //Tabs
 
@@ -193,4 +195,8 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { forgotPasswordEmail })(withStyles(styles)(ForgotPasswordEmail));
+// export default connect(mapStateToProps, { forgotPasswordEmail })(withStyles(styles)(ForgotPasswordEmail));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { forgotPasswordEmail })
+)(withRouter(ForgotPasswordEmail))

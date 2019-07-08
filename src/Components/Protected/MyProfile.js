@@ -7,6 +7,8 @@ import { getCurrentProfile, getProfileCreated } from "../../Actions/profileActio
 import ProfileHeader from "./ProfileHeader";
 import ProfileAbout from "./ProfileAbout";
 import ProfileCreds from "./ProfileCreds";
+import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
 
 const styles = theme => ({})
 
@@ -67,4 +69,8 @@ const mapStateToProps = state => ({
     profilecreated: state.profilecreated.profilecreated
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, getProfileCreated })(withStyles(styles)(MyProfile));
+// export default connect(mapStateToProps, { getCurrentProfile, getProfileCreated })(withStyles(styles)(MyProfile));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { getCurrentProfile, getProfileCreated })
+)(withRouter(MyProfile))

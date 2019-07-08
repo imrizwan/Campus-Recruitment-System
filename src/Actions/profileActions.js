@@ -20,7 +20,7 @@ export const getProfileById = id => dispatch => {
     );
 };
 export const getProfileCreated = () => dispatch => {
-  //dispatch(setProfileLoading());
+  // dispatch(getProfileLoading());
   axios
     .get(URL+`profilecreated`)
     .then(res => {
@@ -64,11 +64,13 @@ export const createProfile = (profileData, history) => dispatch => {
       
       history.push('/profile')
       })
-    .catch(err =>
+    .catch(err =>{
+        console.log(err)
         dispatch({
           type: GET_ERRORS,
           payload: err.response.data
         })
+      }
     );
 }
 
@@ -76,7 +78,7 @@ export const createProfile = (profileData, history) => dispatch => {
 export const addEducation = (eduData, history) => dispatch => {
     axios
       .post(URL+'createprofile/education', eduData)
-      .then(res => history.push('/dashboard'))
+      .then(res => history.push('/studentdashboard'))
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
@@ -88,7 +90,7 @@ export const addEducation = (eduData, history) => dispatch => {
 export const addExperience = (expData, history) => dispatch => {
     axios
       .post(URL+'createprofile/experience', expData)
-      .then(res => history.push('/dashboard'))
+      .then(res => history.push('/studentdashboard'))
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
@@ -97,6 +99,12 @@ export const addExperience = (expData, history) => dispatch => {
       );
   };
 
+  // GET PROFILE loading
+export const getProfileLoading = () => {
+  return {
+    type: PROFILE_LOADING
+  };
+};
   // Profile loading
 export const setProfileLoading = () => {
   return {

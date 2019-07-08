@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
 
 class UnAuthorized extends Component {
 
@@ -27,4 +29,7 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(UnAuthorized);
+// export default connect(mapStateToProps)(UnAuthorized);
+export default compose(
+  connect(mapStateToProps)
+)(withRouter(UnAuthorized))

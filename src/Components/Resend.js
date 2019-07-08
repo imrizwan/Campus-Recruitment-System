@@ -5,7 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { resend } from "../Actions/authActions";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import compose from 'recompose/compose'
 
 
 //Tabs
@@ -178,4 +179,8 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { resend })(withStyles(styles)(Resend));
+// export default connect(mapStateToProps, { resend })(withStyles(styles)(Resend));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { resend })
+)(withRouter(Resend))

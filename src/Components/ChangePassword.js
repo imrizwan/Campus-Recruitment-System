@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { changePassword } from "../Actions/authActions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
 
 
 //Tabs
@@ -214,4 +216,8 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { changePassword })(withStyles(styles)(ChangePassword));
+// export default connect(mapStateToProps, { changePassword })(withStyles(styles)(ChangePassword));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { changePassword })
+)(withRouter(ChangePassword))

@@ -44,7 +44,7 @@ export const getCurrentCompanyProfile = () => dispatch => {
 export const addProject = (proData, history) => dispatch => {
   axios
     .post(URL+'createcompanyprofile/project', proData)
-    .then(res => history.push('/dashboard-company'))
+    .then(res => history.push('/companydashboard'))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -56,7 +56,7 @@ export const addProject = (proData, history) => dispatch => {
 export const addVaccancy = (vaccancyData, history) => dispatch => {
   axios
     .post(URL+'createcompanyprofile/vaccancy', vaccancyData)
-    .then(res => history.push('/dashboard-company'))
+    .then(res => history.push('/companydashboard'))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
