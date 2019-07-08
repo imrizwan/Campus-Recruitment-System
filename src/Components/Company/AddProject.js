@@ -6,11 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addProject, getCurrentCompanyProfile } from '../../Actions/companyProfileActions';
+import { addProject, getCurrentCompanyProfile, getProfileCreated } from '../../Actions/companyProfileActions';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import isEmpty from "../../validation/is-empty"
+import Loader from "../Loader/Loader"
 
 const styles = theme => ({
     root: {
@@ -58,14 +59,18 @@ class AddProject extends Component {
         }
       }
 
-    //   componentWillMount() {
-    //     var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-    //     if (this.props.auth.isAuthenticated) {
-    //         if(!profilecreatedVar){
-    //             this.props.history.push('/createcompanyprofile');
-    //         }
-    //     }
-    // }
+      componentDidMount() {
+        if (this.props.auth.isAuthenticated) {
+          this.props.getProfileCreated();
+          if (!isEmpty(this.props.profilecreated)) {
+            if (!this.props.profilecreated.profilecreated) {
+              if (this.props.auth.user.userType === "student") {
+                this.props.history.push("/createprofile")
+              } else this.props.history.push("/createcompanyprofile")
+            }
+          }
+        }
+      }
 
       handleChangeCheckbox = name => event => {
         let disabled = !this.state.disabled;
@@ -99,6 +104,8 @@ class AddProject extends Component {
     render(){
         const { classes } = this.props;
         const { errors } = this.state;
+        if (isEmpty(this.props.profilecreated)) { return <Loader /> }
+    else {
         return(
             <div className={classes.root}>
             <br/>
@@ -227,6 +234,7 @@ class AddProject extends Component {
             </div>
         )
     }
+    }
 }
 
 AddProject.propTypes = {
@@ -240,7 +248,8 @@ AddProject.propTypes = {
   const mapStateToProps = state => ({
     profile: state.profile,
     errors: state.errors,
-    auth: state.auth
+    auth: state.auth,
+    profilecreated: state.profilecreated.profilecreated,
   });
 
 // export default connect(mapStateToProps, { addProject, getCurrentCompanyProfile })(
@@ -249,6 +258,6 @@ AddProject.propTypes = {
 
   export default compose(
     withStyles(styles),
-    connect(mapStateToProps, { addProject, getCurrentCompanyProfile })
+    connect(mapStateToProps, { addProject, getCurrentCompanyProfile, getProfileCreated })
   )(withRouter(AddProject))
   

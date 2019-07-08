@@ -1,5 +1,19 @@
 import axios from 'axios';
-import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from "../Variables";
+import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+
+export const getProfileCreated = () => dispatch => {
+  // dispatch(getProfileLoading());
+  axios
+    .get(URL+`profilecreated`)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE_CREATED,
+        payload: res.data
+      })
+    }
+    )
+    .catch(err => console.log(err));
+};
 
 export const createCompanyProfile = (profileData, history) => dispatch => {
     axios

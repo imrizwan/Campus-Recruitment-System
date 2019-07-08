@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import { createProfile, getProfileCreated } from "../Actions/profileActions";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import compose from 'recompose/compose'
 import isEmpty from "../validation/is-empty"
 import Loader from "./Loader/Loader"
@@ -75,15 +75,6 @@ class CreateProfile extends React.Component {
             }         
         }
     }
-
-    // componentWillMount() {
-        // let profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        // if (this.props.auth.isAuthenticated) {
-        //     if(profilecreatedVar){
-        //         this.props.history.push('/updateprofile');
-        //     }
-        // }
-    // }
     
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
@@ -191,6 +182,12 @@ class CreateProfile extends React.Component {
     if(isEmpty(this.props.profilecreated)) { return <Loader/> }
     else {
         return (
+            !isEmpty(this.props.profilecreated) && this.props.profilecreated.profilecreated ?
+            <div>
+                <br/>
+            <Typography variant="display1" className={classes.title}>You have already made profile, Go to <Link to="/updateprofile">Update Profile</Link> for Changes</Typography>
+            </div>
+            :
                 <div>
                     <div className={classes.root}>
                     <br/>
@@ -358,7 +355,6 @@ CreateProfile.propTypes = {
     profilecreated: state.profilecreated.profilecreated,
   });
 
-// export default connect(mapStateToProps, { createProfile, getProfileCreated })(withStyles(styles)(CreateProfile));
 export default compose(
     withStyles(styles),
     connect(mapStateToProps, { createProfile, getProfileCreated })

@@ -8,6 +8,7 @@ import { getCurrentCompanyProfile } from "../../Actions/companyProfileActions";
 import ProfileHeader from "./ProfileHeader";
 import compose from 'recompose/compose'
 import { withRouter } from 'react-router-dom';
+import isEmpty from "../../validation/is-empty"
 
 const styles = theme => ({
   
@@ -19,18 +20,18 @@ class MyCompanyProfile extends Component {
         if (this.props.auth.isAuthenticated) {
           this.props.getCurrentCompanyProfile();
         }
+
+        if (this.props.auth.isAuthenticated) {
+          this.props.getProfileCreated();
+          if (!isEmpty(this.props.profilecreated)) {
+            if (!this.props.profilecreated.profilecreated) {
+              if (this.props.auth.user.userType === "student") {
+                this.props.history.push("/createprofile")
+              } else this.props.history.push("/createcompanyprofile")
+            }
+          }
+        }
       }
-
-      // componentWillMount(){
-
-      //   var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-      //   if (this.props.auth.isAuthenticated) {
-      //       // this.props.getProfileCreated(this.props.history, this.props.match.url);      
-      //       if(!profilecreatedVar){
-      //           this.props.history.push('/createcompanyprofile');
-      //       }
-      //   }
-      // }
 
   render() {
     const { profile, loading } = this.props.profile;
@@ -38,7 +39,7 @@ class MyCompanyProfile extends Component {
     if(!this.props.profile) {
        this.props.history.push('/createcompanyprofile');
       }
-    if (profile === null || loading) {
+    if (profile === null || loading || isEmpty(this.props.profilecreated)) {
       profileContent = <Loader />;
     } else { 
         profileContent = (
