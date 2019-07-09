@@ -3,6 +3,7 @@ import {
   GET_PROFILES,
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
+  GET_COMPANY_PROFILES
 } from "../Variables";
 
 const initialState = {
@@ -24,6 +25,12 @@ export default function (state = initialState, action) {
         profile: action.payload,
         loading: false
       };
+    case GET_COMPANY_PROFILES:
+      return {
+        ...state,
+        companyprofiles: action.payload,
+        loading: false
+    };
     case GET_PROFILES:
       return {
         ...state,

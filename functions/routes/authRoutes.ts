@@ -29,6 +29,8 @@ export class Routes {
         app.get('/api/companyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.currentCompanyProfile)
         app.post('/api/createcompanyprofile/project', passport.authenticate("jwt", { session: false }), this.companycontroller.project)
         app.post('/api/createcompanyprofile/vaccancy', passport.authenticate("jwt", { session: false }), this.companycontroller.vaccancy)
+        // It will be used by student
+        app.get('/api/getcompanies', passport.authenticate("jwt", { session: false }), this.companycontroller.getCompanies)
         
     }
 }

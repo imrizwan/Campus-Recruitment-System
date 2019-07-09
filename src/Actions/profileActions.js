@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED, GET_COMPANY_PROFILES } from "../Variables";
 
 // Get profile by handle
 export const getProfileById = id => dispatch => {
@@ -19,6 +19,27 @@ export const getProfileById = id => dispatch => {
       })
     );
 };
+
+// Get company profile to show vaccacies and other stuff
+export const getCompanies = () => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get(URL+`getcompanies`)
+    .then(res =>{
+      dispatch({
+        type: GET_COMPANY_PROFILES,
+        payload: res.data
+      })
+    }
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: null
+      })
+    );
+};
+
 export const getProfileCreated = () => dispatch => {
   // dispatch(getProfileLoading());
   axios

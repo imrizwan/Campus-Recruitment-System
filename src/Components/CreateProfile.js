@@ -65,7 +65,7 @@ class CreateProfile extends React.Component {
     componentDidMount(){
         
         if (this.props.auth.isAuthenticated) {
-            this.props.getProfileCreated();   
+            getProfileCreated();   
             if(!isEmpty(this.props.profilecreated)){
                 if(!this.props.profilecreated.profilecreated){
                     if(this.props.auth.user.userType === "student"){
