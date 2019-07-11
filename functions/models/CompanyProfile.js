@@ -89,6 +89,10 @@ const CompanyProfileSchema = new Schema({
       contactno: {
         type: String,
         require: true
+      },
+      date: {
+        type: Date,
+        default: Date.now
       }
     }
   ],
