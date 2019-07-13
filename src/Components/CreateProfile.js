@@ -30,6 +30,22 @@ const styles = theme => ({
       },
   });
 
+  // Select batch
+  const batch = [
+      { value: "Spring 2014" },
+      { value: "Fall 2014" },
+      { value: "Spring 2015" },
+      { value: "Fall 2015" },
+      { value: "Spring 2016" },
+      { value: "Fall 2016" },
+      { value: "Spring 2017" },
+      { value: "Fall 2017" },
+      { value: "Spring 2018" },
+      { value: "Fall 2018" },
+      { value: "Spring 2019" },
+      { value: "Fall 2019" },
+  ] 
+
   // Select options for status
   const status = [
     { label: '* Select Professional Status', value: 0 },
@@ -50,6 +66,7 @@ class CreateProfile extends React.Component {
         website: '',
         location: '',
         status: '',
+        batch: "",
         skills: '',
         githubusername: '',
         bio: '',
@@ -96,6 +113,7 @@ class CreateProfile extends React.Component {
             website: this.state.website,
             location: this.state.location,
             status: this.state.status,
+            batch: this.state.batch,
             skills: this.state.skills,
             githubusername: this.state.githubusername,
             bio: this.state.bio,
@@ -243,6 +261,30 @@ class CreateProfile extends React.Component {
                         </TextField>
                         {
                             errors.status ? <div style={{ color: "red" }}>{ errors.status }</div> : null
+                        }
+                    <TextField
+                        id="select-batch"
+                        select
+                        label="Select"
+                        className={classes.textField}
+                        value={this.state.batch}
+                        onChange={this.handleChange('batch')}
+                        SelectProps={{
+                            MenuProps: {
+                            className: classes.menu,
+                            },
+                        }}
+                        helperText="Please select your batch"
+                        margin="normal"
+                        >
+                        {batch.map(option => (
+                            <MenuItem key={option.value} value={option.value}>
+                            {option.value}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                        {
+                            errors.batch ? <div style={{ color: "red" }}>{ errors.batch }</div> : null
                         }
                         <TextField
                         id="outlined-website"

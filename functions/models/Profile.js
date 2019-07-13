@@ -109,6 +109,10 @@ const StudentProfileSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  batch: {
+    type: String,
+    required: true
   }
 });
 

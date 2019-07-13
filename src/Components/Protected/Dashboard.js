@@ -28,11 +28,28 @@ class Dashboard extends Component {
       }
     }
   }
-
+  ago = (created) => {
+    // incomplete logic
+    let date = new Date();
+    let TodaysDate = `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`
+    created = new Date(created)
+    let createdDate = `${created.getDate()} ${created.getMonth()} ${created.getFullYear()}`
+    if(TodaysDate === createdDate){
+      return "Published Today"
+    } else {
+      if(TodaysDate !== createdDate){
+        return `${date.getFullYear() - created.getFullYear()} year ago`
+      } else if(`${date.getMonth()} ${date.getFullYear()}` === `${created.getMonth()} ${created.getFullYear()}`){
+        return `${date.getMonth() - created.getMonth()} month ago`
+      } else {
+        return `${date.getDate() - created.getDate()} day ago`
+      }
+    }
+  }
   // skillsSplit = (skills) => {
   //   let skillsTemp;
   //   skillsTemp = skills[0].split(',')
-    
+
   // }
 
   render() {
@@ -53,27 +70,27 @@ class Dashboard extends Component {
                               {vaccancy.position}
                             </div>
                             <div className="card-body">
-                             <h5 className="card-title">
-                               Skills Required
+                              <h5 className="card-title">
+                                Skills Required
                               </h5>
                               <ul className="card-text ">
-                              {
-                                vaccancy.skillsrequired[0].split(",").map((skills, index3)=> <li key = {index3}>{skills}</li>)
-                              }
+                                {
+                                  vaccancy.skillsrequired[0].split(",").map((skills, index3) => <li key={index3}>{skills}</li>)
+                                }
                               </ul>
                               <p className="card-text">
-                              {vaccancy.description}
+                                {vaccancy.description}
                               </p>
                               <h5 className="card-title">
-                                { `${vaccancy.degreerequired.replace(',','/')} required` }
+                                {`${vaccancy.degreerequired.replace(',', '/')} required`}
                               </h5>
                               <h5 className="card-title">
-                                { `Job Type: ${vaccancy.jobtype}` }
+                                {`Job Type: ${vaccancy.jobtype}`}
                               </h5>
                               <button className="btn btn-primary">Apply</button>
                             </div>
                             <div className="card-footer text-muted">
-                              2 days ago
+                              {console.log(this.ago(vaccancy.date))}
                         </div>
                           </div>
                         </div>
@@ -82,9 +99,9 @@ class Dashboard extends Component {
                   </div>
                 )
               })
-              : null
+              : <h4 className="text-center">No vaccancy</h4>
           }
-          <br/>
+          <br />
         </div>
       );
     }

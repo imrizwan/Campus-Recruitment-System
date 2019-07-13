@@ -6,6 +6,7 @@ module.exports = function validateProfileInput(data) {
 
   // data.username = !isEmpty(data.username) ? data.username : '';
   data.status = !isEmpty(data.status) ? data.status : '';
+  data.batch = !isEmpty(data.batch) ? data.batch : '';
   data.skills = !isEmpty(data.skills) ? data.skills : '';
 
   // if (!Validator.isLength(data.username, { min: 2, max: 40 })) {
@@ -18,6 +19,10 @@ module.exports = function validateProfileInput(data) {
 
   if (Validator.isEmpty(data.status)) {
     errors.status = 'Status field is required';
+  }
+
+  if (Validator.isEmpty(data.batch)) {
+    errors.batch = 'Batch field is required';
   }
 
   if (Validator.isEmpty(data.skills)) {

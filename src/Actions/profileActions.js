@@ -78,11 +78,10 @@ export const createProfile = (profileData, history) => dispatch => {
     axios
     .post(URL+'createprofile', profileData)
     .then(res => {
-      const profilecreated = JSON.parse(localStorage.getItem('profilecreated'));
-      if(!profilecreated){
-        localStorage.setItem('profilecreated', !profilecreated);
-      }
-      
+      // const profilecreated = profilecreated.profilecreated;
+      // if(!profilecreated){
+      //   localStorage.setItem('profilecreated', !profilecreated);
+      // }
       history.push('/profile')
       })
     .catch(err =>{
