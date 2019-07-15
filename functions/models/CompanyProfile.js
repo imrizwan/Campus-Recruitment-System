@@ -32,6 +32,10 @@ const CompanyProfileSchema = new Schema({
   },
   project: [
     {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+      },
       title: {
         type: String,
         required: true
@@ -65,6 +69,10 @@ const CompanyProfileSchema = new Schema({
   ],
   vaccancy: [
     {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+      },
       position: {
         type: String,
         required: true

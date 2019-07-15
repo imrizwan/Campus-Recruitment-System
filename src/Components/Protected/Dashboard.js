@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
 import Loader from "../Loader/Loader"
 import isEmpty from "../../validation/is-empty"
-import { getProfileCreated, getCompanies } from "../../Actions/profileActions"
+import { getProfileCreated, getCompanies, applyForVaccancy } from "../../Actions/profileActions"
 
 class Dashboard extends Component {
 
@@ -29,7 +29,6 @@ class Dashboard extends Component {
     }
   }
   ago = (created) => {
-    // incomplete logic
     let date = new Date();
     let TodaysDate = `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`
     created = new Date(created)
@@ -57,6 +56,10 @@ class Dashboard extends Component {
   //   skillsTemp = skills[0].split(',')
 
   // }
+
+  apply = (vaccancy) => {
+    this.props.applyForVaccancy(vaccancy)
+  }
 
   render() {
     if (isEmpty(this.props.profilecreated) && isEmpty(this.props.companyprofiles)) { return <Loader /> } else {
@@ -93,28 +96,28 @@ class Dashboard extends Component {
                               <h5 className="card-title">
                                 {`Job Type: ${vaccancy.jobtype}`}
                               </h5>
-                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
+                              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
                             </div>
                             <div className="card-footer text-muted text-center">
                               {this.ago(vaccancy.date)}
                             </div>
                           </div>
                           {/* Modal */}
-                          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">{vaccancy.position} - {vaccancy.jobtype}</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog" role="document">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5 className="modal-title" id="exampleModalLabel">{vaccancy.position} - {vaccancy.jobtype}</h5>
+                                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
                                 </div>
-                                <div class="modal-body">
+                                <div className="modal-body">
                                   Are you sure?
                                 </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                  <button type="button" class="btn btn-success">Confirm</button>
+                                <div className="modal-footer">
+                                  <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                  <button type="button" className="btn btn-success" onClick = {()=> this.apply(vaccancy)}>Confirm</button>
                                 </div>
                               </div>
                             </div>
@@ -149,5 +152,5 @@ const mapStateToProps = state => ({
 
 // export default connect(mapStateToProps)(Dashboard);
 export default compose(
-  connect(mapStateToProps, { getProfileCreated, getCompanies })
+  connect(mapStateToProps, { getProfileCreated, getCompanies, applyForVaccancy })
 )(withRouter(Dashboard))

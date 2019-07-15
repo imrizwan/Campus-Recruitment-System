@@ -193,8 +193,30 @@ export class AuthController {
   // @desc    student apply for vaccancy
   // @access  Private
 
-  public applyforvaccancy(req: Request, res: Response) {
-    
+  public applyForVaccancy(req: Request, res: Response) {
+    const errors = {};
+    let { companyid, vaccancyid } = req.body;
+
+    if(!companyid || !vaccancyid){
+      errors.applyforvaccancy = 'Abay data to bhej';
+      return res.status(404).json(errors);
+    }
+
+    Verify.findOne({ user: req.user.id }).then(applyData => {
+      
+      if(!applyData.profilecreated){
+        errors.applyforvaccancy = 'Complete your profile';
+        return res.status(404).json(errors);
+      }
+      applyData.applied.unshift({
+        companyid: req.body.companyid,
+        vaccancyid: req.body.vaccancyid
+      });
+      applyData.save()
+        .then(update => res.json(update))
+        .catch((err) => console.log("Error from applyForVaccancy", err));
+    })
+      .catch((err) => console.log("Error from applyForVaccancy", err));
   }
 
   // @route   GET api/profile

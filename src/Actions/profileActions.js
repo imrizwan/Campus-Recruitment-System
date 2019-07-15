@@ -1,5 +1,27 @@
 import axios from 'axios';
-import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED, GET_COMPANY_PROFILES } from "../Variables";
+import { APPLY_FOR_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED, GET_COMPANY_PROFILES } from "../Variables";
+
+// Apply for vaccancy
+export const applyForVaccancy = vaccancy => dispatch => {
+  axios
+    .post(URL+`applyforvaccancy`, {
+      vaccancyid: vaccancy._id,
+      companyid: vaccancy.user
+    })
+    .then(res =>
+      dispatch({
+        type: APPLY_FOR_VACCANCY,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: null
+      })
+    );
+}
+
 
 // Get profile by handle
 export const getProfileById = id => dispatch => {
@@ -78,10 +100,6 @@ export const createProfile = (profileData, history) => dispatch => {
     axios
     .post(URL+'createprofile', profileData)
     .then(res => {
-      // const profilecreated = profilecreated.profilecreated;
-      // if(!profilecreated){
-      //   localStorage.setItem('profilecreated', !profilecreated);
-      // }
       history.push('/profile')
       })
     .catch(err =>{

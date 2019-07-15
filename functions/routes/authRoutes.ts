@@ -24,7 +24,7 @@ export class Routes {
         app.post('/api/resend', this.authController.resendTokenPost);
         app.post('/api/forgotpasswordemail', this.authController.forgotPasswordEmail);
         app.post('/api/changepassword', this.authController.changePassword);
-        app.get('/api/applyforvaccancy', passport.authenticate("jwt", { session: false }), this.authController.applyforvaccancy)
+        app.post('/api/applyforvaccancy', passport.authenticate("jwt", { session: false }), this.authController.applyForVaccancy)
         // Company Routes
         app.post('/api/createcompanyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.createcompanyprofile)
         app.get('/api/companyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.currentCompanyProfile)
