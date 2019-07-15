@@ -34,15 +34,21 @@ class Dashboard extends Component {
     let TodaysDate = `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`
     created = new Date(created)
     let createdDate = `${created.getDate()} ${created.getMonth()} ${created.getFullYear()}`
-    if(TodaysDate === createdDate){
+    if (TodaysDate === createdDate) {
       return "Published Today"
     } else {
-      if(TodaysDate !== createdDate){
-        return `${date.getFullYear() - created.getFullYear()} year ago`
-      } else if(`${date.getMonth()} ${date.getFullYear()}` === `${created.getMonth()} ${created.getFullYear()}`){
-        return `${date.getMonth() - created.getMonth()} month ago`
+      if (date.getDate() === created.getDate() && date.getMonth() === created.getMonth() && date.getDate() === created.getDate() && date.getFullYear() !== created.getFullYear()) {
+        if ((date.getFullYear() - created.getFullYear()) <= 1) {
+          return `${date.getFullYear() - created.getFullYear()} year ago`
+        } else return `${date.getFullYear() - created.getFullYear()} years ago`
+      } else if (date.getDate() !== created.getDate() && date.getMonth() === created.getMonth() && date.getDate() !== created.getDate() && date.getFullYear() === created.getFullYear()) {
+        if ((date.getMonth() - created.getMonth()) <= 1) {
+          return `${date.getMonth() - created.getMonth()} month ago`
+        } else return `${date.getMonth() - created.getMonth()} months ago`
       } else {
-        return `${date.getDate() - created.getDate()} day ago`
+        if ((date.getDate() - created.getDate()) <= 1) {
+          return `${date.getDate() - created.getDate()} day ago`
+        } else return `${date.getDate() - created.getDate()} days ago`
       }
     }
   }
@@ -87,12 +93,33 @@ class Dashboard extends Component {
                               <h5 className="card-title">
                                 {`Job Type: ${vaccancy.jobtype}`}
                               </h5>
-                              <button className="btn btn-primary">Apply</button>
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
                             </div>
-                            <div className="card-footer text-muted">
-                              {console.log(this.ago(vaccancy.date))}
-                        </div>
+                            <div className="card-footer text-muted text-center">
+                              {this.ago(vaccancy.date)}
+                            </div>
                           </div>
+                          {/* Modal */}
+                          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">{vaccancy.position} - {vaccancy.jobtype}</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Are you sure?
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                  <button type="button" class="btn btn-success">Confirm</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/* Modal End */}
                         </div>
                       )
                     })}

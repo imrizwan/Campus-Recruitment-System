@@ -10,7 +10,19 @@ const VerifySchema = new Schema({
     profilecreated: {
         type: Boolean,
         required: true
-    }
+    },
+    applied: [
+        {
+            companyid: {
+                type: String,
+                // required: true
+            },
+            vaccancyid: {
+                type: String,
+                // required: true
+            },
+        }
+    ]
 });
 
 module.exports = Verify = mongoose.model('verify', VerifySchema);

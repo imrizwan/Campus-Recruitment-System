@@ -189,6 +189,14 @@ export class AuthController {
     });
   }
 
+  // @route   GET api/applyforvaccancy
+  // @desc    student apply for vaccancy
+  // @access  Private
+
+  public applyforvaccancy(req: Request, res: Response) {
+    
+  }
+
   // @route   GET api/profile
   // @desc    Get current users profile
   // @access  Private
