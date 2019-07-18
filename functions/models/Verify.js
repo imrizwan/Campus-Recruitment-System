@@ -13,14 +13,9 @@ const VerifySchema = new Schema({
     },
     applied: [
         {
-            companyid: {
-                type: String,
-                // required: true
-            },
-            vaccancyid: {
-                type: String,
-                // required: true
-            },
+            key: {
+                type: String
+            }
         }
     ]
 });

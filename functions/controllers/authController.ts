@@ -10,6 +10,7 @@ import * as nodemailer from 'nodemailer';
 
 // Load Input Validation
 import * as validateRegisterInput from "../validation/register";
+import * as isEmpty from "../validation/is-empty";
 import * as validateLoginInput from "../validation/login";
 import * as validateProfileInput from "../validation/profile";
 import * as validateEducationInput from "../validation/education";
@@ -205,83 +206,40 @@ export class AuthController {
     }
 
 
-    // if (user.vaccancyid && applyData.vaccancyid === req.body.vaccancyid) {
-    //   errors.applyforvaccancy = 'vaccancyid already exists';
-    //   return res.status(400).json(errors);
-    // }
-    Verify.findOne({
-      $and: [
-        { user: req.user.id },
-        { applied: { $elemMatch: { vaccancyid: req.body.vaccancyid } } },
-        { applied: { $elemMatch: { companyid: req.body.companyid } } }
-      ]
-    }
-      // { applied: { $elemMatch: { vaccancyid: req.body.vaccancyid, companyid: req.body.companyid } } }
+    Verify.findOne(
+      { applied: { $elemMatch: { key: `${req.user.id}${req.body.vaccancyid}${req.body.companyid}` } } }
     )
-      .then(applyData => {
-       if(applyData){
-        if (!applyData.profilecreated) {
-          errors.applyforvaccancy = 'Complete your profile';
-          return res.status(404).json(errors);
-        }
-       }
-        if(!applyData){
-          Verify.findOne({ user: req.user.id })
-          .then((data) => {
-            data.applied.unshift({
-              companyid: req.body.companyid,
-              vaccancyid: req.body.vaccancyid
-            });
-            data.save()
-              .then(update => res.json(update))
-              .catch((err) => console.log("Error from applyForVaccancy", err));
-          })
-          .catch((err) => console.log("Error from applyForVaccancy", err))
-        }
-        // console.log(applyData.applied.find(data => data._id !== vaccancyid))
-        if(!applyData.applied.find(data => data._id === vaccancyid)) {
-          Verify.findOne({ user: req.user.id })
-            .then((data) => {
-              data.applied.unshift({
-                companyid: req.body.companyid,
-                vaccancyid: req.body.vaccancyid
-              });
-              data.save()
-                .then(update => res.json(update))
-                .catch((err) => console.log("Error from applyForVaccancy", err));
-            })
-            .catch((err) => console.log("Error from applyForVaccancy", err))
-        } else if(applyData.applied.find(data => data._id === vaccancyid)) {
-         if (applyData) {
+      .then((data) => {
+
+        if (!isEmpty(data)) {
+          if (!isEmpty(data.applied)) {
+            let obj = data.applied.find(apply => apply.key === `${req.user.id}${req.body.vaccancyid}${req.body.companyid}`);
+
+            console.log(obj);
             errors.applyforvaccancy = 'You have already applied';
             return res.status(500).json(errors);
           }
         }
 
-        // if (applyData) {
+        if (isEmpty(data)) {
+          Verify.findOne({ user: req.user.id })
+            .then((data) => {
+              // Add to exp array
+              data.applied.unshift({ key: `${req.user.id}${req.body.vaccancyid}${req.body.companyid}` });
 
-        // }
-        // if(applyData){
-        //   if (!applyData.profilecreated) {
-        //     errors.applyforvaccancy = 'Complete your profile';
-        //     return res.status(404).json(errors);
-        //   }
-        // }
-        // else {
-        //   Verify.findOne({ user: req.user.id })
-        //     .then((data) => {
-        //       data.applied.unshift({
-        //         companyid: req.body.companyid,
-        //         vaccancyid: req.body.vaccancyid
-        //       });
-        //       data.save()
-        //         .then(update => res.json(update))
-        //         .catch((err) => console.log("Error from applyForVaccancy", err));
-        //     })
-        //     .catch((err) => console.log("Error from applyForVaccancy", err));
-        // }
+              data.save()
+                .then(profile => res.json(profile))
+                .catch((err) => console.log("Error from applyForVaccancy2", err));
+            })
+            .catch((err) => {
+              console.log("error from applyForVaccancy3", err)
+            })
+        }
+
       })
-      .catch((err) => console.log("Error from applyForVaccancy", err));
+      .catch((err) => {
+        console.log("error from applyForVaccancy2", err)
+      })
   }
 
   // @route   GET api/profile
