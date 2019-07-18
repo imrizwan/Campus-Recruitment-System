@@ -15,10 +15,7 @@ export const applyForVaccancy = vaccancy => dispatch => {
       })
     )
     .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: null
-      })
+      dispatch({ type: GET_ERRORS, payload: err.response.data })
     );
 }
 

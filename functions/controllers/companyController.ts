@@ -124,6 +124,7 @@ export class CompanyAuthController {
 
     CompanyProfile.findOne({ user: req.user.id }).then(companyprofile => {
       const proData = {
+        user: req.user.id,
         title: req.body.title,
         client: req.body.client,
         clientlocation: req.body.clientlocation,
@@ -157,6 +158,7 @@ export class CompanyAuthController {
 
     CompanyProfile.findOne({ user: req.user.id }).then(companyprofile => {
       const vaccancyData = {
+        user: req.user.id,
         position: req.body.position,
         degreerequired: req.body.degreerequired,
         skillsrequired: req.body.skillsrequired,

@@ -6,8 +6,22 @@ import compose from 'recompose/compose'
 import Loader from "../Loader/Loader"
 import isEmpty from "../../validation/is-empty"
 import { getProfileCreated, getCompanies, applyForVaccancy } from "../../Actions/profileActions"
+import "./Dashboard.css"
 
 class Dashboard extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      errors: {}
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
 
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) {
@@ -73,7 +87,7 @@ class Dashboard extends Component {
                   <div key={index1}>
                     {profile.vaccancy.map((vaccancy, index2) => {
                       return (
-                        <div key={index2}>
+                        <div key={index2} className="marginBottom">
                           <div className="card text-justify">
                             <div className="card-header">
                               {vaccancy.position}
@@ -96,7 +110,15 @@ class Dashboard extends Component {
                               <h5 className="card-title">
                                 {`Job Type: ${vaccancy.jobtype}`}
                               </h5>
-                              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
+                              { 
+                                  !isEmpty(this.props.profilecreated) ?
+                                  !isEmpty(this.props.profilecreated.applied) ? 
+                                  this.props.profilecreated.applied.find(data => data.vaccancyid === vaccancy._id) ? 
+                                  <button type="button" className="btn btn-success" disabled>Applied</button>
+                                  : <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
+                                  : <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
+                                  : <button type="button" className="btn btn-warning">Loading...</button>
+                              }
                             </div>
                             <div className="card-footer text-muted text-center">
                               {this.ago(vaccancy.date)}
@@ -113,11 +135,13 @@ class Dashboard extends Component {
                                   </button>
                                 </div>
                                 <div className="modal-body">
-                                  Are you sure?
+                                  {
+                                    this.state.errors.applyforvaccancy ? <div style={{ color: "red" }}>{this.state.errors.applyforvaccancy}</div> : "Are you sure?"
+                                  }
                                 </div>
                                 <div className="modal-footer">
                                   <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                  <button type="button" className="btn btn-success" onClick = {()=> this.apply(vaccancy)}>Confirm</button>
+                                  <button type="button" className="btn btn-success" data-dismiss="modal" onClick={() => this.apply(vaccancy)}>Confirm</button>
                                 </div>
                               </div>
                             </div>
@@ -146,6 +170,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  errors: state.errors,
   profilecreated: state.profilecreated.profilecreated,
   companyprofiles: state.profile.companyprofiles,
 });

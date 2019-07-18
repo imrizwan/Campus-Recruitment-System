@@ -32,6 +32,10 @@ const StudentProfileSchema = new Schema({
   },
   experience: [
     {
+      user: {
+        type: String,
+        required: true
+      },
       title: {
         type: String,
         required: true
@@ -61,6 +65,10 @@ const StudentProfileSchema = new Schema({
   ],
   education: [
     {
+      user: {
+        type: String,
+        required: true
+      },
       school: {
         type: String,
         required: true

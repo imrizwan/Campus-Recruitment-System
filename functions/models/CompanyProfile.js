@@ -33,8 +33,8 @@ const CompanyProfileSchema = new Schema({
   project: [
     {
       user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
+        type: String,
+        required: true
       },
       title: {
         type: String,
@@ -70,8 +70,8 @@ const CompanyProfileSchema = new Schema({
   vaccancy: [
     {
       user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
+        type: String,
+        required: true
       },
       position: {
         type: String,

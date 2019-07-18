@@ -87,30 +87,31 @@ export class AuthController {
                 var token = new Token({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
 
                 token.save()
-                      .then(()=>{
-                        var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
-                        var mailOptions = { 
-                          from: 'no-reply@rizwanshaikh.me', 
-                          to: user.email, 
-                          subject: 'Account Verification Token', 
-                          text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n' };
-                        transporter.sendMail(mailOptions, function (err) {
-                            if (err) { return res.status(500).send({ msg: err.message }); }
-                            //profilecreated verification
-                            verify.save()
-                            .then((done) => console.log(done))
-                            .catch((err)=> console.log("Error from Verify: ", err))
+                  .then(() => {
+                    var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
+                    var mailOptions = {
+                      from: 'no-reply@rizwanshaikh.me',
+                      to: user.email,
+                      subject: 'Account Verification Token',
+                      text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n'
+                    };
+                    transporter.sendMail(mailOptions, function (err) {
+                      if (err) { return res.status(500).send({ msg: err.message }); }
+                      //profilecreated verification
+                      verify.save()
+                        .then((done) => console.log(done))
+                        .catch((err) => console.log("Error from Verify: ", err))
 
-                            return res.status(200).send({success: 'A verification email has been sent to ' + user.email + '.'});
-                })
-                })
-                .catch((err)=>{
-                  console.log("Error from token.save", err);
-                    });
+                      return res.status(200).send({ success: 'A verification email has been sent to ' + user.email + '.' });
+                    })
+                  })
+                  .catch((err) => {
+                    console.log("Error from token.save", err);
+                  });
 
                 // return res.json(user);
               })
-              .catch((err)=>console.log("Error from addnewuser", err));
+              .catch((err) => console.log("Error from addnewuser", err));
           });
         });
       }
@@ -146,9 +147,9 @@ export class AuthController {
         if (!user.isVerified) {
           errors.email = "Your email has not been verified.";
           errors.resend = "Resend Verification Email";
-          return res.status(401).send(errors); 
+          return res.status(401).send(errors);
         }
-        
+
 
         bcrypt.compare(password, user.password)
           .then(isMatch => {
@@ -162,21 +163,21 @@ export class AuthController {
                 { expiresIn: 3600 },
                 (err, token) => {
                   Verify.findOne({ user: user.id })
-                    .then((data) => { 
+                    .then((data) => {
                       return res.json({
                         success: true,
                         profilecreated: data.profilecreated,
                         token: "Bearer " + token
                       });
                     })
-                    .catch((err)=>console.log("Error from loginUser", err));
+                    .catch((err) => console.log("Error from loginUser", err));
                 })
             } else {
               errors.password = 'Password incorrect';
               return res.status(404).json(errors);
             }
           })
-          .catch((err)=>console.log("Error from loginUser", err));
+          .catch((err) => console.log("Error from loginUser", err));
       })
   }
 
@@ -194,28 +195,92 @@ export class AuthController {
   // @access  Private
 
   public applyForVaccancy(req: Request, res: Response) {
-    const errors = {};
+    const errors = {
+      applyforvaccancy: ""
+    };
     let { companyid, vaccancyid } = req.body;
-
-    if(!companyid || !vaccancyid){
-      errors.applyforvaccancy = 'Abay data to bhej';
+    if (!companyid || !vaccancyid) {
+      errors.applyforvaccancy = 'Something went wrong';
       return res.status(404).json(errors);
     }
 
-    Verify.findOne({ user: req.user.id }).then(applyData => {
-      
-      if(!applyData.profilecreated){
-        errors.applyforvaccancy = 'Complete your profile';
-        return res.status(404).json(errors);
-      }
-      applyData.applied.unshift({
-        companyid: req.body.companyid,
-        vaccancyid: req.body.vaccancyid
-      });
-      applyData.save()
-        .then(update => res.json(update))
-        .catch((err) => console.log("Error from applyForVaccancy", err));
-    })
+
+    // if (user.vaccancyid && applyData.vaccancyid === req.body.vaccancyid) {
+    //   errors.applyforvaccancy = 'vaccancyid already exists';
+    //   return res.status(400).json(errors);
+    // }
+    Verify.findOne({
+      $and: [
+        { user: req.user.id },
+        { applied: { $elemMatch: { vaccancyid: req.body.vaccancyid } } },
+        { applied: { $elemMatch: { companyid: req.body.companyid } } }
+      ]
+    }
+      // { applied: { $elemMatch: { vaccancyid: req.body.vaccancyid, companyid: req.body.companyid } } }
+    )
+      .then(applyData => {
+       if(applyData){
+        if (!applyData.profilecreated) {
+          errors.applyforvaccancy = 'Complete your profile';
+          return res.status(404).json(errors);
+        }
+       }
+        if(!applyData){
+          Verify.findOne({ user: req.user.id })
+          .then((data) => {
+            data.applied.unshift({
+              companyid: req.body.companyid,
+              vaccancyid: req.body.vaccancyid
+            });
+            data.save()
+              .then(update => res.json(update))
+              .catch((err) => console.log("Error from applyForVaccancy", err));
+          })
+          .catch((err) => console.log("Error from applyForVaccancy", err))
+        }
+        // console.log(applyData.applied.find(data => data._id !== vaccancyid))
+        if(!applyData.applied.find(data => data._id === vaccancyid)) {
+          Verify.findOne({ user: req.user.id })
+            .then((data) => {
+              data.applied.unshift({
+                companyid: req.body.companyid,
+                vaccancyid: req.body.vaccancyid
+              });
+              data.save()
+                .then(update => res.json(update))
+                .catch((err) => console.log("Error from applyForVaccancy", err));
+            })
+            .catch((err) => console.log("Error from applyForVaccancy", err))
+        } else if(applyData.applied.find(data => data._id === vaccancyid)) {
+         if (applyData) {
+            errors.applyforvaccancy = 'You have already applied';
+            return res.status(500).json(errors);
+          }
+        }
+
+        // if (applyData) {
+
+        // }
+        // if(applyData){
+        //   if (!applyData.profilecreated) {
+        //     errors.applyforvaccancy = 'Complete your profile';
+        //     return res.status(404).json(errors);
+        //   }
+        // }
+        // else {
+        //   Verify.findOne({ user: req.user.id })
+        //     .then((data) => {
+        //       data.applied.unshift({
+        //         companyid: req.body.companyid,
+        //         vaccancyid: req.body.vaccancyid
+        //       });
+        //       data.save()
+        //         .then(update => res.json(update))
+        //         .catch((err) => console.log("Error from applyForVaccancy", err));
+        //     })
+        //     .catch((err) => console.log("Error from applyForVaccancy", err));
+        // }
+      })
       .catch((err) => console.log("Error from applyForVaccancy", err));
   }
 
@@ -224,7 +289,9 @@ export class AuthController {
   // @access  Private
 
   public currentUserProfile(req: Request, res: Response) {
-    const errors = {};
+    const errors = {
+      noprofile: ""
+    };
 
     Profile.findOne({ user: req.user.id })
       .populate('user', ['fullname', 'avatar'])
@@ -235,7 +302,7 @@ export class AuthController {
         }
         res.json(profile);
       })
-      .catch((err)=>console.log("Error from currentUserProfile", err));
+      .catch((err) => console.log("Error from currentUserProfile", err));
 
   }
   // @route   GET api/profile/all
@@ -243,7 +310,9 @@ export class AuthController {
   // @access  Public
 
   public all(req: Request, res: Response) {
-    const errors = {};
+    const errors = {
+      noprofile: ""
+    };
 
     Profile.find()
       .populate('user', ['name', 'avatar'])
@@ -263,7 +332,9 @@ export class AuthController {
   // @access  Public
 
   public username(req: Request, res: Response) {
-    const errors = {};
+    const errors = {
+      noprofile: ""
+    };
 
     Profile.findOne({ username: req.params.username })
       .populate('user', ['name', 'avatar'])
@@ -275,7 +346,7 @@ export class AuthController {
 
         res.json(profile);
       })
-      .catch((err)=>console.log("Error from username", err));
+      .catch((err) => console.log("Error from username", err));
   }
 
   // @route   GET api/profile/user/:user_id
@@ -284,7 +355,9 @@ export class AuthController {
 
   public user(req: Request, res: Response) {
     {
-      const errors = {};
+      const errors = {
+        noprofile: ""
+      };
 
       Profile.findOne({ user: req.params.user_id })
         .populate('user', ['name', 'avatar'])
@@ -314,6 +387,7 @@ export class AuthController {
 
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newExp = {
+        user: req.user.id,
         title: req.body.title,
         company: req.body.company,
         location: req.body.location,
@@ -327,10 +401,10 @@ export class AuthController {
       profile.experience.unshift(newExp);
 
       profile.save()
-      .then(profile => res.json(profile))
-      .catch((err)=>console.log("Error from experience", err));
+        .then(profile => res.json(profile))
+        .catch((err) => console.log("Error from experience", err));
     })
-    .catch((err)=>console.log("Error from experience", err));
+      .catch((err) => console.log("Error from experience", err));
 
   }
   // education
@@ -346,6 +420,7 @@ export class AuthController {
 
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newEdu = {
+        user: req.user.id,
         school: req.body.school,
         degree: req.body.degree,
         fieldofstudy: req.body.fieldofstudy,
@@ -359,10 +434,10 @@ export class AuthController {
       profile.education.unshift(newEdu);
 
       profile.save()
-      .then(profile => res.json(profile))
-      .catch((err)=>console.log("Error from education", err));
+        .then(profile => res.json(profile))
+        .catch((err) => console.log("Error from education", err));
     })
-    .catch((err)=>console.log("Error from education", err));
+      .catch((err) => console.log("Error from education", err));
   }
 
   public confirmationPost(req: Request, res: Response) {
@@ -379,68 +454,68 @@ export class AuthController {
           return res.status(404).json(errors);
         }
 
-      bcrypt.compare(password, user.password)
+        bcrypt.compare(password, user.password)
           .then(isMatch => {
             if (isMatch) {
               Token.findOne({ token: req.params.token }, function (err, token) {
-                      if (err) { return res.status(500).send({ msg: err.message }); }
-                      if (!token) return res.status(400).send({ type: 'not-verified', msg: 'We were unable to find a valid token. Your token my have expired.' });
-              
-                      // If we found a token, find a matching user
-                      User.findOne({ _id: token.user, email: req.body.email }, function (err, user) {
-                          if (err) { return res.status(500).send({ msg: err.message }); }
-                          if (!user) return res.status(400).send({ msg: 'We were unable to find a user for this token.' });
-                          if (user.isVerified) return res.status(400).send({ type: 'already-verified', msg: 'This user has already been verified.' });
-              
-                          // Verify and save the user
-                          user.isVerified = true;
-                          user.save(function (err) {
-                              if (err) { return res.status(500).send({ msg: err.message }); }
-                              return res.status(200).send({ type: 'verified', success: "The account has been verified." });
-                          });
-                      });
+                if (err) { return res.status(500).send({ msg: err.message }); }
+                if (!token) return res.status(400).send({ type: 'not-verified', msg: 'We were unable to find a valid token. Your token my have expired.' });
+
+                // If we found a token, find a matching user
+                User.findOne({ _id: token.user, email: req.body.email }, function (err, user) {
+                  if (err) { return res.status(500).send({ msg: err.message }); }
+                  if (!user) return res.status(400).send({ msg: 'We were unable to find a user for this token.' });
+                  if (user.isVerified) return res.status(400).send({ type: 'already-verified', msg: 'This user has already been verified.' });
+
+                  // Verify and save the user
+                  user.isVerified = true;
+                  user.save(function (err) {
+                    if (err) { return res.status(500).send({ msg: err.message }); }
+                    return res.status(200).send({ type: 'verified', success: "The account has been verified." });
                   });
+                });
+              });
             } else {
               errors.password = 'Password incorrect';
               return res.status(404).json(errors);
             }
           })
-          .catch((err)=>console.log("Error from confirmationPost", err));
+          .catch((err) => console.log("Error from confirmationPost", err));
       })
-      .catch((err)=>console.log("Error from confirmationPost", err));
+      .catch((err) => console.log("Error from confirmationPost", err));
   }
 
   public resendTokenPost(req: Request, res: Response) {
 
     const { errors } = validateResend(req.body);
-    
+
     User.findOne({ email: req.body.email }, function (err, user) {
+      if (err) { return res.status(500).send({ msg: err.message }); }
+      if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
+      if (user.isVerified) return res.status(400).send({ msg: 'This account has already been verified.' });
+
+      // Create a verification token, save it, and send email
+      var token = new Token({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
+
+      // Save the token
+      token.save(function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
-        if (user.isVerified) return res.status(400).send({ msg: 'This account has already been verified.' });
- 
-        // Create a verification token, save it, and send email
-        var token = new Token({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
- 
-        // Save the token
-        token.save(function (err) {
-            if (err) { return res.status(500).send({ msg: err.message }); }
- 
-            // Send the email
-            var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
-            var mailOptions = { 
-              from: 'no-reply@localhost.com', 
-              to: user.email, 
-              subject: 'Account Verification Token', 
-              text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n' 
-              };
-            transporter.sendMail(mailOptions, function (err) {
-                if (err) { return res.status(500).send({ msg: err.message }); }
-                
-                res.status(200).send({ success: 'A verification email has been sent to ' + user.email + '.' });
-            });
+
+        // Send the email
+        var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
+        var mailOptions = {
+          from: 'no-reply@localhost.com',
+          to: user.email,
+          subject: 'Account Verification Token',
+          text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n'
+        };
+        transporter.sendMail(mailOptions, function (err) {
+          if (err) { return res.status(500).send({ msg: err.message }); }
+
+          res.status(200).send({ success: 'A verification email has been sent to ' + user.email + '.' });
         });
- 
+      });
+
     });
   }
 
@@ -474,65 +549,65 @@ export class AuthController {
               { _id: tokenFound.user },
               { $set: { password } },
               { new: true }
-              )
-              .then((user)=>{
-              if (!user) {
-              errors.tokenerror = 'User not found';
-              return res.status(404).json(errors);
-              }
-            // if user found then change his password
-              PasswordToken.findOneAndUpdate(
-                { token: req.body.token },
-                { passwordchanged: true },
-                { token: req.body.token }
+            )
+              .then((user) => {
+                if (!user) {
+                  errors.tokenerror = 'User not found';
+                  return res.status(404).json(errors);
+                }
+                // if user found then change his password
+                PasswordToken.findOneAndUpdate(
+                  { token: req.body.token },
+                  { passwordchanged: true },
+                  { token: req.body.token }
                 )
-                .then((done)=>console.log(done))
-                .catch((err)=>console.log("Error from Password Change Update: ", err))
-              return res.status(200).json({ success: "Password Changed Successfully"});
+                  .then((done) => console.log(done))
+                  .catch((err) => console.log("Error from Password Change Update: ", err))
+                return res.status(200).json({ success: "Password Changed Successfully" });
 
               })
-              .catch((err)=>console.log("Error from Password Update: ", err));
-            });
+              .catch((err) => console.log("Error from Password Update: ", err));
+          });
         });
 
 
-        
-      
-  })
-  .catch((err)=> console.log("Error from Password Token: ", err));
+
+
+      })
+      .catch((err) => console.log("Error from Password Token: ", err));
 
   }
 
 
   public forgotPasswordEmail(req: Request, res: Response) {
     const { errors } = validateResend(req.body);
-    
+
     User.findOne({ email: req.body.email }, function (err, user) {
-        if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
-        // if (!user.isVerified) res.status(400).send({ msg: 'This account has not been verified.' });
- 
+      if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
+      // if (!user.isVerified) res.status(400).send({ msg: 'This account has not been verified.' });
+
       // Create a verification token, save it, and send email
       var passwordtoken = new PasswordToken({ user: user._id, token: crypto.randomBytes(16).toString('hex') });
- 
+
       // Save the token
       passwordtoken.save(function (err) {
+        if (err) { return res.status(500).send({ msg: err.message }); }
+
+        // Send the email
+        var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
+        var mailOptions = {
+          from: 'no-reply@localhost.com',
+          to: user.email,
+          subject: 'Change Password',
+          text: 'Hello,\n\n' + 'Please change your account password by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/changepassword\/' + passwordtoken.token + '.\n'
+        };
+        transporter.sendMail(mailOptions, function (err) {
           if (err) { return res.status(500).send({ msg: err.message }); }
 
-          // Send the email
-          var transporter = nodemailer.createTransport({ service: keys.service, auth: { user: keys.user, pass: keys.pass } });
-          var mailOptions = { 
-            from: 'no-reply@localhost.com', 
-            to: user.email, 
-            subject: 'Change Password', 
-            text: 'Hello,\n\n' + 'Please change your account password by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/changepassword\/' + passwordtoken.token + '.\n' 
-            };
-          transporter.sendMail(mailOptions, function (err) {
-              if (err) { return res.status(500).send({ msg: err.message }); }
-              
-              res.status(200).send({ success: 'An email has been sent to ' + user.email + '.' });
-          });
+          res.status(200).send({ success: 'An email has been sent to ' + user.email + '.' });
+        });
       });
- 
+
     });
   }
 
@@ -540,7 +615,7 @@ export class AuthController {
 
     Verify.findOne({ user: req.user.id })
       .then((data) => res.json(data))
-      .catch((err)=>console.log("Error from create Profile: ",err));
+      .catch((err) => console.log("Error from create Profile: ", err));
   }
 
   // createprofile
@@ -587,7 +662,7 @@ export class AuthController {
           { $set: profileFields },
           { new: true }
         ).then(profile => res.json(profile))
-        .catch((err)=>console.log("Error from create Profile 1: ",err));
+          .catch((err) => console.log("Error from create Profile 1: ", err));
       } else {
         // Create
 
@@ -600,12 +675,12 @@ export class AuthController {
               { $set: { profilecreated: true } },
               { new: true }
             ).then(success => res.json(profile))
-            .catch((err)=>console.log("Error from verify: ",err));
+              .catch((err) => console.log("Error from verify: ", err));
           }
         })
-        .catch((err)=>console.log("Error from create Profile 2: ",err));
+          .catch((err) => console.log("Error from create Profile 2: ", err));
       }
     })
-    .catch((err)=>console.log("Error from create Profile 3: ",err));
+      .catch((err) => console.log("Error from create Profile 3: ", err));
   }
 }
