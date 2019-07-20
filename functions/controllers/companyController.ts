@@ -1,24 +1,32 @@
 import { Request, Response } from "express";
-// const { Request, Response } = require("express");
-import * as gravatar from 'gravatar';
-import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
-const keys = require('../config/keys.ts');
-// Verification Token
-import * as crypto from 'crypto';
-import * as nodemailer from 'nodemailer';
-// Load Input Validation
 import * as validateCompanyProfileInput from "../validation/companyprofile";
 import * as validateCompanyProjectInput from "../validation/companyproject";
 import * as validateCompanyVaccancyInput from "../validation/companyvaccancy";
 // Load User model
 import * as CompanyProfile from '../models/CompanyProfile';
 import * as Verify from '../models/Verify';
+import isEmpty from "../validation/is-empty";
 
 export class CompanyAuthController {
   public createcompanyprofile(req: Request, res: Response) {
     const { errors, isValid } = validateCompanyProfileInput(req.body);
-    const profileFields = {};
+    const profileFields = {
+      company: "",
+      website: "",
+      location: "",
+      user: "",
+      industrytype: "",
+      description: "",
+      githubusername: "",
+      numberofemployee: "",
+      social: {
+        youtube: "",
+        twitter: "",
+        facebook: "",
+        linkedin: "",
+        instagram: "",
+      }
+    };
 
     // Check Validation
     if (!isValid) {
@@ -37,7 +45,7 @@ export class CompanyAuthController {
     if (req.body.githubusername) profileFields.githubusername = req.body.githubusername;
 
     // Social
-    profileFields.social = {};
+    // profileFields.social = {};
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
@@ -73,15 +81,37 @@ export class CompanyAuthController {
     });
   }
 
+  // @route   GET api/getcompanies
+  // @desc    getCompanies
+  // @access  Private
 
-  // @route   GET api/profile
+  public deleteVaccany(req: Request, res: Response) {
+    const errors = {
+      deletevaccany: ""
+    }
+
+    if (!req.query.vaccancyid) {
+      errors.deletevaccany = 'Sorry, Something Went Wrong';
+      return res.status(500).json(errors);
+    }
+
+    CompanyProfile.updateOne(
+      { user: req.user.id },
+      { $pull: { "vaccancy" : { _id: req.query.vaccancyid } } },
+      { multi: true }
+      )
+      .then((data) => res.status(200).json({ success: "Successfuly Deleted" }))
+  }
+
+
+  // @route   GET api/getcompanies
   // @desc    getCompanies
   // @access  Private
 
   public getCompanies(req: Request, res: Response) {
     const errors = {};
 
-    CompanyProfile.find({vaccancy: {$exists: true, $not: {$size: 0}}})
+    CompanyProfile.find({ vaccancy: { $exists: true, $not: { $size: 0 } } })
       .then(profiles => {
         if (!profiles) {
           errors.noprofile = 'Sorry, Companies are unavailable';

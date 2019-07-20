@@ -1,8 +1,24 @@
 import axios from 'axios';
 import { APPLY_FOR_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED, GET_COMPANY_PROFILES } from "../Variables";
 
+
+export const getProfileCreated = () => dispatch => {
+  // dispatch(getProfileLoading());
+  axios
+    .get(URL+`profilecreated`)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE_CREATED,
+        payload: res.data
+      })
+    }
+    )
+    .catch(err => console.log(err));
+};
+
 // Apply for vaccancy
 export const applyForVaccancy = vaccancy => dispatch => {
+  getProfileCreated()
   axios
     .post(URL+`applyforvaccancy`, {
       vaccancyid: vaccancy._id,
@@ -57,20 +73,6 @@ export const getCompanies = () => dispatch => {
         payload: null
       })
     );
-};
-
-export const getProfileCreated = () => dispatch => {
-  // dispatch(getProfileLoading());
-  axios
-    .get(URL+`profilecreated`)
-    .then(res => {
-      dispatch({
-        type: GET_PROFILE_CREATED,
-        payload: res.data
-      })
-    }
-    )
-    .catch(err => console.log(err));
 };
 
 // Get current profile

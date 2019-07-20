@@ -43,7 +43,7 @@ class MyCompanyProfile extends Component {
       profileContent = <Loader />;
     } else { 
         profileContent = (
-            JSON.parse(localStorage.getItem('profilecreated')) ? 
+            this.props.profilecreated.profilecreated ? 
         <div>
             <ProfileHeader profile={profile} fullname={this.props.auth.user.fullname} />
         </div>

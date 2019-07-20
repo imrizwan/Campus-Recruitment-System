@@ -213,9 +213,6 @@ export class AuthController {
 
         if (!isEmpty(data)) {
           if (!isEmpty(data.applied)) {
-            let obj = data.applied.find(apply => apply.key === `${req.user.id}${req.body.vaccancyid}${req.body.companyid}`);
-
-            console.log(obj);
             errors.applyforvaccancy = 'You have already applied';
             return res.status(500).json(errors);
           }
@@ -226,6 +223,18 @@ export class AuthController {
             .then((data) => {
               // Add to exp array
               data.applied.unshift({ key: `${req.user.id}${req.body.vaccancyid}${req.body.companyid}` });
+
+              // Add to company profilecreated applied array
+              Verify.findOne({ user: req.body.companyid })
+              .then((company)=> {
+
+                if(!company){
+                  errors.applyforvaccancy = 'Company does not exist';
+                  return res.status(404).json(errors);
+                }
+                company.applied.unshift({ key: `${req.user.id}${req.body.vaccancyid}${req.body.companyid}` });
+              })
+              .catch((err) => console.log("err from applyforVaccancy Company", err))
 
               data.save()
                 .then(profile => res.json(profile))

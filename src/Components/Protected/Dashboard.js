@@ -13,7 +13,8 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: {}
+      errors: {},
+      data: {}
     }
   }
 
@@ -73,6 +74,7 @@ class Dashboard extends Component {
 
   apply = (vaccancy) => {
     this.props.applyForVaccancy(vaccancy)
+    window.location.reload();
   }
 
   render() {
@@ -110,14 +112,12 @@ class Dashboard extends Component {
                               <h5 className="card-title">
                                 {`Job Type: ${vaccancy.jobtype}`}
                               </h5>
-                              { 
-                                  !isEmpty(this.props.profilecreated) ?
-                                  !isEmpty(this.props.profilecreated.applied) ? 
-                                  this.props.profilecreated.applied.find(data => data.vaccancyid === vaccancy._id) ? 
-                                  <button type="button" className="btn btn-success" disabled>Applied</button>
-                                  : <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
-                                  : <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Apply</button>
-                                  : <button type="button" className="btn btn-warning">Loading...</button>
+                              {
+                                !isEmpty(this.props.profilecreated) ?
+                                  !this.props.profilecreated.applied.find(data => data.key === `${this.props.auth.user.id}${vaccancy._id}${vaccancy.user}`) ?
+                                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={() => this.setState({ data: vaccancy })}>Apply</button> :
+                                    <button type="button" className="btn btn-success" disabled>Applied</button>
+                                  : null
                               }
                             </div>
                             <div className="card-footer text-muted text-center">
@@ -141,7 +141,7 @@ class Dashboard extends Component {
                                 </div>
                                 <div className="modal-footer">
                                   <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                  <button type="button" className="btn btn-success" data-dismiss="modal" onClick={() => this.apply(vaccancy)}>Confirm</button>
+                                  <button type="button" className="btn btn-success" data-dismiss="modal" onClick={() => this.apply(this.state.data)}>Confirm</button>
                                 </div>
                               </div>
                             </div>

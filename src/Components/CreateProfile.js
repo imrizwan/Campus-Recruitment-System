@@ -79,17 +79,24 @@ class CreateProfile extends React.Component {
         displaySocialInputs: false,
     }
 
-    componentDidMount(){
-        
+    componentDidMount() {
         if (this.props.auth.isAuthenticated) {
-            getProfileCreated();   
-            if(!isEmpty(this.props.profilecreated)){
-                if(!this.props.profilecreated.profilecreated){
-                    if(this.props.auth.user.userType === "student"){
+            this.props.getProfileCreated(this.props.history, this.props.match.url);
+        }
+
+        if (this.props.auth.isAuthenticated) {
+            this.props.getProfileCreated();
+            if (!isEmpty(this.props.profilecreated)) {
+                if (this.props.profilecreated.profilecreated) {
+                    if (this.props.auth.user.userType === "student") {
+                        this.props.history.push("/updateprofile")
+                    } else this.props.history.push("/updatecompanyprofile")
+                } else if (!this.props.profilecreated.profilecreated) {
+                    if (this.props.auth.user.userType === "student") {
                         this.props.history.push("/createprofile")
                     } else this.props.history.push("/createcompanyprofile")
                 }
-            }         
+            }
         }
     }
     

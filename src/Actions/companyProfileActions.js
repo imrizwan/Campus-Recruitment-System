@@ -1,5 +1,20 @@
 import axios from 'axios';
-import { URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+
+export const deleteVaccancy = (vaccancyid) => dispatch => {
+  // dispatch(getProfileLoading());
+  axios
+    .get(URL+`deletevaccancy?vaccancyid=${vaccancyid}`)
+    .then(res => {
+      dispatch({
+        type: DELETE_VACCANCY,
+        payload: res.data
+      })
+    }
+    )
+    .catch(err => console.log(err));
+};
+
 
 export const getProfileCreated = () => dispatch => {
   // dispatch(getProfileLoading());
