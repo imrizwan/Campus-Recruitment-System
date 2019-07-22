@@ -81,8 +81,65 @@ export class CompanyAuthController {
     });
   }
 
-  // @route   GET api/getcompanies
-  // @desc    getCompanies
+  // @route   GET api/updatevaccancy
+  // @desc    updateVaccancy
+  // @access  Private
+
+  public updateVaccancy(req: Request, res: Response) {
+    const data = {
+      position: "",
+      degreerequired: "",
+      jobtype: "",
+      skillsrequired: "",
+      description: "",
+      contactno: ""
+    }
+    const { errors, isValid } = validateCompanyVaccancyInput({
+      position: req.body.position,
+      degreerequired: req.body.degreerequired,
+      jobtype: req.body.jobtype,
+      skillsrequired: req.body.skillsrequired.toString(),
+      description: req.body.description,
+      contactno: req.body.contactno
+    });
+
+    if (!req.body.id) {
+      errors.noprofile = 'Sorry, Something went wrong';
+      return res.status(404).json(errors);
+    }
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    if (req.body.position) data.position = req.body.position;
+    if (req.body.degreerequired) data.degreerequired = req.body.degreerequired;
+    if (req.body.jobtype) data.jobtype = req.body.jobtype;
+    if (req.body.skillsrequired) data.skillsrequired = req.body.skillsrequired.toString();
+    if (req.body.description) data.description = req.body.description;
+    if (req.body.contactno) data.contactno = req.body.contactno;
+
+    CompanyProfile.updateOne(
+      { vaccancy: { $elemMatch: { _id: req.body.id } } },
+      { $set: 
+        {
+          "vaccancy.$.position": data.position,
+          "vaccancy.$.degreerequired": data.degreerequired,
+          "vaccancy.$.jobtype": data.jobtype,
+          "vaccancy.$.skillsrequired": data.skillsrequired,
+          "vaccancy.$.description": data.description,
+          "vaccancy.$.contactno": data.contactno
+        }
+      },
+      { multi: true }
+    )
+      .then((data) => {
+        return res.status(200).json({ success: "Successfuly Deleted" })
+      })
+  }
+
+  // @route   GET api/deleteVaccany
+  // @desc    deleteVaccany
   // @access  Private
 
   public deleteVaccany(req: Request, res: Response) {
@@ -97,9 +154,9 @@ export class CompanyAuthController {
 
     CompanyProfile.updateOne(
       { user: req.user.id },
-      { $pull: { "vaccancy" : { _id: req.query.vaccancyid } } },
+      { $pull: { "vaccancy": { _id: req.query.vaccancyid } } },
       { multi: true }
-      )
+    )
       .then((data) => res.status(200).json({ success: "Successfuly Deleted" }))
   }
 
@@ -180,12 +237,9 @@ export class CompanyAuthController {
   public vaccancy(req: Request, res: Response) {
     const { errors, isValid } = validateCompanyVaccancyInput(req.body);
 
-    // Check Validation
     if (!isValid) {
-      // Return any errors with 400 status
       return res.status(400).json(errors);
     }
-
     CompanyProfile.findOne({ user: req.user.id }).then(companyprofile => {
       const vaccancyData = {
         user: req.user.id,
@@ -196,7 +250,6 @@ export class CompanyAuthController {
         description: req.body.description,
         contactno: req.body.contactno
       };
-
       // Add to exp array
       companyprofile.vaccancy.unshift(vaccancyData);
 

@@ -128,17 +128,6 @@ class CreateProfile extends React.Component {
             }         
         }
       }
-
-      componentWillMount(){
-        // var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-        // if (this.props.auth.isAuthenticated) {
-        //     // this.props.getProfileCreated(this.props.history, this.props.match.url);      
-        //     if(!profilecreatedVar){
-        //         this.props.history.push('/createprofile');
-        //     }
-        // }
-
-      }
     
     handleChange = name => event => {
         this.setState({

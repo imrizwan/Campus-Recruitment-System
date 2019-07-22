@@ -205,7 +205,7 @@ class AddVaccancy extends Component {
             }
             <br />
             <Button variant="contained" color="primary" className={classes.button} onClick={this.onClick}>
-              Add Project
+              Add Vaccancy
                 </Button>
             <br />
             <br />

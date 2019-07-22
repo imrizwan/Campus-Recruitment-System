@@ -34,7 +34,6 @@ const CompanyProfileSchema = new Schema({
     {
       user: {
         type: String,
-        required: true
       },
       title: {
         type: String,
@@ -71,7 +70,6 @@ const CompanyProfileSchema = new Schema({
     {
       user: {
         type: String,
-        required: true
       },
       position: {
         type: String,

@@ -121,7 +121,7 @@ export class AuthController {
   }
 
   public loginUser(req: Request, res: Response) {
-    const { errors, isValid } = validateLoginInput(req.body);
+    const { errors } = validateLoginInput(req.body);
 
     const email = req.body.email;
     const password = req.body.password;
