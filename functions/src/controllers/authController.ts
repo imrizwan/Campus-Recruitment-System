@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as gravatar from 'gravatar';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import * as keys from '../config/keys.ts';
+import * as keys from '../config/keys';
 
 // Verification Token
 import * as crypto from 'crypto';
@@ -589,7 +589,24 @@ export class AuthController {
 
   public createprofile(req: Request, res: Response) {
     const { errors, isValid } = validateProfileInput(req.body);
-    const profileFields = {};
+    const profileFields = {
+      user: "",
+      company: "",
+      website: "",
+      location: "",
+      bio: "",
+      status: "",
+      batch: "",
+      githubusername: "",
+      skills: "",
+      social: {
+        youtube: "",
+        twitter: "",
+        facebook: "",
+        linkedin: "",
+        instagram: "",
+      }
+    };
 
     // Check Validation
     if (!isValid) {
@@ -614,7 +631,6 @@ export class AuthController {
     }
 
     // Social
-    profileFields.social = {};
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;

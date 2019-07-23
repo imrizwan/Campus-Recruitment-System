@@ -30,8 +30,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "ts-node-dev --respawn --transpileOnly functions/index.ts",
-    "dev": "concurrently \"cd functions && npm run server\" \"npm run start\""
+    "dev": "concurrently \"cd functions && npm run watch\" \"npm run start\""
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {

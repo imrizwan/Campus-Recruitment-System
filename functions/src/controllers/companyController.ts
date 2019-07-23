@@ -5,7 +5,7 @@ import * as validateCompanyVaccancyInput from "../validation/companyvaccancy";
 // Load User model
 import * as CompanyProfile from '../models/CompanyProfile';
 import * as Verify from '../models/Verify';
-import isEmpty from "../validation/is-empty";
+import * as isEmpty from "../validation/is-empty";
 
 export class CompanyAuthController {
   public createcompanyprofile(req: Request, res: Response) {
@@ -166,7 +166,9 @@ export class CompanyAuthController {
   // @access  Private
 
   public getCompanies(req: Request, res: Response) {
-    const errors = {};
+    const errors = {
+      noprofile: ""
+    };
 
     CompanyProfile.find({ vaccancy: { $exists: true, $not: { $size: 0 } } })
       .then(profiles => {
@@ -185,7 +187,9 @@ export class CompanyAuthController {
   // @access  Private
 
   public currentCompanyProfile(req: Request, res: Response) {
-    const errors = {};
+    const errors = {
+      noprofile: ""
+    };
 
     CompanyProfile.findOne({ user: req.user.id })
       .populate('user', ['fullname', 'avatar'])
