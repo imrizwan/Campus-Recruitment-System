@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "server": "ts-node-dev --respawn --transpileOnly index.ts",
+    "server": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "watch": "nodemon --exec ts-node -- ./dist/index.js",
     "build": "tsc",
     "dist": "nodemon ./dist/index.js"
@@ -28,7 +28,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "ts-node": "^7.0.1",
-    "ts-node-dev": "^1.0.0-pre.30",
+    "ts-node-dev": "^1.0.0-pre.41",
     "typescript": "^3.5.3",
     "validator": "^10.8.0"
   },

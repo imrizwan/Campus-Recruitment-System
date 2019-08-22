@@ -32,6 +32,10 @@ const PasswordToken = require('../models/PasswordToken');
 
 export class AuthController {
 
+  public testing(req: Request, res: Response) {
+    res.json("Rozwam")
+  }
+
   public addNewUser(req: Request, res: Response) {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check Validation
@@ -156,7 +160,8 @@ export class AuthController {
           .then(isMatch => {
             if (isMatch) {
               //User Matched
-              const payload = { id: user.id, fullname: user.fullname, avatar: user.avatar, username: user.username, userType: user.userType }
+              
+              const payload = { id: user.id, fullname: user.fullname, username: user.username, email: user.email ,userType: user.userType }
               //Sign Token
               jwt.sign(
                 payload,
@@ -492,7 +497,6 @@ export class AuthController {
 
     let password = req.body.password;
     // const password2 = req.body.password2;
-    console.log(req.body)
     PasswordToken.findOne({ token: req.body.token })
       .then((tokenFound) => {
         if (!tokenFound) {
@@ -588,23 +592,26 @@ export class AuthController {
   // createprofile
 
   public createprofile(req: Request, res: Response) {
+    console.log(req.body)
     const { errors, isValid } = validateProfileInput(req.body);
     const profileFields = {
       user: "",
-      company: "",
+      name: "",
+      mail: "",
+      phoneNumber: "",
       website: "",
-      location: "",
-      bio: "",
-      status: "",
+      description: "",
       batch: "",
-      githubusername: "",
+      location: "",
       skills: "",
+      interests: "",
       social: {
         youtube: "",
         twitter: "",
         facebook: "",
         linkedin: "",
         instagram: "",
+        github: ""
       }
     };
 
@@ -617,17 +624,20 @@ export class AuthController {
     // Get fields
     profileFields.user = req.user.id;
     // if (req.body.username) profileFields.username = req.body.username;
-    if (req.body.company) profileFields.company = req.body.company;
+    if (req.body.name) profileFields.name = req.body.name;
+    if (req.body.mail) profileFields.mail = req.body.mail;
+    if (req.body.phoneNumber) profileFields.phoneNumber = req.body.phoneNumber;
     if (req.body.website) profileFields.website = req.body.website;
-    if (req.body.location) profileFields.location = req.body.location;
-    if (req.body.bio) profileFields.bio = req.body.bio;
-    if (req.body.status) profileFields.status = req.body.status;
+    if (req.body.description) profileFields.description = req.body.description;
     if (req.body.batch) profileFields.batch = req.body.batch;
-    if (req.body.githubusername)
-      profileFields.githubusername = req.body.githubusername;
+    if (req.body.location) profileFields.location = req.body.location;
     // Skills - Spilt into array
     if (typeof req.body.skills !== 'undefined') {
       profileFields.skills = req.body.skills.split(',');
+    }
+    // Interests - Spilt into array
+    if (typeof req.body.interests !== 'undefined') {
+      profileFields.interests = req.body.interests.split(',');
     }
 
     // Social
@@ -636,6 +646,7 @@ export class AuthController {
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+    if (req.body.github) profileFields.social.github = req.body.github;
 
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {

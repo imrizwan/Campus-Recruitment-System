@@ -9,6 +9,7 @@ export class Routes {
         app.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 
 
+        app.get('/api/testing', this.authController.testing)
         app.post('/api/register', this.authController.addNewUser)
         app.post('/api/login', this.authController.loginUser)
         app.get('/api/current', passport.authenticate("jwt", { session: false }), this.authController.current)

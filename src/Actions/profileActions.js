@@ -96,13 +96,13 @@ export const getCurrentProfile = () => dispatch => {
 };
 
 export const createProfile = (profileData, history) => dispatch => {
+  console.log(profileData)
     axios
     .post(URL+'createprofile', profileData)
     .then(res => {
       history.push('/profile')
       })
     .catch(err =>{
-        console.log(err)
         dispatch({
           type: GET_ERRORS,
           payload: err.response.data

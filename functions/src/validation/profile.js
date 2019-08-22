@@ -5,7 +5,6 @@ module.exports = function validateProfileInput(data) {
   let errors = {};
 
   // data.username = !isEmpty(data.username) ? data.username : '';
-  data.status = !isEmpty(data.status) ? data.status : '';
   data.batch = !isEmpty(data.batch) ? data.batch : '';
   data.skills = !isEmpty(data.skills) ? data.skills : '';
 
@@ -17,22 +16,39 @@ module.exports = function validateProfileInput(data) {
   //   errors.username = 'Profile username is required';
   // }
 
-  if (Validator.isEmpty(data.status)) {
-    errors.status = 'Status field is required';
+  if (Validator.isEmpty(data.name)) {
+    errors.name = 'Name field is required';
   }
-
-  if (Validator.isEmpty(data.batch)) {
-    errors.batch = 'Batch field is required';
+  if (Validator.isEmpty(data.mail)) {
+    errors.mail = 'Email field is required';
   }
-
-  if (Validator.isEmpty(data.skills)) {
-    errors.skills = 'Skills field is required';
+  if (Validator.isEmpty(data.phoneNumber)) {
+    errors.phoneNumber = 'Phone Number is required';
   }
 
   if (!isEmpty(data.website)) {
     if (!Validator.isURL(data.website)) {
       errors.website = 'Not a valid URL';
     }
+  }
+
+  if (Validator.isEmpty(data.description)) {
+    errors.description = 'Bio is required';
+  }
+
+  if (Validator.isEmpty(data.batch)) {
+    errors.batch = 'Batch field is required';
+  }
+
+  if (Validator.isEmpty(data.location)) {
+    errors.location = 'Location is required';
+  }
+
+  if (Validator.isEmpty(data.skills)) {
+    errors.skills = 'Skills are required';
+  }
+  if (Validator.isEmpty(data.interests)) {
+    errors.interests = 'Interests are required';
   }
 
   if (!isEmpty(data.youtube)) {
@@ -62,6 +78,11 @@ module.exports = function validateProfileInput(data) {
   if (!isEmpty(data.instagram)) {
     if (!Validator.isURL(data.instagram)) {
       errors.instagram = 'Not a valid URL';
+    }
+  }
+  if (!isEmpty(data.github)) {
+    if (!Validator.isURL(data.github)) {
+      errors.github = 'Not a valid URL';
     }
   }
 
