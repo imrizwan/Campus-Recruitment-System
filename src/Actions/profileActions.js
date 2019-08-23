@@ -96,7 +96,6 @@ export const getCurrentProfile = () => dispatch => {
 };
 
 export const createProfile = (profileData, history) => dispatch => {
-  console.log(profileData)
     axios
     .post(URL+'createprofile', profileData)
     .then(res => {
@@ -123,6 +122,19 @@ export const addEducation = (eduData, history) => dispatch => {
         })
       );
   };
+
+// Add education
+export const addLanguage = (langData, history) => dispatch => {
+  axios
+    .post(URL+'createprofile/language', langData)
+    .then(res => history.push('/studentdashboard'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
 
 export const addExperience = (expData, history) => dispatch => {
     axios

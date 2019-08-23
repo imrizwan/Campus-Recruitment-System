@@ -22,6 +22,7 @@ import SignUp from '../Components/SignUp';
 import NotFound from '../Components/NotFound';
 import AddEducation from '../Components/AddEducation';
 import AddExperience from '../Components/AddExperience';
+import AddLanguage from '../Components/AddLanguage';
 import CreateProfile from '../Components/CreateProfile';
 import UpdateProfile from '../Components/UpdateProfile';
 import UnAuthorized from '../Components/UnAuthorized';
@@ -31,8 +32,8 @@ import store from "../Store/configureStore";
 import setAuthToken from "../utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "../Actions/authActions";
 import PrivateRoute from "./PrivateRoute";
-import createHistory from 'history/createBrowserHistory';
-export const history = createHistory();
+import {createBrowserHistory} from 'history';
+export const history = createBrowserHistory();
 
 if(localStorage.jwtToken){
   setAuthToken(localStorage.jwtToken);
@@ -110,6 +111,7 @@ class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/updateprofile" userType="student" component={UpdateProfile} />
           <PrivateRoute exact={true} path="/addeducation" userType="student" component={AddEducation} />
           <PrivateRoute exact={true} path="/addexperience" userType="student" component={AddExperience} />
+          <PrivateRoute exact={true} path="/addlanguage" userType="student" component={AddLanguage} />
       </Switch>
       </div>
       </Router>

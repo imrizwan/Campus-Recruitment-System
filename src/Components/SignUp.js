@@ -81,7 +81,7 @@ class RenderForm extends React.Component {
       loader: false
     }
   
-    componentWillReceiveProps(nextProps){
+    UNSAFE_componentWillReceiveProps(nextProps){
       if(nextProps.errors){
         this.setState({ errors: nextProps.errors, loader: false });
         if(nextProps.errors.success){

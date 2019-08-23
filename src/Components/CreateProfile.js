@@ -88,7 +88,7 @@ class CreateProfile extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
@@ -255,9 +255,9 @@ class CreateProfile extends React.Component {
                 onChange={this.handleChange("name")}
                 placeholder="Enter your fullname"
               />
-               {errors.name ? (
-            <div style={{ color: "red" }}>{errors.name}</div>
-          ) : null}
+              {errors.name ? (
+                <div style={{ color: "red" }}>{errors.name}</div>
+              ) : null}
               <TextField
                 id="outlined-mail"
                 label="Email"
@@ -269,9 +269,9 @@ class CreateProfile extends React.Component {
                 placeholder="Enter your Mail"
                 disabled
               />
- {errors.mail ? (
-            <div style={{ color: "red" }}>{errors.mail}</div>
-          ) : null}
+              {errors.mail ? (
+                <div style={{ color: "red" }}>{errors.mail}</div>
+              ) : null}
               <TextField
                 id="outlined-phoneNumber"
                 label="Phone Number"
@@ -282,9 +282,9 @@ class CreateProfile extends React.Component {
                 onChange={this.handleChange("phoneNumber")}
                 placeholder="Enter your phone number"
               />
- {errors.phoneNumber ? (
-            <div style={{ color: "red" }}>{errors.phoneNumber}</div>
-          ) : null}
+              {errors.phoneNumber ? (
+                <div style={{ color: "red" }}>{errors.phoneNumber}</div>
+              ) : null}
               <TextField
                 id="outlined-description"
                 label="Bio"
@@ -296,9 +296,9 @@ class CreateProfile extends React.Component {
                 placeholder="Tell us a little about yourself"
                 multiline
               />
-               {errors.description ? (
-            <div style={{ color: "red" }}>{errors.description}</div>
-          ) : null}
+              {errors.description ? (
+                <div style={{ color: "red" }}>{errors.description}</div>
+              ) : null}
               <TextField
                 id="select-batch"
                 select
@@ -348,7 +348,7 @@ class CreateProfile extends React.Component {
                 placeholder="City or city &amp; state suggested (eg. Karachi, Sindh)"
                 multiline
               />
-               {errors.location ? (
+              {errors.location ? (
                 <div style={{ color: "red" }}>{errors.location}</div>
               ) : null}
               <TextField

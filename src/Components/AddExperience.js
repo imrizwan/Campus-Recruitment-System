@@ -52,7 +52,7 @@ class AddExperience extends Component {
     disabled: false
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
@@ -62,15 +62,6 @@ class AddExperience extends Component {
     let disabled = !this.state.disabled;
     this.setState({ [name]: event.target.checked, disabled });
   };
-
-  //   componentWillMount() {
-  //     var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-  //     if (this.props.auth.isAuthenticated) {
-  //         if(!profilecreatedVar){
-  //             this.props.history.push('/createprofile');
-  //         }
-  //     }
-  // }
 
   handleChangeInput = name => event => {
     this.setState({

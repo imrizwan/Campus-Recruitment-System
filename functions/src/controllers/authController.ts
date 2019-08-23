@@ -14,6 +14,7 @@ import * as isEmpty from "../validation/is-empty";
 import * as validateLoginInput from "../validation/login";
 import * as validateProfileInput from "../validation/profile";
 import * as validateEducationInput from "../validation/education";
+import * as validateLanguageInput from "../validation/language";
 import * as validateExperienceInput from "../validation/experience";
 import * as validateResend from "../validation/resend";
 import * as validateConfirmToken from "../validation/validateConfirmToken";
@@ -346,7 +347,7 @@ export class AuthController {
         );
     }
   }
-  // education
+  // experience
 
   public experience(req: Request, res: Response) {
     const { errors, isValid } = validateExperienceInput(req.body);
@@ -379,6 +380,7 @@ export class AuthController {
       .catch((err) => console.log("Error from experience", err));
 
   }
+
   // education
 
   public education(req: Request, res: Response) {
@@ -410,6 +412,33 @@ export class AuthController {
         .catch((err) => console.log("Error from education", err));
     })
       .catch((err) => console.log("Error from education", err));
+  }
+
+
+  public language(req: Request, res: Response) {
+    const { errors, isValid } = validateLanguageInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newLang = {
+        user: req.user.id,
+        name: req.body.name,
+        level: req.body.level,
+      };
+
+      // Add to exp array
+      profile.language.unshift(newLang);
+
+      profile.save()
+        .then(profile => res.json(profile))
+        .catch((err) => console.log("Error from language", err));
+    })
+      .catch((err) => console.log("Error from language", err));
   }
 
   public confirmationPost(req: Request, res: Response) {

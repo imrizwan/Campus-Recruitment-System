@@ -33,10 +33,6 @@ const StudentProfileSchema = new Schema({
     type: String,
     required: true //careerProfile
   },
-  status: {
-    type: String,
-    required: true
-  },
   batch: {
     type: String,
     required: true
@@ -45,7 +41,7 @@ const StudentProfileSchema = new Schema({
     type: [String],
     required: true
   },
-  languages: [
+  language: [
     {
       name: {
         type: String,

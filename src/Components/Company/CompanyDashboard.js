@@ -25,7 +25,7 @@ class CompanyDashboard extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.success) {
       this.setState({ success: nextProps.success });
     }

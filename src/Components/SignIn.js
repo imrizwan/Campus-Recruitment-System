@@ -76,7 +76,7 @@ class RenderForm extends React.Component {
     });
   };
 
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "student"){
         this.props.history.push('/studentdashboard');
     } else if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "company"){
