@@ -43,11 +43,9 @@ class AddEducation extends Component {
   state = {
     school: '',
     degree: '',
-    fieldofstudy: '',
     from: '',
     to: '',
     current: false,
-    description: '',
     errors: {},
     disabled: false
   };
@@ -71,15 +69,6 @@ class AddEducation extends Component {
     }
   }
 
-  //   componentWillMount() {
-  //     var profilecreatedVar = JSON.parse(localStorage.getItem('profilecreated'));
-  //     if (this.props.auth.isAuthenticated) {
-  //         if(!profilecreatedVar){
-  //             this.props.history.push('/createprofile');
-  //         }
-  //     }
-  // }
-
   handleChangeCheckbox = name => event => {
     let disabled = !this.state.disabled;
     this.setState({ [name]: event.target.checked, disabled });
@@ -96,11 +85,9 @@ class AddEducation extends Component {
     const eduData = {
       school: this.state.school,
       degree: this.state.degree,
-      fieldofstudy: this.state.fieldofstudy,
       from: this.state.from,
       to: this.state.to,
       current: this.state.current,
-      description: this.state.description,
     }
     if (this.state.current && this.state.to) {
       eduData.to = "";
@@ -121,7 +108,7 @@ class AddEducation extends Component {
           <div className={classes.center}>
             <TextField
               id="school"
-              label="School Name"
+              label="Institute Name"
               className={classes.textField}
               margin="normal"
               variant="outlined"
@@ -143,19 +130,6 @@ class AddEducation extends Component {
             <br />
             {
               errors.degree ? <div style={{ color: "red" }}>{errors.degree}</div> : null
-            }
-            <br />
-            <TextField
-              id="field"
-              label="Field of Study"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.handleChangeInput('fieldofstudy')}
-            />
-            <br />
-            {
-              errors.fieldofstudy ? <div style={{ color: "red" }}>{errors.fieldofstudy}</div> : null
             }
             <br />
             <TextField
@@ -183,7 +157,7 @@ class AddEducation extends Component {
                   color="primary"
                 />
               }
-              label="Currently Working"
+              label="Currently Studying"
             />
             <br />
             <TextField
@@ -200,17 +174,6 @@ class AddEducation extends Component {
               onChange={this.handleChangeInput('to')}
             />
             <br />
-            <br />
-            <TextField
-              id="description"
-              label="Program Description"
-              multiline
-              rowsMax="10"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.handleChangeInput('description')}
-            />
             <br />
             <Button variant="contained" color="primary" className={classes.button} onClick={this.onClick}>
               Add Education

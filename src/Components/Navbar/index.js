@@ -282,6 +282,21 @@ class Navbar extends React.Component {
                 </NavLink>
               )
             ) : null}
+            {this.props.profilecreated &&
+            this.props.auth.isAuthenticated &&
+            this.props.auth.user.userType === "student" ? (
+              !this.props.profilecreated.profilecreated ? null : (
+                <NavLink
+                  className="nav-item nav-link"
+                  activeClassName={
+                    this.state.path === "/addprojectstu" ? "active" : null
+                  }
+                  to="/addprojectstu"
+                >
+                  Add Project
+                </NavLink>
+              )
+            ) : null}
             {this.props.auth.isAuthenticated && (
               <a
                 className="nav-item nav-link btn btn-outline-danger btnLogout"

@@ -21,6 +21,7 @@ import ChangePassword from '../Components/ChangePassword';
 import SignUp from '../Components/SignUp';
 import NotFound from '../Components/NotFound';
 import AddEducation from '../Components/AddEducation';
+import AddProjectStu from '../Components/AddProjectStu';
 import AddExperience from '../Components/AddExperience';
 import AddLanguage from '../Components/AddLanguage';
 import CreateProfile from '../Components/CreateProfile';
@@ -107,6 +108,7 @@ class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/addvaccancy" userType="company"  component={AddVaccancy} />
           <PrivateRoute exact={true} path="/studentdashboard" userType="student" component={Dashboard} />
           <PrivateRoute exact={true} path="/profile" userType="student" component={MyProfile} />
+          <PrivateRoute exact={true} path="/addprojectstu" userType="student" component={AddProjectStu} />
           <PrivateRoute exact={true} path="/createprofile" userType="student" component={CreateProfile} />
           <PrivateRoute exact={true} path="/updateprofile" userType="student" component={UpdateProfile} />
           <PrivateRoute exact={true} path="/addeducation" userType="student" component={AddEducation} />

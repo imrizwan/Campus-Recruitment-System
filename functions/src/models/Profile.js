@@ -107,10 +107,6 @@ const StudentProfileSchema = new Schema({
         type: String,
         required: true
       },
-      fieldofstudy: {
-        type: String,
-        required: true
-      },
       from: {
         type: Date,
         required: true
@@ -121,9 +117,6 @@ const StudentProfileSchema = new Schema({
       current: {
         type: Boolean,
         default: false
-      },
-      description: {
-        type: String
       }
     }
   ],

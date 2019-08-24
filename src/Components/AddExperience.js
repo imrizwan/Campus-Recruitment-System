@@ -44,6 +44,8 @@ class AddExperience extends Component {
     company: '',
     title: '',
     location: '',
+    companyLink: '',
+    companyShortDetail: '',
     from: '',
     to: '',
     current: false,
@@ -78,7 +80,9 @@ class AddExperience extends Component {
       from: this.state.from,
       to: this.state.to,
       current: this.state.current,
-      description: this.state.description
+      description: this.state.description,
+      companyLink: this.state.companyLink,
+      companyShortDetail: this.state.companyShortDetail
     };
     if (this.state.current && this.state.to) {
       expData.to = "";
@@ -131,6 +135,24 @@ class AddExperience extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.handleChangeInput('location')}
+            />
+            <br />
+            <TextField
+              id="companyLink"
+              label="Website Link"
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChangeInput('companyLink')}
+            />
+            <br />
+            <TextField
+              id="companyShortDetail"
+              label="Company Short Detail"
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChangeInput('companyShortDetail')}
             />
             <br />
             <br />

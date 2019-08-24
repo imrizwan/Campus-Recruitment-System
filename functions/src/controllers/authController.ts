@@ -367,7 +367,9 @@ export class AuthController {
         from: req.body.from,
         to: req.body.to,
         current: req.body.current,
-        description: req.body.description
+        description: req.body.description,
+        companyLink: req.body.companyLink,
+        companyShortDetail: req.body.companyShortDetail
       };
 
       // Add to exp array
