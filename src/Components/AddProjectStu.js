@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { addLanguage, getProfileCreated } from "../Actions/profileActions";
+import { getProfileCreated, addProjectsStu } from "../Actions/profileActions";
 import Button from "@material-ui/core/Button";
 import compose from "recompose/compose";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import isEmpty from "../validation/is-empty";
 import Loader from "./Loader/Loader";
+import _ from "lodash";
 
 const styles = theme => ({
   root: {
@@ -27,6 +28,9 @@ const styles = theme => ({
   textField: {
     width: "100%"
   },
+  textFieldNew: {
+    width: 200
+  },
   button: {
     width: "100%"
   },
@@ -39,8 +43,11 @@ const styles = theme => ({
 class AddProjectStu extends Component {
   state = {
     name: "",
-    level: "",
-    errors: {}
+    url: "",
+    title: "",
+    desc: "",
+    errors: {},
+    list: []
   };
 
   componentDidMount() {
@@ -70,11 +77,43 @@ class AddProjectStu extends Component {
 
   onClick = e => {
     e.preventDefault();
-    const langData = {
-      name: this.state.name,
-      level: this.state.level,
-    };
-    this.props.addLanguage(langData, this.props.history);
+
+    if (!this.state.name || this.state.list === []) {
+      alert("Enter complete details");
+    } else {
+      const langData = {
+        name: this.state.name,
+        list: this.state.list
+      };
+      this.props.addProjectsStu(langData, this.props.history);
+    }
+  };
+
+  addProject = () => {
+    if (!this.state.title || !this.state.desc) {
+      alert("Enter complete details");
+    } else {
+      const list = this.state.list;
+
+      list.push({
+        url: this.state.url,
+        title: this.state.title,
+        description: this.state.desc
+      });
+
+      this.setState({ list });
+    }
+  };
+
+  removeFromList = (index) => {
+    const list = this.state.list;
+
+    if (list) {
+      if (index > -1) {
+        list.splice(index, 1);
+      }
+      this.setState({ list })
+    }
   };
 
   render() {
@@ -99,48 +138,75 @@ class AddProjectStu extends Component {
               variant="outlined"
               onChange={this.handleChangeInput("name")}
             />
-            <br />
             {errors.name ? (
               <div style={{ color: "red" }}>{errors.name}</div>
             ) : null}
+            <TextField
+              id="url"
+              label="Project URL"
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChangeInput("url")}
+            />
+            <br />
+            {errors.url ? (
+              <div style={{ color: "red" }}>{errors.url}</div>
+            ) : null}
+            <TextField
+              id="title"
+              label="Project Title"
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChangeInput("title")}
+            />
             <br />
             <TextField
-              id="select-level"
-              select
-              label="Select Language Level"
+              id="desc"
+              label="Project Description"
               className={classes.textField}
-              value={this.state.level}
-              onChange={this.handleChangeInput("level")}
-              SelectProps={{
-                MenuProps: {
-                  className: classes.menu
-                }
-              }}
               margin="normal"
-            >
-              {[
-                {
-                  value: "Basic"
-                },
-                {
-                  value: "Conversational"
-                },
-                {
-                  value: "Fluent"
-                },
-                {
-                  value: "Native/Bilingual"
-                }
-              ].map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value}
-                </MenuItem>
-              ))}
-            </TextField>
-            {errors.level ? (
-              <div style={{ color: "red" }}>{errors.level}</div>
+              variant="outlined"
+              onChange={this.handleChangeInput("desc")}
+            />
+            <br />
+            {errors.list ? (
+              <div style={{ color: "red" }}>{errors.list}</div>
             ) : null}
             <br />
+            <div className="text-center" onClick={this.addProject}>
+              <AddCircleOutlineIcon style={{ width: 60, height: 60 }} />
+            </div>
+            <br />
+            {this.state.list ? (
+              <table className="table">
+                <thead className="thead-dark">
+                  <tr>
+                    <th scope="col">Remove</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.list
+                    ? this.state.list.map((l, index) => (
+                        <tr key={index}>
+                          <th scope="row" style={{ color: "red" }}>
+                            <div onClick={() => this.removeFromList(index)}>X</div>
+                          </th>
+                          <th>{index + 1}</th>
+                          <td>
+                            <a href={`//${l.url}`}>{l.title}</a>
+                          </td>
+                          <td>{l.description}</td>
+                        </tr>
+                      ))
+                    : null}
+                </tbody>
+              </table>
+            ) : null}
             <br />
             <Button
               variant="contained"
@@ -148,7 +214,7 @@ class AddProjectStu extends Component {
               className={classes.button}
               onClick={this.onClick}
             >
-              Add Language
+              Add Projects
             </Button>
             <br />
             <br />
@@ -169,6 +235,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { addLanguage, getProfileCreated }
+    { getProfileCreated, addProjectsStu }
   )
 )(withRouter(AddProjectStu));

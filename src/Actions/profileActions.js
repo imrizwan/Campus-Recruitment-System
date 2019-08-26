@@ -110,6 +110,20 @@ export const createProfile = (profileData, history) => dispatch => {
     );
 }
 
+// Add Projects
+export const addProjectsStu = (projectData, history) => dispatch => {
+  console.log(projectData)
+  axios
+    .post(URL+'createprofile/projectstu', projectData)
+    .then(res => history.push('/studentdashboard'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Add education
 export const addEducation = (eduData, history) => dispatch => {
     axios

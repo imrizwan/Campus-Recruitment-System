@@ -129,8 +129,7 @@ const StudentProfileSchema = new Schema({
       list: [
         {
           url: {
-            type: String,
-            required: true
+            type: String
           },
           title: {
             type: String,

@@ -15,6 +15,7 @@ import * as validateLoginInput from "../validation/login";
 import * as validateProfileInput from "../validation/profile";
 import * as validateEducationInput from "../validation/education";
 import * as validateLanguageInput from "../validation/language";
+import * as validateProjectStu from "../validation/projectstu";
 import * as validateExperienceInput from "../validation/experience";
 import * as validateResend from "../validation/resend";
 import * as validateConfirmToken from "../validation/validateConfirmToken";
@@ -380,6 +381,35 @@ export class AuthController {
         .catch((err) => console.log("Error from experience", err));
     })
       .catch((err) => console.log("Error from experience", err));
+
+  }
+
+// project
+
+  public projectStu(req: Request, res: Response) {
+    console.log(req.body)
+    const { errors, isValid } = validateProjectStu(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newProjects = {
+        name: req.body.name,
+        list: req.body.list,
+      };
+
+      // Add to exp array
+      profile.projects.unshift(newProjects);
+
+      profile.save()
+        .then(profile => res.json(profile))
+        .catch((err) => console.log("Error from projectstu", err));
+    })
+      .catch((err) => console.log("Error from projectstu", err));
 
   }
 

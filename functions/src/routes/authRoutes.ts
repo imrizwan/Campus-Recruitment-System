@@ -14,6 +14,7 @@ export class Routes {
         app.post('/api/login', this.authController.loginUser)
         app.get('/api/current', passport.authenticate("jwt", { session: false }), this.authController.current)
         app.post('/api/createprofile', passport.authenticate("jwt", { session: false }), this.authController.createprofile)
+        app.post('/api/createprofile/projectstu', passport.authenticate("jwt", { session: false }), this.authController.projectStu)
         app.post('/api/createprofile/education', passport.authenticate("jwt", { session: false }), this.authController.education)
         app.post('/api/createprofile/language', passport.authenticate("jwt", { session: false }), this.authController.language)
         app.post('/api/createprofile/experience', passport.authenticate("jwt", { session: false }), this.authController.experience)
