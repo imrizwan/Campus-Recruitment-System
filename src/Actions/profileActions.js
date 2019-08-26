@@ -137,7 +137,7 @@ export const addEducation = (eduData, history) => dispatch => {
       );
   };
 
-// Add education
+// addLanguage
 export const addLanguage = (langData, history) => dispatch => {
   axios
     .post(URL+'createprofile/language', langData)
@@ -146,6 +146,19 @@ export const addLanguage = (langData, history) => dispatch => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
+      })
+    );
+};
+
+// addActivities
+export const addActivities = (acitivties, history) => dispatch => {
+  axios
+    .post(URL+'createprofile/activities', acitivties)
+    .then(res => history.push('/studentdashboard'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: 500
       })
     );
 };

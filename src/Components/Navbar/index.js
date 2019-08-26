@@ -48,7 +48,7 @@ class Navbar extends React.Component {
             }
             to="/studentdashboard"
           >
-            Campus Recruitment System
+            Junoon
           </NavLink>
         ) : this.props.auth.isAuthenticated &&
           this.props.auth.user.userType === "company" ? (
@@ -59,7 +59,7 @@ class Navbar extends React.Component {
             }
             to="/companydashboard"
           >
-            Campus Recruitment System
+            Junoon
           </NavLink>
         ) : (
           <NavLink
@@ -69,7 +69,7 @@ class Navbar extends React.Component {
             }
             to="/publicdashboard"
           >
-            Campus Recruitment System
+            Junoon
           </NavLink>
         )}
         <button

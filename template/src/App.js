@@ -1,52 +1,71 @@
 import React, { useEffect, Component } from "react";
-import PropTypes from 'prop-types';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.css';
-import './assets/theme/styles.css';
-import Section from './components/shared/section';
-import Sidebar from './components/sidebar';
-import Experiences from './components/experiences';
-import Projects from './components/projects';
-import Tags from './components/tags';
-
+import PropTypes from "prop-types";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "font-awesome/css/font-awesome.css";
+import "./assets/theme/styles.css";
+import Section from "./components/shared/section";
+import Sidebar from "./components/sidebar";
+import Experiences from "./components/experiences";
+import Projects from "./components/projects";
+import Tags from "./components/tags";
+import Loader from "./Loader"
 export default class CV extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {}
+    }
+  }
 
-  componentDidMount(){
-    fetch("http://localhost:8080/api/user/5d5faed8f8a4151c0c061ec1")
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
+  // 5d613602c37fed147c097860
+  componentDidMount() {
+    fetch(`http://localhost:8080/api/user${window.location.pathname}`)
+      .then(res => res.json())
+      .then(data => this.setState({ data }))
+      .catch(err => console.log(err));
   }
 
   renderExperiencesSection() {
     if (this.props.experiences) {
-      return (<Experiences {...this.props.experiences} />);
+      return <Experiences {...this.props.experiences} />;
     }
     return null;
   }
   renderProjectsSection() {
     if (this.props.projects) {
-      return (<Projects {...this.props.projects} />);
+      return <Projects {...this.props.projects} />;
     }
     return null;
   }
   renderTags() {
     if (this.props.tags) {
-      return (<Tags {...this.props.tags} />);
+      return <Tags {...this.props.tags} />;
     }
     return null;
   }
   renderOpenSourcePart() {
-    return (<div>You can create your own CV like this, <a href="https://github.com/sbayd/react-cv-template" target="_blank">access to the source code.</a></div>);
-  }     
+    return (
+      <div>
+        You can create your own CV like this,{" "}
+        <a href="https://github.com/sbayd/react-cv-template" target="_blank">
+          access to the source code.
+        </a>
+      </div>
+    );
+  }
   renderCareerProfile() {
     const { icon, sectionTitle, description } = this.props.careerProfile;
-    const innerContent = (<div className="summary" dangerouslySetInnerHTML={{ __html: description }} />);
+    const innerContent = (
+      <div
+        className="summary"
+        dangerouslySetInnerHTML={{ __html: description }}
+      />
+    );
     return (
       <Section
         className="summary-section"
-        icon={icon || 'user'}
-        title={sectionTitle || 'Career Profile'}
+        icon={icon || "user"}
+        title={sectionTitle || "Career Profile"}
       >
         {innerContent}
       </Section>
@@ -55,10 +74,10 @@ export default class CV extends Component {
 
   render() {
     return (
+      !this.state.data ?
+      <Loader/> :
       <div className="wrapper">
-        <Sidebar
-          {...this.props.profile}
-        />
+        <Sidebar {...this.props.profile} />
         <div className="main-wrapper">
           {this.renderCareerProfile()}
           {this.renderExperiencesSection()}

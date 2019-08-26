@@ -120,6 +120,17 @@ const StudentProfileSchema = new Schema({
       }
     }
   ],
+  activities: [
+    {
+      title: {
+        type: String,
+        required: true
+      },
+      description: {
+        type: String,
+      },
+    }
+  ],
   projects: [
     {
       name: {

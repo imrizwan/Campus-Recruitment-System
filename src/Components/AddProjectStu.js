@@ -10,8 +10,6 @@ import compose from "recompose/compose";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import isEmpty from "../validation/is-empty";
 import Loader from "./Loader/Loader";
-import _ from "lodash";
-
 const styles = theme => ({
   root: {
     flexGrow: 1,

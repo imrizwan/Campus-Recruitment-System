@@ -15,6 +15,7 @@ import * as validateLoginInput from "../validation/login";
 import * as validateProfileInput from "../validation/profile";
 import * as validateEducationInput from "../validation/education";
 import * as validateLanguageInput from "../validation/language";
+import * as validateAcitivties from "../validation/acitivties";
 import * as validateProjectStu from "../validation/projectstu";
 import * as validateExperienceInput from "../validation/experience";
 import * as validateResend from "../validation/resend";
@@ -471,6 +472,31 @@ export class AuthController {
         .catch((err) => console.log("Error from language", err));
     })
       .catch((err) => console.log("Error from language", err));
+  }
+
+
+  public acitivties(req: Request, res: Response) {
+  /*   const { errors, isValid } = validateAcitivties(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    } */
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newActivity = {
+        title: req.body.title,
+        description: req.body.description,
+      };
+
+      // Add to exp array
+      profile.activities.unshift(newActivity);
+
+      profile.save()
+        .then(profile => res.json(profile))
+        .catch((err) => console.log("Error from acitivties", err));
+    })
+      .catch((err) => console.log("Error from acitivties", err));
   }
 
   public confirmationPost(req: Request, res: Response) {
