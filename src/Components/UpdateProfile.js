@@ -8,7 +8,8 @@ import Button from "@material-ui/core/Button";
 import {
   createProfile,
   getCurrentProfile,
-  getProfileCreated
+  getProfileCreated,
+  upload
 } from "../Actions/profileActions";
 import { connect } from "react-redux";
 import Loader from "./Loader/Loader";
@@ -36,24 +37,26 @@ const styles = theme => ({
 
 // Select batch
 const batch = [
-    { value: "Spring 2014" },
-    { value: "Fall 2014" },
-    { value: "Spring 2015" },
-    { value: "Fall 2015" },
-    { value: "Spring 2016" },
-    { value: "Fall 2016" },
-    { value: "Spring 2017" },
-    { value: "Fall 2017" },
-    { value: "Spring 2018" },
-    { value: "Fall 2018" },
-    { value: "Spring 2019" },
-    { value: "Fall 2019" }
-  ];
+  { value: "Spring 2014" },
+  { value: "Fall 2014" },
+  { value: "Spring 2015" },
+  { value: "Fall 2015" },
+  { value: "Spring 2016" },
+  { value: "Fall 2016" },
+  { value: "Spring 2017" },
+  { value: "Fall 2017" },
+  { value: "Spring 2018" },
+  { value: "Fall 2018" },
+  { value: "Spring 2019" },
+  { value: "Fall 2019" }
+];
 
 class CreateProfile extends React.Component {
   state = {
+    file: null,
     username: this.props.auth.user.username,
     name: "",
+    title: "",
     mail: "",
     phoneNumber: "",
     website: "",
@@ -93,6 +96,7 @@ class CreateProfile extends React.Component {
       }
       // if profile fields does not exist, make it empty
       profile.name = !isEmpty(profile.name) ? profile.name : "";
+      profile.title = !isEmpty(profile.title) ? profile.title : "";
       profile.mail = !isEmpty(profile.mail) ? profile.mail : "";
       profile.phoneNumber = !isEmpty(profile.phoneNumber)
         ? profile.phoneNumber
@@ -129,6 +133,7 @@ class CreateProfile extends React.Component {
 
       this.setState({
         name: profile.name,
+        title: profile.title,
         mail: profile.mail,
         phoneNumber: profile.phoneNumber,
         website: profile.website,
@@ -171,10 +176,17 @@ class CreateProfile extends React.Component {
     });
   };
 
+  handlePicture = event => {
+    this.setState({
+      file: event.target.value
+    });
+  };
+
   onClick = e => {
     e.preventDefault();
     const profileData = {
       name: this.state.name,
+      title: this.state.title,
       mail: this.props.auth.user.email,
       phoneNumber: this.state.phoneNumber,
       website: this.state.website,
@@ -192,6 +204,19 @@ class CreateProfile extends React.Component {
     };
 
     this.props.createProfile(profileData, this.props.history);
+  };
+
+  uploadPicture = e => {
+    e.preventDefault();
+
+    if (isEmpty(this.state.file)) {
+      alert("Please select an image");
+    } else {
+      var formData = new FormData();
+      formData.append("selectedImage", this.state);
+
+      this.props.upload(formData);
+    }
   };
 
   render() {
@@ -287,9 +312,81 @@ class CreateProfile extends React.Component {
             <br />
             <div className={classes.center}>
               <Typography variant="display2">Update Profile</Typography>
-              <Link to="/addextracurricularactivities" className="btn btn-primary cardMain">
-               Add Extracurricular Activities
+              <Link
+                to="/addextracurricularactivities"
+                className="btn btn-primary cardMain"
+              >
+                Add Extracurricular Activities
               </Link>
+              <br />
+              <br />
+              <button
+                className="btn btn-primary btn-block"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+              >
+                Upload Picture
+              </button>
+              <div
+                className="modal fade"
+                id="exampleModalCenter"
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true"
+              >
+                <div
+                  className="modal-dialog modal-dialog-centered"
+                  role="document"
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalCenterTitle">
+                        Upload Picture
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      <TextField
+                        type="file"
+                        id="outlined-file"
+                        className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        value={this.state.file}
+                        onChange={this.handleChange("file")}
+                      />
+                      {errors.name ? (
+                        <div style={{ color: "red" }}>{errors.name}</div>
+                      ) : null}
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onChange={this.uploadPicture}
+                      >
+                        Save changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
               <TextField
                 id="outlined-username"
                 label="Username"
@@ -313,6 +410,19 @@ class CreateProfile extends React.Component {
               />
               {errors.name ? (
                 <div style={{ color: "red" }}>{errors.name}</div>
+              ) : null}
+              <TextField
+                id="outlined-title"
+                label="Title (e.g. Frontend Developer)"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+                value={this.state.title}
+                onChange={this.handleChange("title")}
+                placeholder="Enter title"
+              />
+              {errors.title ? (
+                <div style={{ color: "red" }}>{errors.title}</div>
               ) : null}
               <TextField
                 id="outlined-mail"
@@ -488,7 +598,8 @@ const mapStateToProps = state => ({
   //we will access the profile throughout the component
   profile: state.profile,
   auth: state.auth,
-  profilecreated: state.profilecreated.profilecreated
+  profilecreated: state.profilecreated.profilecreated,
+  picture: state.profile.picture
 });
 
 // and then we are getting current profile
@@ -497,6 +608,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { createProfile, getCurrentProfile, getProfileCreated }
+    { createProfile, getCurrentProfile, getProfileCreated, upload }
   )
 )(withRouter(CreateProfile));

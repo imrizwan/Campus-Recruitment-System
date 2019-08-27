@@ -6,6 +6,8 @@ const keys = require('./config/keys');
 const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
+var cloudinary = require('cloudinary');
+
 // import { Routes } from "./routes/todoRoutes";
 // importing all routes of todo app
 
@@ -50,6 +52,12 @@ class App {
     this.app.use(session({ secret: 'passport', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
     this.app.use(cors());
+    
+    cloudinary.config({
+      cloud_name: keys.cloud_name,
+      api_key: keys.api_key,
+      api_secret: keys.api_secret
+    });
 
     this.app.use((req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');

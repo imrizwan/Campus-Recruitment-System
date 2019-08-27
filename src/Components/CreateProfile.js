@@ -49,6 +49,7 @@ const batch = [
 class CreateProfile extends React.Component {
   state = {
     name: "",
+    title: "",
     mail: "",
     phoneNumber: "",
     website: "",
@@ -105,6 +106,7 @@ class CreateProfile extends React.Component {
     const profileData = {
       username: this.props.auth.user.username,
       name: this.state.name,
+      title: this.state.title,
       mail: this.props.auth.user.email,
       phoneNumber: this.state.phoneNumber,
       website: this.state.website,
@@ -257,6 +259,19 @@ class CreateProfile extends React.Component {
               />
               {errors.name ? (
                 <div style={{ color: "red" }}>{errors.name}</div>
+              ) : null}
+              <TextField
+                id="outlined-title"
+                label="Title (e.g. Frontend Developer)"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+                value={this.state.title}
+                onChange={this.handleChange("title")}
+                placeholder="Enter title"
+              />
+              {errors.title ? (
+                <div style={{ color: "red" }}>{errors.title}</div>
               ) : null}
               <TextField
                 id="outlined-mail"

@@ -3,7 +3,8 @@ import {
   GET_PROFILES,
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
-  GET_COMPANY_PROFILES
+  GET_COMPANY_PROFILES,
+  PICTURE
 } from "../Variables";
 
 const initialState = {
@@ -41,6 +42,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         profile: null
+      };
+    case PICTURE:
+      return {
+        ...state,
+        picture: action.payload
       };
     default:
       return state;

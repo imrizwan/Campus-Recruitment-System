@@ -13,6 +13,7 @@ export class Routes {
         app.post('/api/register', this.authController.addNewUser)
         app.post('/api/login', this.authController.loginUser)
         app.get('/api/current', passport.authenticate("jwt", { session: false }), this.authController.current)
+        app.post('/api/upload', passport.authenticate("jwt", { session: false }), this.authController.uploadPicture)
         app.post('/api/createprofile', passport.authenticate("jwt", { session: false }), this.authController.createprofile)
         app.post('/api/createprofile/projectstu', passport.authenticate("jwt", { session: false }), this.authController.projectStu)
         app.post('/api/createprofile/education', passport.authenticate("jwt", { session: false }), this.authController.education)

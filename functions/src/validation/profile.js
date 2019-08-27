@@ -19,6 +19,9 @@ module.exports = function validateProfileInput(data) {
   if (Validator.isEmpty(data.name)) {
     errors.name = 'Name field is required';
   }
+  if (Validator.isEmpty(data.title)) {
+    errors.title = 'Title field is required';
+  }
   if (Validator.isEmpty(data.mail)) {
     errors.mail = 'Email field is required';
   }

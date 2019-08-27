@@ -1,6 +1,12 @@
 import axios from 'axios';
-import { APPLY_FOR_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED, GET_COMPANY_PROFILES } from "../Variables";
+import { PICTURE, APPLY_FOR_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED, GET_COMPANY_PROFILES } from "../Variables";
 
+
+export const upload = (selectedImage, history) => dispatch => {
+  axios.post(URL + "upload", selectedImage)
+  .then((data)=> dispatch({ type: PICTURE, payload: data }))
+  .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }))
+}
 
 export const getProfileCreated = () => dispatch => {
   // dispatch(getProfileLoading());

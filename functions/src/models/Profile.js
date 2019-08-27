@@ -13,6 +13,12 @@ const StudentProfileSchema = new Schema({
   title: {
     type: String
   },
+  title: {
+    type: String
+  },
+  url: {
+    type: String
+  },
   mail: {
     type: String
   },
