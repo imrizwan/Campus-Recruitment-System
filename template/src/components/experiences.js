@@ -3,13 +3,19 @@ import PropTypes from 'prop-types';
 import Section from './shared/section';
 
 export default class Experiences extends Component {
+
+myDate = (date) => {
+    date = new Date(date);
+    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+}
+
   renderListItem(item, i) {
     return (
       <div className="item" key={`exp_item_${i}`}>
         <div className="meta">
           <div className="upper-row">
             <h3 className="job-title">{item.title}</h3>
-            <div className="time">{item.date}</div>
+            <div className="time">{`${this.myDate(item.from)} - ${item.current ? "PRESENT" : this.myDate(item.to)}`}</div>
           </div>
           {this.renderCompanySection(item.company, item.companyLink, item.companyShortDetail)}
         </div>
@@ -26,7 +32,7 @@ export default class Experiences extends Component {
     return null;
   }
   render() {
-    const { icon, sectionTitle, list } = this.props;
+    const { icon, sectionTitle, list, data } = this.props;
     return (
       <Section
         className="experieces-section"
@@ -34,7 +40,7 @@ export default class Experiences extends Component {
         title={sectionTitle || 'Experiences'}
         id="experiences"
       >
-        {list.map((item, i) => {
+        {data.map((item, i) => {
           return this.renderListItem(item, i);
         })}
       </Section>

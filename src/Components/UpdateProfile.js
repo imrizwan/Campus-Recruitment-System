@@ -204,7 +204,7 @@ class CreateProfile extends React.Component {
         <div>
           <TextField
             id="outlined-twitter-username"
-            label="Twitter Profile URL"
+            label="Twitter Profile Username"
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -216,7 +216,7 @@ class CreateProfile extends React.Component {
           ) : null}
           <TextField
             id="outlined-facebook-username"
-            label="Facebook Page URL"
+            label="Facebook Page Username"
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -228,7 +228,7 @@ class CreateProfile extends React.Component {
           ) : null}
           <TextField
             id="outlined-linkedin-username"
-            label="Linkedin Profile URL"
+            label="Linkedin Profile Username"
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -240,7 +240,7 @@ class CreateProfile extends React.Component {
           ) : null}
           <TextField
             id="outlined-youtube-username"
-            label="YouTube Profile URL"
+            label="YouTube Profile Username"
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -252,7 +252,7 @@ class CreateProfile extends React.Component {
           ) : null}
           <TextField
             id="outlined-instagram-username"
-            label="Instagram Profile URL"
+            label="Instagram Profile Username"
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -264,7 +264,7 @@ class CreateProfile extends React.Component {
           ) : null}
           <TextField
             id="outlined-github-username"
-            label="Github Profile URL"
+            label="Github Profile Username"
             className={classes.textField}
             margin="normal"
             variant="outlined"

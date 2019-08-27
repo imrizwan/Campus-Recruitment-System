@@ -9,6 +9,7 @@ import Experiences from "./components/experiences";
 import Projects from "./components/projects";
 import Tags from "./components/tags";
 import Loader from "./Loader"
+import isEmpty from "./is-empty"
 export default class CV extends Component {
   constructor(props) {
     super(props);
@@ -25,40 +26,40 @@ export default class CV extends Component {
       .catch(err => console.log(err));
   }
 
-  renderExperiencesSection() {
-    if (this.props.experiences) {
-      return <Experiences {...this.props.experiences} />;
+  renderExperiencesSection(data) {
+    if (this.props.experiences || !isEmpty(data.experience)) {
+      return <Experiences {...this.props.experiences} data = {data.experience}/>;
     }
     return null;
   }
-  renderProjectsSection() {
-    if (this.props.projects) {
-      return <Projects {...this.props.projects} />;
+  renderProjectsSection(data) {
+    if (this.props.projects || !isEmpty(data.projects)) {
+      return <Projects {...this.props.projects} data={data.projects}/>;
     }
     return null;
   }
-  renderTags() {
-    if (this.props.tags) {
-      return <Tags {...this.props.tags} />;
+  renderTags(data) {
+    if (this.props.tags || !isEmpty(data.skills)) {
+      return <Tags {...this.props.tags} data={data.skills} />;
     }
     return null;
   }
   renderOpenSourcePart() {
     return (
       <div>
-        You can create your own CV like this,{" "}
-        <a href="https://github.com/sbayd/react-cv-template" target="_blank">
-          access to the source code.
+        Made By&nbsp;
+        <a href="https://github.com/imrizwan" target="_blank">
+          Muhammad Rizwan
         </a>
       </div>
     );
   }
-  renderCareerProfile() {
+  renderCareerProfile(data) {
     const { icon, sectionTitle, description } = this.props.careerProfile;
     const innerContent = (
       <div
         className="summary"
-        dangerouslySetInnerHTML={{ __html: description }}
+        dangerouslySetInnerHTML={{ __html: data.description }}
       />
     );
     return (
@@ -74,16 +75,16 @@ export default class CV extends Component {
 
   render() {
     return (
-      !this.state.data ?
+      isEmpty(this.state.data) ?
       <Loader/> :
       <div className="wrapper">
-        <Sidebar {...this.props.profile} />
+        <Sidebar {...this.props.profile} data={this.state.data} />
         <div className="main-wrapper">
-          {this.renderCareerProfile()}
-          {this.renderExperiencesSection()}
-          {this.renderProjectsSection()}
-          {this.renderTags()}
-          {this.renderOpenSourcePart()}
+          {this.renderCareerProfile(this.state.data)}
+          {this.renderExperiencesSection(this.state.data)}
+          {this.renderProjectsSection(this.state.data)}
+          {this.renderTags(this.state.data)}
+          {this.renderOpenSourcePart(this.state.data)}
         </div>
       </div>
     );

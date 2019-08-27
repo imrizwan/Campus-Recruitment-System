@@ -12,6 +12,24 @@ export default class ContactDetails extends Component {
       case 'phone':
         href = `tel:${data}`;
         break;
+      case 'linkedin':
+        href=  `http://linkedin.com/in/${data}`;
+        break;
+      case 'github':
+        href=  `http://github.com/${data}`;
+        break;
+      case 'twitter':
+        href=  `http://twitter.com/${data}`;
+        break;
+      case 'youtube':
+        href=  `http://youtube.com/user/${data}`;
+        break;
+      case 'facebook':
+        href=  `http://facebook.com/${data}`;
+        break;
+      case 'instagram':
+        href=  `http://instagram.com/${data}`;
+        break;
     }
     return (
       <li className={className}>
@@ -30,6 +48,9 @@ export default class ContactDetails extends Component {
           {this.renderListItem('linkedin', this.props.linkedin, 'fa-linkedin', 'link')}
           {this.renderListItem('github', this.props.github, 'fa-github', 'link')}
           {this.renderListItem('twitter', this.props.twitter, 'fa-twitter', 'link')}
+          {this.renderListItem('youtube', this.props.youtube, 'fa-youtube', 'link')}
+          {this.renderListItem('facebook', this.props.facebook, 'fa-facebook', 'link')}
+          {this.renderListItem('instagram', this.props.instagram, 'fa-instagram', 'link')}
         </ul>
       </div>
     );

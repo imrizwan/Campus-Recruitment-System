@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import ProfileContainer from './profileContainer';
 import ContactDetails from './contactDetails';
 import EducationDetails from './educationDetails';
@@ -8,53 +7,56 @@ import LanguageDetails from './languageDetails';
 import Interests from './interests';
 
 export default class Sidebar extends Component {
-  renderInterests() {
+  renderInterests(props) {
     if (this.props.interests) {
-      return (<Interests list={this.props.interests.list} title={this.props.interests.sectionTitle} />);
+      return (<Interests data={props.interests} list={this.props.interests.list} title={this.props.interests.sectionTitle} />);
     }
     return null;
   }
-  renderLanguages() {
-    if (this.props.languages) {
-      return (<LanguageDetails list={this.props.languages.list} title={this.props.languages.sectionTitle} />);
+  renderLanguages(props) {
+    if (this.props.languages || !isEmpty(props.language)) {
+      return (<LanguageDetails data={props.language} list={this.props.languages.list} title={this.props.languages.sectionTitle} />);
     }
     return null;
   }
-  renderEducationDetails() {
-    if (this.props.educationDetails) {
-      return (<EducationDetails list={this.props.educationDetails.list} title={this.props.educationDetails.sectionTitle} />);
+  renderEducationDetails(props) {
+    if (this.props.educationDetails || !isEmpty(props.education)) {
+      return (<EducationDetails data={props.education} list={this.props.educationDetails.list} title={this.props.educationDetails.sectionTitle} />);
     }
     return null;
   }
 
-  renderProfileContainer() {
+  renderProfileContainer(props) {
     return (<ProfileContainer
-      name={this.props.name}
+      name={props.name}
       title={this.props.title}
       imagePath={this.props.imagePath}
     />);
   }
 
-  renderContactDetails() {
+  renderContactDetails(props) {
     return (<ContactDetails
-      mail={this.props.mail}
-      phoneNumber={this.props.phoneNumber}
-      website={this.props.website}
-      linkedin={this.props.linkedin}
-      github={this.props.github}
-      title={this.props.title}
-      twitter={this.props.twitter}
+      mail={props.mail}
+      phoneNumber={props.phoneNumber}
+      website={props.website}
+      linkedin={props.social.linkedin}
+      github={props.social.github}
+      title={props.title}
+      twitter={props.social.twitter}
+      facebook={props.social.facebook}
+      youtube={props.social.youtube}
+      instagram={props.social.instagram}
     />);
   }
 
   render() {
     return (
       <div className="sidebar-wrapper">
-        {this.renderProfileContainer()}
-        {this.renderContactDetails()}
-        {this.renderEducationDetails()}
-        {this.renderLanguages()}
-        {this.renderInterests()}
+        {this.renderProfileContainer(this.props.data)}
+        {this.renderContactDetails(this.props.data)}
+        {this.renderEducationDetails(this.props.data)}
+        {this.renderLanguages(this.props.data)}
+        {this.renderInterests(this.props.data)}
       </div>
     );
   }

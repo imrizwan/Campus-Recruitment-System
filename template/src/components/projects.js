@@ -45,8 +45,9 @@ export default class Projects extends Component {
     const {
       icon,
       sectionTitle,
-      categories,
-      description
+      // categories,
+      // description,
+      data
     } = this.props;
     return (
       <Section
@@ -55,10 +56,10 @@ export default class Projects extends Component {
         id="projects"
         title={sectionTitle || 'Projects'}
       >
-        { this.renderIntro(description) }
+        { this.renderIntro(data.description) }
         <div className="projects">
           {
-            categories.map((c) => {
+            data.map((c) => {
               return this.renderCategory(c);
             })
           }

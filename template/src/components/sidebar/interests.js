@@ -14,7 +14,7 @@ export default class LanguageDetails extends Component {
       <div className="languages-container container-block">
         <h2 className="container-block-title">{this.props.title || 'Interests'}</h2>
         <ul className="list-unstyled interests-list">
-          {this.props.list.map((item) => {
+          {this.props.data.map((item) => {
             return this.renderListItem(item);
           })}
         </ul>

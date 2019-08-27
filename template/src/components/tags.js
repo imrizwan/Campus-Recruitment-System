@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Section from './shared/section';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Section from "./shared/section";
 
 export default class Tags extends Component {
   renderListItem(item, i) {
@@ -11,17 +11,21 @@ export default class Tags extends Component {
     );
   }
   render() {
-    const { icon, sectionTitle, list } = this.props;
+    const { 
+      icon, 
+      sectionTitle, 
+      // list, 
+      data } = this.props;
     return (
       <Section
         className="tags-section"
-        icon={icon || 'rocket'}
+        icon={icon || "rocket"}
         id="tags"
-        title={sectionTitle || 'Skills & Proficiency'}
+        title={sectionTitle || "Skills & Proficiency"}
       >
         <div className="skills">
           <ul className="skillset">
-            {list.map((item, i) => {
+            {data.map((item, i) => {
               return this.renderListItem(item, i);
             })}
           </ul>
@@ -36,4 +40,3 @@ Tags.propTypes = {
   sectionTitle: PropTypes.string.isRequired,
   icon: PropTypes.string
 };
-
