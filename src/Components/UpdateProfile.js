@@ -176,12 +176,6 @@ class CreateProfile extends React.Component {
     });
   };
 
-  handlePicture = event => {
-    this.setState({
-      file: event.target.value
-    });
-  };
-
   onClick = e => {
     e.preventDefault();
     const profileData = {
@@ -206,17 +200,12 @@ class CreateProfile extends React.Component {
     this.props.createProfile(profileData, this.props.history);
   };
 
-  uploadPicture = e => {
-    e.preventDefault();
-
-    if (isEmpty(this.state.file)) {
-      alert("Please select an image");
-    } else {
-      var formData = new FormData();
-      formData.append("selectedImage", this.state);
-
+  uploadPicture = () => {
+    
+    var formData = new FormData();
+    formData.append("selectedImage", this.state.file);
+    console.log(formData)
       this.props.upload(formData);
-    }
   };
 
   render() {
@@ -230,7 +219,7 @@ class CreateProfile extends React.Component {
           <TextField
             id="outlined-twitter-username"
             label="Twitter Profile Username"
-            className={classes.textField}
+            className="custom-file-input"
             margin="normal"
             variant="outlined"
             value={this.state.twitter}
@@ -354,17 +343,17 @@ class CreateProfile extends React.Component {
                       </button>
                     </div>
                     <div className="modal-body">
-                      <TextField
-                        type="file"
-                        id="outlined-file"
-                        className={classes.textField}
-                        margin="normal"
-                        variant="outlined"
-                        value={this.state.file}
-                        onChange={this.handleChange("file")}
+                      <input
+                         type="file"
+                         name="file"
+                         onChange={(event)=> {
+                          this.setState({
+                            file: event.target.files[0]
+                          });
+                         }}
                       />
-                      {errors.name ? (
-                        <div style={{ color: "red" }}>{errors.name}</div>
+                      {errors.url ? (
+                        <div style={{ color: "red" }}>{errors.url}</div>
                       ) : null}
                     </div>
                     <div className="modal-footer">
@@ -378,7 +367,7 @@ class CreateProfile extends React.Component {
                       <button
                         type="button"
                         className="btn btn-primary"
-                        onChange={this.uploadPicture}
+                        onClick={this.uploadPicture}
                       >
                         Save changes
                       </button>

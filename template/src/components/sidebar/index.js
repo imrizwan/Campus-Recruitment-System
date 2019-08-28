@@ -30,7 +30,7 @@ export default class Sidebar extends Component {
     return (<ProfileContainer
       name={props.name}
       title={props.title}
-      imagePath={this.props.imagePath}
+      imagePath={props.url}
     />);
   }
 
