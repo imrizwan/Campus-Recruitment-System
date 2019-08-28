@@ -1,4 +1,6 @@
 export const URL = "http://localhost:8080/api/";
+export const cvURL = "http://920a05d4.ngrok.io";
+export const cvDomain = "rizwanshaikh.me";
 export const GET_ERRORS = "GET_ERRORS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const GET_PROFILE = "GET_PROFILE";

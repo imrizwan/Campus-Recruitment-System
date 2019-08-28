@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import Loader from "../Loader/Loader";
 import isEmpty from "../../validation/is-empty";
@@ -11,8 +11,6 @@ import {
   applyForVaccancy
 } from "../../Actions/profileActions";
 import "./Dashboard.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserMd, faSchool, faLanguage, faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -98,32 +96,6 @@ class Dashboard extends Component {
     } else {
       return (
         <div className="container">
-          <br />
-          <div className="row">
-            <div className="col-md-6 col-sm-12">
-              <Link to="/addexperience" className="btn btn-primary cardMain">
-                <FontAwesomeIcon icon={faUserMd} /> &nbsp; Add Experience
-              </Link>
-            </div>
-            <div className="col-md-6 col-sm-12">
-              <Link to="/addeducation" className="btn btn-primary cardMain">
-                <FontAwesomeIcon icon={faSchool} /> &nbsp; Add Education
-              </Link>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6 col-sm-12">
-              <Link to="/addlanguage" className="btn btn-primary cardMain">
-                <FontAwesomeIcon icon={faLanguage} /> &nbsp; Add Language
-              </Link>
-            </div>
-            <div className="col-md-6 col-sm-12">
-              <Link to="/addprojectstu" className="btn btn-primary cardMain">
-                <FontAwesomeIcon icon={faProjectDiagram} /> &nbsp; Add Project
-              </Link>
-            </div>
-          </div>
-          <br />
           {!isEmpty(this.props.companyprofiles) ? (
             this.props.companyprofiles.map((profile, index1) => {
               return (

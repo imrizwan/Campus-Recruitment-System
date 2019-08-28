@@ -16,7 +16,8 @@ import Loader from "./Loader/Loader";
 import isEmpty from "../validation/is-empty";
 import { withRouter, Link } from "react-router-dom";
 import compose from "recompose/compose";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserMd, faSchool, faLanguage, faProjectDiagram, faRunning } from "@fortawesome/free-solid-svg-icons";
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -201,11 +202,10 @@ class CreateProfile extends React.Component {
   };
 
   uploadPicture = () => {
-    
     var formData = new FormData();
     formData.append("selectedImage", this.state.file);
-    console.log(formData)
-      this.props.upload(formData);
+    console.log(formData);
+    this.props.upload(formData);
   };
 
   render() {
@@ -301,11 +301,46 @@ class CreateProfile extends React.Component {
             <br />
             <div className={classes.center}>
               <Typography variant="display2">Update Profile</Typography>
+              <br />
+              <div className="row">
+                <div className="col-md-6 col-sm-12">
+                  <Link
+                    to="/addexperience"
+                    className="btn btn-primary cardMain"
+                    target="_blank"
+                  >
+                    <FontAwesomeIcon icon={faUserMd} /> &nbsp; Add Experience
+                  </Link>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <Link to="/addeducation" className="btn btn-primary cardMain" target="_blank">
+                    <FontAwesomeIcon icon={faSchool} /> &nbsp; Add Education
+                  </Link>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6 col-sm-12">
+                  <Link to="/addlanguage" className="btn btn-primary cardMain" target="_blank">
+                    <FontAwesomeIcon icon={faLanguage} /> &nbsp; Add Language
+                  </Link>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <Link
+                    to="/addprojectstu"
+                    className="btn btn-primary cardMain"
+                    target="_blank"
+                  >
+                    <FontAwesomeIcon icon={faProjectDiagram} /> &nbsp; Add
+                    Project
+                  </Link>
+                </div>
+              </div>
               <Link
                 to="/addextracurricularactivities"
                 className="btn btn-primary cardMain"
+                target="_blank"
               >
-                Add Extracurricular Activities
+                <FontAwesomeIcon icon={faRunning} /> &nbsp; Add Extracurricular Activities
               </Link>
               <br />
               <br />
@@ -344,13 +379,13 @@ class CreateProfile extends React.Component {
                     </div>
                     <div className="modal-body">
                       <input
-                         type="file"
-                         name="file"
-                         onChange={(event)=> {
+                        type="file"
+                        name="file"
+                        onChange={event => {
                           this.setState({
                             file: event.target.files[0]
                           });
-                         }}
+                        }}
                       />
                       {errors.url ? (
                         <div style={{ color: "red" }}>{errors.url}</div>

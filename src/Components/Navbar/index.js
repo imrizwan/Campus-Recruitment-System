@@ -5,8 +5,10 @@ import { logoutUser } from "../../Actions/authActions";
 // import { getProfileCreated } from "../../Actions/profileActions";
 import "./Navbar.css";
 import Loader from "../Loader/Loader";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink, withRouter, Link } from "react-router-dom";
 import compose from "recompose/compose";
+import { cvURL, cvDomain } from "../../Variables"
+// import isEmpty from "../../validation/is-empty"
 
 class Navbar extends React.Component {
   state = {
@@ -32,11 +34,9 @@ class Navbar extends React.Component {
   }
 
   render() {
-    if (this.props.auth.isAuthenticated) {
-      if (!this.props.profilecreated) {
+      if (this.props.auth.isAuthenticated && !this.props.profilecreated) {
         return <Loader />;
       }
-    }
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         {this.props.auth.isAuthenticated &&
@@ -190,6 +190,81 @@ class Navbar extends React.Component {
                     >
                       Update Profile
                     </NavLink>
+                    {this.props.auth.user.userType === "student" ? (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addeducation" ? "active" : null
+                        }
+                        to="/addeducation"
+                      >
+                        Add Education
+                      </NavLink>
+                    ) : null}
+                    {this.props.auth.user.userType === "student" ? (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addexperience" ? "active" : null
+                        }
+                        to="/addexperience"
+                      >
+                        Add Experience
+                      </NavLink>
+                    ) : null}
+                    {this.props.auth.user.userType === "student" ? (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addlanguage" ? "active" : null
+                        }
+                        to="/addlanguage"
+                      >
+                        Add Language
+                      </NavLink>
+                    ) : (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addvaccancy" ? "active" : null
+                        }
+                        to="/addvaccancy"
+                      >
+                        Add Vaccancy
+                      </NavLink>
+                    )}
+                    {this.props.auth.user.userType === "student" ? (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addprojectstu" ? "active" : null
+                        }
+                        to="/addprojectstu"
+                      >
+                        Add Project
+                      </NavLink>
+                    ) : (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addproject" ? "active" : null
+                        }
+                        to="/addproject"
+                      >
+                        Add Project
+                      </NavLink>
+                    )}
+                     {this.props.auth.user.userType === "student" ? (
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          this.state.path === "/addextracurricularactivities" ? "active" : null
+                        }
+                        to="/addextracurricularactivities"
+                      >
+                        Add Extracurricular Activities
+                      </NavLink>
+                    ) : null}
                   </div>
                 </div>
               ))}
@@ -213,7 +288,7 @@ class Navbar extends React.Component {
                 Create Profile
               </NavLink>
             ) : null}
-            {this.props.profilecreated &&
+            {/* {this.props.profilecreated &&
             this.props.auth.isAuthenticated &&
             this.props.auth.user.userType === "student" ? (
               !this.props.profilecreated.profilecreated ? null : (
@@ -239,8 +314,8 @@ class Navbar extends React.Component {
                   Add Vaccancy
                 </NavLink>
               )
-            ) : null}
-            {this.props.profilecreated &&
+            ) : null} */}
+            {/* {this.props.profilecreated &&
             this.props.auth.isAuthenticated &&
             this.props.auth.user.userType === "student" ? (
               !this.props.profilecreated.profilecreated ? null : (
@@ -266,8 +341,8 @@ class Navbar extends React.Component {
                   Add Project
                 </NavLink>
               )
-            ) : null}
-            {this.props.profilecreated &&
+            ) : null} */}
+            {/* {this.props.profilecreated &&
             this.props.auth.isAuthenticated &&
             this.props.auth.user.userType === "student" ? (
               !this.props.profilecreated.profilecreated ? null : (
@@ -281,8 +356,8 @@ class Navbar extends React.Component {
                   Add Language
                 </NavLink>
               )
-            ) : null}
-            {this.props.profilecreated &&
+            ) : null} */}
+            {/* {this.props.profilecreated &&
             this.props.auth.isAuthenticated &&
             this.props.auth.user.userType === "student" ? (
               !this.props.profilecreated.profilecreated ? null : (
@@ -296,7 +371,7 @@ class Navbar extends React.Component {
                   Add Project
                 </NavLink>
               )
-            ) : null}
+            ) : null} */}
             {this.props.auth.isAuthenticated && (
               <a
                 className="nav-item nav-link btn btn-outline-danger btnLogout"
@@ -304,6 +379,10 @@ class Navbar extends React.Component {
               >
                 Logout
               </a>
+            )}
+            {console.log(this.props.auth)}
+            {this.props.auth.isAuthenticated && (
+               <Link style={{ marginLeft: 20 }} to={`//${cvDomain}/?url=${cvURL}&id=${this.props.auth.user.id}`} className="btn btn-outline-success" target="_blank">Generate CV</Link>
             )}
           </div>
         </div>

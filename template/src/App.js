@@ -8,19 +8,30 @@ import Sidebar from "./components/sidebar";
 import Experiences from "./components/experiences";
 import Projects from "./components/projects";
 import Tags from "./components/tags";
-import Loader from "./Loader"
-import isEmpty from "./is-empty"
+import Loader from "./Loader";
+import isEmpty from "./is-empty";
+// console.log(url.searchParams.get("url"));
+// console.log(url.searchParams.get("id"));
+// var url = url.searchParams.get("url");
+// var id = url.searchParams.get("id");
+
 export default class CV extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {}
-    }
+    };
   }
 
   // 5d613602c37fed147c097860
   componentDidMount() {
-    fetch(`http://localhost:8080/api/user${window.location.pathname}`)
+    var url_string = window.location.href; //window.location.href
+    var url = new URL(url_string);
+    // http://localhost:3001/?url=http://920a05d4.ngrok.io&id=5d613602c37fed147c097860
+    // fetch(`http://localhost:8080/api/user${window.location.pathname}`)
+    fetch(
+      `${url.searchParams.get("url")}/api/user/${url.searchParams.get("id")}`
+    )
       .then(res => res.json())
       .then(data => this.setState({ data }))
       .catch(err => console.log(err));
@@ -28,13 +39,13 @@ export default class CV extends Component {
 
   renderExperiencesSection(data) {
     if (this.props.experiences || !isEmpty(data.experience)) {
-      return <Experiences {...this.props.experiences} data = {data.experience}/>;
+      return <Experiences {...this.props.experiences} data={data.experience} />;
     }
     return null;
   }
   renderProjectsSection(data) {
     if (this.props.projects || !isEmpty(data.projects)) {
-      return <Projects {...this.props.projects} data={data.projects}/>;
+      return <Projects {...this.props.projects} data={data.projects} />;
     }
     return null;
   }
@@ -74,9 +85,9 @@ export default class CV extends Component {
   }
 
   render() {
-    return (
-      isEmpty(this.state.data) ?
-      <Loader/> :
+    return isEmpty(this.state.data) ? (
+      <Loader />
+    ) : (
       <div className="wrapper">
         <Sidebar {...this.props.profile} data={this.state.data} />
         <div className="main-wrapper">
