@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { addActivities, getProfileCreated } from "../Actions/profileActions";
+import { addActivities, getProfileCreated, getCurrentProfile, deleteActivities } from "../Actions/profileActions";
 import Button from "@material-ui/core/Button";
 import compose from "recompose/compose";
 import isEmpty from "../validation/is-empty";
@@ -45,6 +45,7 @@ class AddExtracurricularActivities extends Component {
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.getProfileCreated();
+      this.props.getCurrentProfile();
       if (!isEmpty(this.props.profilecreated)) {
         if (!this.props.profilecreated.profilecreated) {
           if (this.props.auth.user.userType === "student") {
@@ -76,10 +77,15 @@ class AddExtracurricularActivities extends Component {
     this.props.addActivities(activities, this.props.history);
   };
 
+  
+  delete = id => {
+    this.props.deleteActivities(id, this.props.getCurrentProfile)
+  }
+
   render() {
     const { classes } = this.props;
     const { errors } = this.state;
-    if (isEmpty(this.props.profilecreated)) {
+    if (isEmpty(this.props.profilecreated) || isEmpty(this.props.profile)) {
       return <Loader />;
     } else {
       return (
@@ -123,6 +129,32 @@ class AddExtracurricularActivities extends Component {
             </Button>
             <br />
             <br />
+            <Typography variant="display1" className={classes.title}>
+              Manage
+            </Typography>
+            <br />
+
+            {this.props.profile.activities.map(act => (
+              <div className="card" key={act._id} style={{ marginBottom: 20 }}>
+                <div className="card-header">{act.title}</div>
+                <div className="card-body">
+                  <p className="card-text">
+                    {act.description}
+                  </p>
+                  <a
+                    href="#"
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.delete(act._id)
+                    }}
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            ))}
+            <br />
           </div>
         </div>
       );
@@ -133,13 +165,15 @@ class AddExtracurricularActivities extends Component {
 const mapStateToProps = state => ({
   errors: state.errors,
   auth: state.auth,
-  profilecreated: state.profilecreated.profilecreated
+  profilecreated: state.profilecreated.profilecreated,
+  profile: state.profile.profile,
+  deleteactivities: state.profile.deleteactivities
 });
 
 export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { addActivities, getProfileCreated }
+    { addActivities, getProfileCreated, getCurrentProfile, deleteActivities }
   )
 )(withRouter(AddExtracurricularActivities));

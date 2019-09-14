@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { getProfileCreated, addProjectsStu } from "../Actions/profileActions";
+import { getProfileCreated, addProjectsStu, getCurrentProfile, deleteProject } from "../Actions/profileActions";
 import Button from "@material-ui/core/Button";
 import compose from "recompose/compose";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -51,6 +51,7 @@ class AddProjectStu extends Component {
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.getProfileCreated();
+      this.props.getCurrentProfile();
       if (!isEmpty(this.props.profilecreated)) {
         if (!this.props.profilecreated.profilecreated) {
           if (this.props.auth.user.userType === "student") {
@@ -114,10 +115,14 @@ class AddProjectStu extends Component {
     }
   };
 
+  delete = id => {
+    this.props.deleteProject(id, this.props.getCurrentProfile)
+  }
+
   render() {
     const { classes } = this.props;
     const { errors } = this.state;
-    if (isEmpty(this.props.profilecreated)) {
+    if (isEmpty(this.props.profilecreated) || isEmpty(this.props.profile)) {
       return <Loader />;
     } else {
       return (
@@ -216,6 +221,29 @@ class AddProjectStu extends Component {
             </Button>
             <br />
             <br />
+            <Typography variant="display1" className={classes.title}>
+              Manage
+            </Typography>
+            <br />
+
+            {this.props.profile.projects.map(proj => (
+              <div className="card" key={proj._id} style={{ marginBottom: 20 }}>
+                <div className="card-header">{`Projects of ${proj.name}`}</div>
+                <div className="card-body">
+                  <a
+                    href="#"
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.delete(proj._id)
+                    }}
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            ))}
+            <br />
           </div>
         </div>
       );
@@ -225,14 +253,16 @@ class AddProjectStu extends Component {
 
 const mapStateToProps = state => ({
   errors: state.errors,
+  profile: state.profile.profile,
   auth: state.auth,
-  profilecreated: state.profilecreated.profilecreated
+  profilecreated: state.profilecreated.profilecreated,
+  deleteproject: state.profile.deleteproject
 });
 
 export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { getProfileCreated, addProjectsStu }
+    { getProfileCreated, addProjectsStu, deleteProject, getCurrentProfile }
   )
 )(withRouter(AddProjectStu));

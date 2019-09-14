@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { addLanguage, getProfileCreated } from "../Actions/profileActions";
+import { addLanguage, getProfileCreated, deleteLanguage, getCurrentProfile } from "../Actions/profileActions";
 import Button from "@material-ui/core/Button";
 import compose from "recompose/compose";
 import isEmpty from "../validation/is-empty";
@@ -46,6 +46,7 @@ class AddLanguage extends Component {
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.getProfileCreated();
+      this.props.getCurrentProfile();
       if (!isEmpty(this.props.profilecreated)) {
         if (!this.props.profilecreated.profilecreated) {
           if (this.props.auth.user.userType === "student") {
@@ -77,10 +78,14 @@ class AddLanguage extends Component {
     this.props.addLanguage(langData, this.props.history);
   };
 
+  delete = id => {
+    this.props.deleteLanguage(id, this.props.getCurrentProfile)
+  }
+
   render() {
     const { classes } = this.props;
     const { errors } = this.state;
-    if (isEmpty(this.props.profilecreated)) {
+    if (isEmpty(this.props.profilecreated) || isEmpty(this.props.profile)) {
       return <Loader />;
     } else {
       return (
@@ -152,6 +157,29 @@ class AddLanguage extends Component {
             </Button>
             <br />
             <br />
+            <Typography variant="display1" className={classes.title}>
+              Manage
+            </Typography>
+            <br />
+
+            {this.props.profile.language.map(lang => (
+              <div className="card" key={lang._id} style={{ marginBottom: 20 }}>
+                <div className="card-header">{lang.name} - {lang.level}</div>
+                <div className="card-body">
+                  <a
+                    href="#"
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.delete(lang._id)
+                    }}
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            ))}
+            <br />
           </div>
         </div>
       );
@@ -162,13 +190,15 @@ class AddLanguage extends Component {
 const mapStateToProps = state => ({
   errors: state.errors,
   auth: state.auth,
-  profilecreated: state.profilecreated.profilecreated
+  profile: state.profile.profile,
+  profilecreated: state.profilecreated.profilecreated,
+  deletelanguage: state.profile.deletelanguage
 });
 
 export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { addLanguage, getProfileCreated }
+    { addLanguage, getProfileCreated, deleteLanguage, getCurrentProfile }
   )
 )(withRouter(AddLanguage));

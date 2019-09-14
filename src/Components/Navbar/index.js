@@ -44,9 +44,9 @@ class Navbar extends React.Component {
           <NavLink
             className="navbar-brand"
             activeClassName={
-              this.state.path === "/studentdashboard" ? "active" : null
+              window.location.pathname === "/" ? "active" : null
             }
-            to="/studentdashboard"
+            to="/"
           >
             Junoon
           </NavLink>
@@ -55,9 +55,9 @@ class Navbar extends React.Component {
           <NavLink
             className="navbar-brand"
             activeClassName={
-              this.state.path === "/companydashboard" ? "active" : null
+              window.location.pathname === "/" ? "active" : null
             }
-            to="/companydashboard"
+            to="/"
           >
             Junoon
           </NavLink>
@@ -65,9 +65,9 @@ class Navbar extends React.Component {
           <NavLink
             className="navbar-brand"
             activeClassName={
-              this.state.path === "/publicdashboard" ? "active" : null
+              window.location.pathname === "/" ? "active" : null
             }
-            to="/publicdashboard"
+            to="/"
           >
             Junoon
           </NavLink>
@@ -90,7 +90,7 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  this.state.path === "/studentdashboard" ? "active" : null
+                  window.location.pathname === "/studentdashboard" ? "active" : null
                 }
                 to="/studentdashboard"
               >
@@ -101,7 +101,7 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  this.state.path === "/companydashboard" ? "active" : null
+                  window.location.pathname === "/companydashboard" ? "active" : null
                 }
                 to="/companydashboard"
               >
@@ -111,7 +111,7 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  this.state.path === "/publicdashboard" ? "active" : null
+                  window.location.pathname === "/publicdashboard" ? "active" : null
                 }
                 to="/publicdashboard"
               >
@@ -122,7 +122,7 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  this.state.path === "/signup" ? "active" : null
+                  window.location.pathname === "/signup" ? "active" : null
                 }
                 to="/signup"
               >
@@ -133,7 +133,7 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  this.state.path === "/signin" ? "active" : null
+                  window.location.pathname === "/signin" ? "active" : null
                 }
                 to="/signin"
               >
@@ -161,8 +161,8 @@ class Navbar extends React.Component {
                     <NavLink
                       className="dropdown-item"
                       activeClassName={
-                        this.state.path === "/profile" ||
-                        this.state.path === "/companyprofile"
+                        window.location.pathname === "/profile" ||
+                        window.location.pathname === "/companyprofile"
                           ? "active"
                           : null
                       }
@@ -177,8 +177,8 @@ class Navbar extends React.Component {
                     <NavLink
                       className="dropdown-item"
                       activeClassName={
-                        this.state.path === "/updateprofile" ||
-                        this.state.path === "/updatecompanyprofile"
+                        window.location.pathname === "/updateprofile" ||
+                        window.location.pathname === "/updatecompanyprofile"
                           ? "active"
                           : null
                       }
@@ -194,7 +194,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addeducation" ? "active" : null
+                          window.location.pathname === "/addeducation" ? "active" : null
                         }
                         to="/addeducation"
                       >
@@ -205,7 +205,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addexperience" ? "active" : null
+                          window.location.pathname === "/addexperience" ? "active" : null
                         }
                         to="/addexperience"
                       >
@@ -216,7 +216,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addlanguage" ? "active" : null
+                          window.location.pathname === "/addlanguage" ? "active" : null
                         }
                         to="/addlanguage"
                       >
@@ -226,7 +226,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addvaccancy" ? "active" : null
+                          window.location.pathname === "/addvaccancy" ? "active" : null
                         }
                         to="/addvaccancy"
                       >
@@ -237,7 +237,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addprojectstu" ? "active" : null
+                          window.location.pathname === "/addprojectstu" ? "active" : null
                         }
                         to="/addprojectstu"
                       >
@@ -247,7 +247,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addproject" ? "active" : null
+                          window.location.pathname === "/addproject" ? "active" : null
                         }
                         to="/addproject"
                       >
@@ -258,7 +258,7 @@ class Navbar extends React.Component {
                       <NavLink
                         className="dropdown-item"
                         activeClassName={
-                          this.state.path === "/addextracurricularactivities" ? "active" : null
+                          window.location.pathname === "/addextracurricularactivities" ? "active" : null
                         }
                         to="/addextracurricularactivities"
                       >
@@ -274,8 +274,8 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  this.state.path === "/createprofile" ||
-                  this.state.path === "/createcompanyprofile"
+                  window.location.pathname === "/createprofile" ||
+                  window.location.pathname === "/createcompanyprofile"
                     ? "active"
                     : null
                 }
@@ -295,7 +295,7 @@ class Navbar extends React.Component {
                 <NavLink
                   className="nav-item nav-link"
                   activeClassName={
-                    this.state.path === "/addexperience" ? "active" : null
+                    window.location.pathname === "/addexperience" ? "active" : null
                   }
                   to="/addexperience"
                 >
@@ -307,7 +307,7 @@ class Navbar extends React.Component {
                 <NavLink
                   className="nav-item nav-link"
                   activeClassName={
-                    this.state.path === "/addvaccancy" ? "active" : null
+                    window.location.pathname === "/addvaccancy" ? "active" : null
                   }
                   to="/addvaccancy"
                 >
@@ -322,7 +322,7 @@ class Navbar extends React.Component {
                 <NavLink
                   className="nav-item nav-link"
                   activeClassName={
-                    this.state.path === "/addeducation" ? "active" : null
+                    window.location.pathname === "/addeducation" ? "active" : null
                   }
                   to="/addeducation"
                 >
@@ -334,7 +334,7 @@ class Navbar extends React.Component {
                 <NavLink
                   className="nav-item nav-link"
                   activeClassName={
-                    this.state.path === "/addproject" ? "active" : null
+                    window.location.pathname === "/addproject" ? "active" : null
                   }
                   to="/addproject"
                 >
@@ -349,7 +349,7 @@ class Navbar extends React.Component {
                 <NavLink
                   className="nav-item nav-link"
                   activeClassName={
-                    this.state.path === "/addlanguage" ? "active" : null
+                    window.location.pathname === "/addlanguage" ? "active" : null
                   }
                   to="/addlanguage"
                 >
@@ -364,7 +364,7 @@ class Navbar extends React.Component {
                 <NavLink
                   className="nav-item nav-link"
                   activeClassName={
-                    this.state.path === "/addprojectstu" ? "active" : null
+                    window.location.pathname === "/addprojectstu" ? "active" : null
                   }
                   to="/addprojectstu"
                 >
@@ -380,7 +380,6 @@ class Navbar extends React.Component {
                 Logout
               </a>
             )}
-            {console.log(this.props.auth)}
             {this.props.auth.isAuthenticated && (
                <Link style={{ marginLeft: 20 }} to={`//${cvDomain}/?url=${cvURL}&id=${this.props.auth.user.id}`} className="btn btn-outline-success" target="_blank">Generate CV</Link>
             )}

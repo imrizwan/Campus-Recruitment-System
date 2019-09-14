@@ -4,7 +4,12 @@ import {
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_COMPANY_PROFILES,
-  PICTURE
+  PICTURE,
+  DELETE_EDUCATION,
+  DELETE_LANGUAGE,
+  DELETE_PROJECT,
+  DELETE_EXPERIENCE,
+  DELETE_ACTIVITIES
 } from "../Variables";
 
 const initialState = {
@@ -47,6 +52,31 @@ export default function (state = initialState, action) {
       return {
         ...state,
         picture: action.payload
+      };
+    case DELETE_EDUCATION:
+      return {
+        ...state,
+        deleteducation: action.payload
+      };
+    case DELETE_LANGUAGE:
+      return {
+        ...state,
+        deletelanguage: action.payload
+      };
+    case DELETE_PROJECT:
+      return {
+        ...state,
+        deleteproject: action.payload
+      };
+    case DELETE_EXPERIENCE:
+      return {
+        ...state,
+        deleteexperience: action.payload
+      };
+    case DELETE_ACTIVITIES:
+      return {
+        ...state,
+        deleteactivities: action.payload
       };
     default:
       return state;

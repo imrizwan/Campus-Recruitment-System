@@ -1,6 +1,6 @@
 export const URL = "http://localhost:8080/api/";
-export const cvURL = "http://920a05d4.ngrok.io";
-export const cvDomain = "rizwanshaikh.me";
+export const cvURL = "http://localhost:8080";
+export const cvDomain = "localhost:3001";
 export const GET_ERRORS = "GET_ERRORS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const GET_PROFILE = "GET_PROFILE";
@@ -14,3 +14,8 @@ export const APPLY_FOR_VACCANCY = "APPLY_FOR_VACCANCY";
 export const DELETE_VACCANCY = "DELETE_VACCANCY";
 export const UPDATE_VACCANCY = "UPDATE_VACCANCY";
 export const PICTURE = "PICTURE";
+export const DELETE_EDUCATION = "DELETE_EDUCATION";
+export const DELETE_LANGUAGE = "DELETE_LANGUAGE";
+export const DELETE_PROJECT = "DELETE_PROJECT";
+export const DELETE_EXPERIENCE = "DELETE_EXPERIENCE";
+export const DELETE_ACTIVITIES = "DELETE_ACTIVITIES";

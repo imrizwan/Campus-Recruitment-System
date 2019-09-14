@@ -34,7 +34,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"cd functions && npm run server\" \"npm run start\""
+    "dev": "concurrently \"cd functions && npm run server\" \"npm run start\" \"cd template && npm run dev\""
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {

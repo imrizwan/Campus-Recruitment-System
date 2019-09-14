@@ -45,7 +45,18 @@ export default class CV extends Component {
   }
   renderProjectsSection(data) {
     if (this.props.projects || !isEmpty(data.projects)) {
-      return <Projects {...this.props.projects} data={data.projects} />;
+      const projectsAndExtraActivities = data.projects;
+      if (!isEmpty(data.activities)) {
+        const activities = {
+          name: "Extracurricular Activities",
+          list: data.activities,
+          _id: 123
+        };
+        projectsAndExtraActivities.push(activities);
+      }
+      return (
+        <Projects {...this.props.projects} data={projectsAndExtraActivities} />
+      );
     }
     return null;
   }

@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addExperience, getCurrentProfile, getProfileCreated } from '../Actions/profileActions';
+import { addExperience, getCurrentProfile, getProfileCreated, deleteExperience } from '../Actions/profileActions';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -54,6 +54,20 @@ class AddExperience extends Component {
     disabled: false
   };
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.getProfileCreated();
+      this.props.getCurrentProfile();
+      if (!isEmpty(this.props.profilecreated)) {
+        if (!this.props.profilecreated.profilecreated) {
+          if (this.props.auth.user.userType === "student") {
+            this.props.history.push("/createprofile");
+          } else this.props.history.push("/createcompanyprofile");
+        }
+      }
+    }
+  }
+
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -87,14 +101,22 @@ class AddExperience extends Component {
     if (this.state.current && this.state.to) {
       expData.to = "";
     }
-    console.log(expData);
     this.props.addExperience(expData, this.props.history);
+  }
+
+  getDate = date => {
+    date = new Date(date);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
+  delete = id => {
+    this.props.deleteExperience(id, this.props.getCurrentProfile)
   }
 
   render() {
     const { classes } = this.props;
     const { errors } = this.state;
-    if (isEmpty(this.props.profilecreated)) { return <Loader /> }
+    if (isEmpty(this.props.profilecreated) || isEmpty(this.props.profile)) { return <Loader /> }
     else {
       return (
         <div className={classes.root}>
@@ -215,6 +237,34 @@ class AddExperience extends Component {
               </Button>
             <br />
             <br />
+            <Typography variant="display1" className={classes.title}>
+              Manage
+            </Typography>
+            <br />
+
+            {this.props.profile.experience.map(exp => (
+              <div className="card" key={exp._id} style={{ marginBottom: 20 }}>
+                <div className="card-header">{exp.title}</div>
+                <div className="card-body">
+                  <h5 className="card-title">{exp.company}</h5>
+                  <p className="card-text">
+                    {this.getDate(exp.from)} -{" "}
+                    {exp.current ? "PRESENT" : this.getDate(exp.to)}
+                  </p>
+                  <a
+                    href="#"
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.delete(exp._id)
+                    }}
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            ))}
+            <br />
           </div>
         </div>
       )
@@ -222,16 +272,9 @@ class AddExperience extends Component {
   }
 }
 
-AddExperience.propTypes = {
-  addExperience: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
-  profile: state.profile,
+  profile: state.profile.profile,
+  deleteexperience: state.profile.deleteexperience,
   errors: state.errors,
   auth: state.auth,
   profilecreated: state.profilecreated.profilecreated,
@@ -243,5 +286,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { addExperience, getCurrentProfile, getProfileCreated })
+  connect(mapStateToProps, { addExperience, getCurrentProfile, getProfileCreated, deleteExperience })
 )(withRouter(AddExperience))

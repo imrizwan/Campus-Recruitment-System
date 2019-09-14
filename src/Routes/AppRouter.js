@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { getProfileCreated } from "../Actions/profileActions";
 import Profile from '../Components/Protected/Profile';
 import MyProfile from '../Components/Protected/MyProfile';
+import PublicDashboard from '../Components/Public/PublicDashboard';
 import Dashboard from '../Components/Protected/Dashboard';
 import CompanyDashboard from '../Components/Company/CompanyDashboard';
 import CreateCompanyProfile from '../Components/Company/CreateCompanyProfile';
@@ -100,6 +101,7 @@ class AppRouter extends React.Component {
           <Route path="/404" component={NotFound} />
           <Route path="/unauthorized" component={UnAuthorized} />
           <Route exact={true} path="/profile/:id" component={Profile} />
+          <Route exact={true} path="/" component={PublicDashboard} />
       <Switch>
           <PrivateRoute exact={true} path="/companydashboard" userType="company" component={CompanyDashboard} />
           <PrivateRoute exact={true} path="/updatecompanyprofile" userType="company" component={UpdateCompanyProfile} />

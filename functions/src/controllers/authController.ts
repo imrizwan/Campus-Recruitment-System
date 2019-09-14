@@ -522,6 +522,61 @@ export class AuthController {
       .catch(err => console.log("Error from projectstu", err));
   }
 
+  // delete education
+  public deleteEducation(req: Request, res: Response) {
+    Profile.updateOne(
+      { user: req.user.id },
+      { $pull: { "education": { _id: req.query.id } } },
+      { multi: true }
+    )
+    .then((data) => res.status(200).json({ success: 200 }))
+    .catch((err) => console.log("err from delete education", err))
+  }
+
+  // delete language
+  public deleteLanguage(req: Request, res: Response) {
+    Profile.updateOne(
+      { user: req.user.id },
+      { $pull: { "language": { _id: req.query.id } } },
+      { multi: true }
+    )
+    .then((data) => res.status(200).json({ success: 200 }))
+    .catch((err) => console.log("err from delete language", err))
+  }
+
+  // deleteExperience
+  public deleteExperience(req: Request, res: Response) {
+    Profile.updateOne(
+      { user: req.user.id },
+      { $pull: { "experience": { _id: req.query.id } } },
+      { multi: true }
+    )
+    .then((data) => res.status(200).json({ success: 200 }))
+    .catch((err) => console.log("err from delete experience", err))
+  }
+  // deleteActivities
+  public deleteActivities(req: Request, res: Response) {
+    Profile.updateOne(
+      { user: req.user.id },
+      { $pull: { "activities": { _id: req.query.id } } },
+      { multi: true }
+    )
+    .then((data) => res.status(200).json({ success: 200 }))
+    .catch((err) => console.log("err from delete deleteActivities", err))
+  }
+  
+  // delete project
+  public deleteProject(req: Request, res: Response) {
+    Profile.updateOne(
+      { user: req.user.id },
+      { $pull: { "projects": { _id: req.query.id } } },
+      { multi: true }
+    )
+    .then((data) => res.status(200).json({ success: 200 }))
+    .catch((err) => console.log("err from delete project", err))
+  }
+
+
   // education
 
   public education(req: Request, res: Response) {
