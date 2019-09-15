@@ -380,7 +380,7 @@ class Navbar extends React.Component {
                 Logout
               </a>
             )}
-            {this.props.auth.isAuthenticated && (
+            {this.props.auth.isAuthenticated && this.props.profilecreated && this.props.profilecreated.profilecreated && (
                <Link style={{ marginLeft: 20 }} to={`//${cvDomain}/?url=${cvURL}&id=${this.props.auth.user.id}`} className="btn btn-outline-success" target="_blank">Generate CV</Link>
             )}
           </div>
