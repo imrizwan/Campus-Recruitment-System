@@ -100,14 +100,17 @@ export default class CV extends Component {
       <Loader />
     ) : (
       <div className="wrapper">
-        <Sidebar {...this.props.profile} data={this.state.data} />
+        {isEmpty(this.state.data.experience) || isEmpty(this.state.data.education)? null : <Sidebar {...this.props.profile} data={this.state.data} />}
+        {isEmpty(this.state.data.experience) || isEmpty(this.state.data.education)? <div className="main-wrapper">
+          <h1>Add education, experiences and other profile details</h1>
+        </div> :
         <div className="main-wrapper">
           {this.renderCareerProfile(this.state.data)}
           {this.renderExperiencesSection(this.state.data)}
           {this.renderProjectsSection(this.state.data)}
           {this.renderTags(this.state.data)}
           {this.renderOpenSourcePart(this.state.data)}
-        </div>
+        </div>}
       </div>
     );
   }

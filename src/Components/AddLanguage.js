@@ -157,9 +157,9 @@ class AddLanguage extends Component {
             </Button>
             <br />
             <br />
-            <Typography variant="display1" className={classes.title}>
+            {!isEmpty(this.props.profile.language) && <Typography variant="display1" className={classes.title}>
               Manage
-            </Typography>
+            </Typography>}
             <br />
 
             {this.props.profile.language.map(lang => (

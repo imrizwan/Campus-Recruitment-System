@@ -99,7 +99,7 @@ class Dashboard extends Component {
           {!isEmpty(this.props.companyprofiles) ? (
             this.props.companyprofiles.map((profile, index1) => {
               return (
-                <div key={index1}>
+                <div key={index1} style={{ marginTop: 20 }}>
                   {profile.vaccancy.map((vaccancy, index2) => {
                     return (
                       <div key={index2} className="marginBottom">

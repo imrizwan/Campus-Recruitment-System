@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addVaccancy, getCurrentCompanyProfile, getProfileCreated } from '../../Actions/companyProfileActions';
+import { addVaccancy, getCurrentCompanyProfile, getProfileCreated, deleteVaccancy2 } from '../../Actions/companyProfileActions';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import isEmpty from "../../validation/is-empty"
@@ -69,6 +69,7 @@ class AddVaccancy extends Component {
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.getProfileCreated();
+      this.props.getCurrentCompanyProfile();
       if (!isEmpty(this.props.profilecreated)) {
         if (!this.props.profilecreated.profilecreated) {
           if (this.props.auth.user.userType === "student") {
@@ -99,10 +100,19 @@ class AddVaccancy extends Component {
     this.props.addVaccancy(vaccancyData, this.props.history);
   }
 
+  getDate = date => {
+    date = new Date(date);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
+  delete = id => {
+    this.props.deleteVaccancy2(id, this.props.getCurrentCompanyProfile)
+  }
+
   render() {
     const { classes } = this.props;
     const { errors } = this.state;
-    if (isEmpty(this.props.profilecreated)) { return <Loader /> }
+    if (isEmpty(this.props.profilecreated) || isEmpty(this.props.profile)) { return <Loader /> }
     else {
       return (
         <div className={classes.root}>
@@ -208,6 +218,39 @@ class AddVaccancy extends Component {
               Add Vaccancy
                 </Button>
             <br />
+            {!isEmpty(this.props.profile.vaccancy) && <Typography variant="display1" className={classes.title}>
+              Manage
+            </Typography>}
+            <br />
+
+            {this.props.profile.vaccancy.map(vac => (
+              <div className="card" key={vac._id} style={{ marginBottom: 20 }}>
+                <div className="card-header">{vac.position} - {vac.jobtype}</div>
+                <div className="card-body">
+                  <h5 className="card-title">{vac.degreerequired}</h5>
+                  <p className="card-text">
+                    {vac.description}
+                    <br />
+                  </p>
+                  <ul>
+                    {vac.skillsrequired.map((skill, index) =>
+                      <li key={index}>
+                        {skill}
+                      </li>)}
+                  </ul>
+                  <a
+                    href="#"
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.delete(vac._id)
+                    }}
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            ))}
             <br />
           </div>
         </div>
@@ -216,16 +259,9 @@ class AddVaccancy extends Component {
   }
 }
 
-AddVaccancy.propTypes = {
-  addVaccancy: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  getCurrentCompanyProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
-  profile: state.profile,
+  profile: state.profile.profile,
+  deletevaccancy: state.profile.deletevaccancy,
   errors: state.errors,
   auth: state.auth,
   profilecreated: state.profilecreated.profilecreated,
@@ -237,5 +273,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { addVaccancy, getCurrentCompanyProfile, getProfileCreated })
+  connect(mapStateToProps, { addVaccancy, getCurrentCompanyProfile, getProfileCreated, deleteVaccancy2 })
 )(withRouter(AddVaccancy))

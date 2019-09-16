@@ -1,5 +1,42 @@
 import axios from 'axios';
-import { UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+
+// Delete education
+export const deleteProject = (id, getCurrentCompanyProfile) => dispatch => {
+  axios
+    .get(URL + `deleteproject?id=${id}`)
+    .then(res => {
+      getCurrentCompanyProfile()
+      dispatch({
+        type: DELETE_PROJECT_COMPANY,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deleteVaccancy2 = (id, getCurrentCompanyProfile) => dispatch => {
+  axios
+    .get(URL + `deletevaccancy?vaccancyid=${id}`)
+    .then(res => {
+      getCurrentCompanyProfile()
+      dispatch({
+        type: DELETE_VACCANCY,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
 
 export const updateVaccancy = (data) => dispatch => {
   // dispatch(getProfileLoading());

@@ -160,6 +160,28 @@ export class CompanyAuthController {
       .then((data) => res.status(200).json({ success: "Successfuly Deleted" }))
   }
 
+  // @route   GET api/deleteProject
+  // @desc    deleteProject
+  // @access  Private
+
+  public deleteProject(req: Request, res: Response) {
+    const errors = {
+      deleteproject: ""
+    }
+
+    if (!req.query.id) {
+      errors.deleteproject = 'Sorry, Something Went Wrong';
+      return res.status(500).json(errors);
+    }
+
+    CompanyProfile.updateOne(
+      { user: req.user.id },
+      { $pull: { "project": { _id: req.query.id } } },
+      { multi: true }
+    )
+      .then((data) => res.status(200).json({ success: "Successfuly Deleted" }))
+  }
+
 
   // @route   GET api/getcompanies
   // @desc    getCompanies

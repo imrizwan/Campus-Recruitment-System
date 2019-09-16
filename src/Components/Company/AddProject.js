@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addProject, getCurrentCompanyProfile, getProfileCreated } from '../../Actions/companyProfileActions';
+import { addProject, getCurrentCompanyProfile, getProfileCreated, deleteProject } from '../../Actions/companyProfileActions';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -62,6 +62,7 @@ class AddProject extends Component {
       componentDidMount() {
         if (this.props.auth.isAuthenticated) {
           this.props.getProfileCreated();
+          this.props.getCurrentCompanyProfile();
           if (!isEmpty(this.props.profilecreated)) {
             if (!this.props.profilecreated.profilecreated) {
               if (this.props.auth.user.userType === "student") {
@@ -101,10 +102,20 @@ class AddProject extends Component {
         this.props.addProject(proData, this.props.history);
       }
 
+
+      getDate = date => {
+        date = new Date(date);
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      };
+    
+      delete = id => {
+        this.props.deleteProject(id, this.props.getCurrentCompanyProfile)
+      }
+
     render(){
         const { classes } = this.props;
         const { errors } = this.state;
-        if (isEmpty(this.props.profilecreated)) { return <Loader /> }
+        if (isEmpty(this.props.profilecreated) || isEmpty(this.props.profile)) { return <Loader /> }
     else {
         return(
             <div className={classes.root}>
@@ -229,6 +240,43 @@ class AddProject extends Component {
               Add Project
               </Button>
               <br/>
+              <br />
+            {!isEmpty(this.props.profile.project) && <Typography variant="display1" className={classes.title}>
+              Manage
+            </Typography>}
+            <br />
+
+            {this.props.profile.project.map(pro => (
+              <div className="card" key={pro._id} style={{ marginBottom: 20 }}>
+                <div className="card-header">{pro.title}</div>
+                <div className="card-body">
+                  <h5 className="card-title">{pro.client} - {pro.clientlocation}</h5>
+                  <p className="card-text">
+                    {this.getDate(pro.from)} -{" "}
+                    {pro.current ? "PRESENT" : this.getDate(pro.to)}
+                  </p>
+                  <p>
+                    {pro.description}
+                  </p>
+                  <ul>
+                    {pro.skills.map((skill, index) =>
+                      <li key={index}>
+                        {skill}
+                      </li>)}
+                  </ul>
+                  <a
+                    href="#"
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.delete(pro._id)
+                    }}
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            ))}
               <br/>
             </div>
             </div>
@@ -236,20 +284,13 @@ class AddProject extends Component {
     }
     }
 }
-
-AddProject.propTypes = {
-    addProject: PropTypes.func.isRequired,
-    profile: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-    getCurrentCompanyProfile: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
-  };
   
   const mapStateToProps = state => ({
-    profile: state.profile,
+    profile: state.profile.profile,
     errors: state.errors,
     auth: state.auth,
     profilecreated: state.profilecreated.profilecreated,
+    deleteprojectcompany: state.profile.deleteprojectcompany
   });
 
 // export default connect(mapStateToProps, { addProject, getCurrentCompanyProfile })(
@@ -258,6 +299,6 @@ AddProject.propTypes = {
 
   export default compose(
     withStyles(styles),
-    connect(mapStateToProps, { addProject, getCurrentCompanyProfile, getProfileCreated })
+    connect(mapStateToProps, { addProject, getCurrentCompanyProfile, getProfileCreated, deleteProject })
   )(withRouter(AddProject))
   

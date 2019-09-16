@@ -139,7 +139,7 @@ class CompanyDashboard extends Component {
                             {`Job Type: ${vaccancy.jobtype}`}
                           </h5>
                           <h5 className="card-title">
-                            {`Job Type: ${vaccancy.contactno}`}
+                            {`Contact No: ${vaccancy.contactno}`}
                           </h5>
                           <div className="btn btn-info margin" data-toggle="modal" data-target="#editmodal" onClick={() => this.setState({
                             id: vaccancy._id,
@@ -156,6 +156,29 @@ class CompanyDashboard extends Component {
                           {this.ago(vaccancy.date)}
                         </div>
                       </div>
+                      {/* Candidates Modal */}
+                      <div className="modal fade" id="CandidatesModal" tabIndex="-1" role="dialog" aria-labelledby="CandidatesModalLabel" aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" id="CandidatesModalLabel">{vaccancy.position} - {vaccancy.jobtype}</h5>
+                              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div className="modal-body">
+                              {
+                                this.state.errors.deletevaccany ? <div style={{ color: "red" }}>{this.state.errors.deletevaccany}</div> : "Are you sure?"
+                              }
+                            </div>
+                            <div className="modal-footer">
+                              <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                              <button type="button" className="btn btn-success" data-dismiss="modal" onClick={() => this.apply(this.state.data)}>Confirm</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Candidates Modal End */}
                       {/* edit modal */}
                       <div className="modal fade" id="editmodal" tabIndex="-1" role="dialog" aria-labelledby="editmodal" aria-hidden="true">
                         <div className="modal-dialog" role="document">
