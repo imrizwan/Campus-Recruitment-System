@@ -167,7 +167,7 @@ class AddLanguage extends Component {
                 <div className="card-header">{lang.name} - {lang.level}</div>
                 <div className="card-body">
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();

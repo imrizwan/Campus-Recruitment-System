@@ -5,7 +5,6 @@ import compose from 'recompose/compose'
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { addVaccancy, getCurrentCompanyProfile, getProfileCreated, deleteVaccancy2 } from '../../Actions/companyProfileActions';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -239,7 +238,7 @@ class AddVaccancy extends Component {
                       </li>)}
                   </ul>
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();

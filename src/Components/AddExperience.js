@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { addExperience, getCurrentProfile, getProfileCreated, deleteExperience } from '../Actions/profileActions';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -252,7 +251,7 @@ class AddExperience extends Component {
                     {exp.current ? "PRESENT" : this.getDate(exp.to)}
                   </p>
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();

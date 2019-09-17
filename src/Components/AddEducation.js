@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import {
   addEducation,
   getCurrentProfile,
@@ -216,7 +215,7 @@ class AddEducation extends Component {
                     {edu.current ? "PRESENT" : this.getDate(edu.to)}
                   </p>
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();

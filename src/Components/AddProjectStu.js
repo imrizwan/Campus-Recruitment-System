@@ -231,7 +231,7 @@ class AddProjectStu extends Component {
                 <div className="card-header">{`Projects of ${proj.name}`}</div>
                 <div className="card-body">
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();

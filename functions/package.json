@@ -33,6 +33,7 @@
     "validator": "^10.8.0"
   },
   "dependencies": {
+    "dotenv": "^8.1.0",
     "jwt-decode": "^2.2.0",
     "nodemailer": "^5.1.1",
     "nodemon": "^1.19.1"

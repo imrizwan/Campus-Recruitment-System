@@ -142,7 +142,7 @@ class AddExtracurricularActivities extends Component {
                     {act.description}
                   </p>
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();

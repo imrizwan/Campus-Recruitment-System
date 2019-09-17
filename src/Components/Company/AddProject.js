@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { addProject, getCurrentCompanyProfile, getProfileCreated, deleteProject } from '../../Actions/companyProfileActions';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -265,7 +264,7 @@ class AddProject extends Component {
                       </li>)}
                   </ul>
                   <a
-                    href="#"
+                    href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
