@@ -81,6 +81,13 @@ export class CompanyAuthController {
     });
   }
 
+  // @route   GET api/getCandidates
+  // @desc    getCandidates
+  // @access  Private
+
+  public getCandidates(req: Request, res: Response) {
+    
+  }
   // @route   GET api/updatevaccancy
   // @desc    updateVaccancy
   // @access  Private

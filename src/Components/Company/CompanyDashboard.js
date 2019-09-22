@@ -21,7 +21,8 @@ class CompanyDashboard extends Component {
       skillsrequired: "",
       description: "",
       contactno: "",
-      success: ""
+      success: "",
+      key: ""
     }
   }
 
@@ -150,7 +151,8 @@ class CompanyDashboard extends Component {
                             description: vaccancy.description,
                             contactno: vaccancy.contactno
                           })}>Edit</div>
-                          <div className="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onClick={() => this.setState({ data: vaccancy })}>Delete</div>
+                          <div className="btn btn-danger margin" data-toggle="modal" data-target="#exampleModal" onClick={() => this.setState({ data: vaccancy })}>Delete</div>
+                          <div className="btn btn-success" data-toggle="modal" data-target="#candidatesModal" onClick={() => this.setState({ key: vaccancy })}>Candidates</div>
                         </div>
                         <div className="card-footer text-muted text-center">
                           {this.ago(vaccancy.date)}
@@ -227,8 +229,8 @@ class CompanyDashboard extends Component {
                                   <option value="Intern">Intern</option>
                                 </select>
                                 {
-                                    this.state.errors.jobtype ? <div style={{ color: "red" }}>{this.state.errors.jobtype}</div> : null
-                                  }
+                                  this.state.errors.jobtype ? <div style={{ color: "red" }}>{this.state.errors.jobtype}</div> : null
+                                }
                                 <div className="form-group">
                                   <label htmlFor="recipient-name" className="col-form-label">Contact No.</label>
                                   <input value={this.state.contactno} type="text" onChange={this.handleChange('contactno')} className="form-control" id="recipient-name" />
@@ -285,6 +287,35 @@ class CompanyDashboard extends Component {
                         </div>
                       </div>
                       {/* Modal End */}
+                      {/* Check Candidates Start */}
+                      <div className="modal fade" id="candidatesModal" tabIndex="-1" role="dialog" aria-labelledby="candidatesModalCenterTitle" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered" role="document">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" id="candidatesModalCenterTitle">Candidates</h5>
+                              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div className="modal-body">
+                              ...
+                              {/* {console.log(this.props.profilecreated.applied)} */}
+                              {/* vaccancyid */}
+                              {/* {console.log(this.state.key._id)} */}
+                              {/* companyid */}
+                              {/* {console.log(this.props.auth.user.id)} */}
+                              {
+                                // this.props.auth.user.id && this.props.profilecreated && this.state.key &&
+                                console.log(this.props.profilecreated.applied.filter(item => item.key.indexOf(`${this.state.key._id}${this.props.auth.user.id}`) !== -1))}
+                            </div>
+                            <div className="modal-footer">
+                              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                              {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Check Candidates End */}
                     </div>
                   )
                 }) : <h4 className="text-center">No vaccancy</h4>}
