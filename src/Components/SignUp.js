@@ -150,7 +150,7 @@ class RenderForm extends React.Component {
                 <span className="sr-only">Loading...</span>
               </div>
               </div>
-              : this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.</Typography> : null
+              : this.state.errors.success ? <Typography variant="h4" style={{ textAlign: "center" }} className={classes.success}>{ this.state.errors.success }.</Typography> : null
           }
           <TextField
               id="username"
@@ -252,7 +252,7 @@ class SignUp extends React.Component {
     return (
       <div className={classes.root}>
       <br/>
-      <Typography variant="display2" className={classes.title}>Sign Up</Typography>
+      <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>Sign Up</Typography>
 
         <Tabs
           value={value}

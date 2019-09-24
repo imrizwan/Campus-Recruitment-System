@@ -186,7 +186,7 @@ class SignIn extends React.Component {
       <div className={classes.root}>
         <br/>
         {/* <Typography variant="display2" className={classes.title}>Sign In</Typography> */}
-        <Typography variant="display2" className={classes.title}>Sign In</Typography>
+        <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>Sign In</Typography>
         <Tabs
           value={value}
           onChange={this.handleChangeTabs}

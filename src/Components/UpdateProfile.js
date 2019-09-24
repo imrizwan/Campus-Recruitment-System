@@ -300,7 +300,7 @@ class CreateProfile extends React.Component {
           <div className={classes.root}>
             <br />
             <div className={classes.center}>
-              <Typography variant="display2">Update Profile</Typography>
+              <Typography variant="h3" style={{ textAlign: "center" }}>Update Profile</Typography>
               <br />
               <div className="row">
                 <div className="col-md-6 col-sm-12">

@@ -128,7 +128,7 @@ class AddProjectStu extends Component {
       return (
         <div className={classes.root}>
           <br />
-          <Typography variant="display2" className={classes.title}>
+          <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>
             Add Project
           </Typography>
           <br />

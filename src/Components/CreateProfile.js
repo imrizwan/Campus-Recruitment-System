@@ -217,7 +217,7 @@ class CreateProfile extends React.Component {
         <div>
           <br />
           <Typography variant="display1" className={classes.title}>
-            You have already made profile, Go to{" "}
+            You have made profile, Go to{" "}
             <Link to="/updateprofile">Update Profile</Link> for Changes
           </Typography>
         </div>
@@ -228,11 +228,11 @@ class CreateProfile extends React.Component {
             <div className={classes.center}>
               {!isEmpty(this.props.profilecreated) &&
               this.props.profilecreated.profilecreated ? (
-                <Typography variant="display2">Create Profile</Typography>
+                <Typography variant="h3" style={{ textAlign: "center" }}>Create Profile</Typography>
               ) : null}
               {!isEmpty(this.props.profilecreated) &&
               !this.props.profilecreated.profilecreated ? (
-                <Typography variant="display1">
+                <Typography variant="h3" style={{ textAlign: "center" }}>
                   Create your profile first
                 </Typography>
               ) : null}

@@ -212,14 +212,14 @@ class CreateCompanyProfile extends React.Component {
                 !isEmpty(this.props.profilecreated) && this.props.profilecreated.profilecreated ?
                     <div>
                         <br />
-                        <Typography variant="display1" className={classes.title}>You have already made profile, Go to <Link to="/updatecompanyprofile">Update Profile</Link> for Changes</Typography>
+                        <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>You have made profile, Go to <Link to="/updatecompanyprofile">Update Profile</Link> for Changes</Typography>
                     </div>
                     :
                     <div>
                         <div className={classes.root}>
                             <br />
                             <div className={classes.center}>
-                                <Typography variant="display3">Create your profile first</Typography>
+                                <Typography variant="h4" style={{ textAlign: "center" }}>Create your profile first</Typography>
                                 <TextField
                                     id="outlined-username"
                                     label="Username"

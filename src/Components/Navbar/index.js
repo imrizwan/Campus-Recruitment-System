@@ -48,7 +48,7 @@ class Navbar extends React.Component {
             }
             to="/"
           >
-            Junoon
+            Talent Pool
           </NavLink>
         ) : this.props.auth.isAuthenticated &&
           this.props.auth.user.userType === "company" ? (
@@ -59,7 +59,7 @@ class Navbar extends React.Component {
             }
             to="/"
           >
-            Junoon
+            Talent Pool
           </NavLink>
         ) : (
           <NavLink
@@ -69,7 +69,7 @@ class Navbar extends React.Component {
             }
             to="/"
           >
-            Junoon
+            Talent Pool
           </NavLink>
         )}
         <button

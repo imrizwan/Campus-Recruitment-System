@@ -116,7 +116,7 @@ class AddVaccancy extends Component {
       return (
         <div className={classes.root}>
           <br />
-          <Typography variant="display2" className={classes.title}>Add Vaccancy</Typography>
+          <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>Add Vaccancy</Typography>
           <br />
           <div className={classes.center}>
             <TextField

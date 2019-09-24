@@ -121,7 +121,7 @@ class RenderForm extends React.Component {
     return(
       <TabContainer>
            {
-              errors.msg ? <Typography variant="display3" className={classes.rederrortitle}>{ this.state.errors.msg }</Typography> : null
+              errors.msg ? <Typography variant="h4" style={{ textAlign: "center" }} className={classes.rederrortitle}>{ this.state.errors.msg }</Typography> : null
            }
            {
               this.state.loader ? 
@@ -130,7 +130,7 @@ class RenderForm extends React.Component {
                 <span className="sr-only">Loading...</span>
               </div>
               </div>
-              : this.state.errors.success ? <Typography variant="display3" className={classes.success}>{ this.state.errors.success }.  <Link to="/signin">Please Sign In</Link></Typography> : null
+              : this.state.errors.success ? <Typography variant="h4" style={{ textAlign: "center" }} className={classes.success}>{ this.state.errors.success }.  <Link to="/signin">Please Sign In</Link></Typography> : null
           }
 
             <div className={classes.center}>
@@ -182,7 +182,7 @@ class Confirmation extends React.Component {
     return (
       <div className={classes.root}>
         <br/>
-        <Typography variant="display2" className={classes.title}>Confirm Your Email</Typography>
+        <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>Confirm Your Email</Typography>
        
         <RenderForm 
             classes={classes} 

@@ -119,7 +119,7 @@ class AddProject extends Component {
         return(
             <div className={classes.root}>
             <br/>
-            <Typography variant="display2" className={classes.title}>Add Project</Typography>
+            <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>Add Project</Typography>
             <br/>
             <div className={classes.center}>
             <TextField
