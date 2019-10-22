@@ -91,7 +91,7 @@ class AddExtracurricularActivities extends Component {
       return (
         <div className={classes.root}>
           <br />
-          <Typography variant="display2" className={classes.title}>
+          <Typography variant="h3" style={{ textAlign: "center" }}>
             Add Extracurricular Activities
           </Typography>
           <br />
@@ -129,7 +129,7 @@ class AddExtracurricularActivities extends Component {
             </Button>
             <br />
             <br />
-            {!isEmpty(this.props.profile.activities) && <Typography variant="display1" className={classes.title}>
+            {!isEmpty(this.props.profile.activities) && <Typography variant="h6" style={{ textAlign: "center" }}>
               Manage
             </Typography>}
             <br />

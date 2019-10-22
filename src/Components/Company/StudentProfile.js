@@ -18,24 +18,11 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Hidden from "@material-ui/core/Hidden";
-// import Link from '@material-ui/core/Link';
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
-// import { PropTypes } from 'prop-types';
-// import ProfileHeader from "./ProfileHeader";
-// import ProfileAbout from "./ProfileAbout";
-// import ProfileCreds from "./ProfileCreds";
-// import IconButton from '@material-ui/core/IconButton';
-// import SearchIcon from '@material-ui/icons/Search';
-// import Markdown from './Markdown';
-// import post1 from './blog-post.1.md';
 import Img from "../../assets/img.jpeg";
-// import post2 from './blog-post.2.md';
-// import post3 from './blog-post.3.md';
 
 function Copyright() {
   return (
@@ -136,7 +123,7 @@ const monthNames = [
   "December"
 ];
 
-function MyProfile(props) {
+function StudentProfile(props) {
   const classes = useStyles();
 
   const getDate = date => {
@@ -171,31 +158,9 @@ function MyProfile(props) {
           >
             Profile
           </Typography>
-          {/* <IconButton>
-            <SearchIcon />
-          </IconButton>
-          <Button variant="outlined" size="small">
-            Sign up
-          </Button> */}
         </Toolbar>
-        {/* <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-          {sections.map(section => (
-            <Link
-              color="inherit"
-              noWrap
-              key={section}
-              variant="body2"
-              href="#"
-              className={classes.toolbarLink}
-            >
-              {section}
-            </Link>
-          ))}
-        </Toolbar> */}
         <main>
-          {/* Main featured post */}
           <Paper className={classes.mainFeaturedPost}>
-            {/* Increase the priority of the hero background image */}
             {
               <img
                 style={{ display: "none" }}
@@ -268,25 +233,13 @@ function MyProfile(props) {
                         <Typography component="h2" variant="h5">
                           {post.title}
                         </Typography>
-                        {/* <Typography variant="subtitle1" paragraph> */}
                         <ul variant="subtitle1">
                           {post.posts.map((item, index1) => (
                             <li key={index1}>{item}</li>
                           ))}
                         </ul>
-                        {/* </Typography> */}
-                        {/* <Typography variant="subtitle1" color="primary">
-                            Hello reading...
-                        </Typography> */}
                       </CardContent>
                     </div>
-                    {/* <Hidden xsDown>
-                      <CardMedia
-                        className={classes.cardMedia}
-                        image="https://source.unsplash.com/random"
-                        title="Image title"
-                      />
-                    </Hidden> */}
                   </Card>
                 </CardActionArea>
               </Grid>
@@ -624,7 +577,7 @@ export default compose(
     mapStateToProps,
     { getCurrentProfile, getProfileCreated }
   )
-)(withRouter(MyProfile));
+)(withRouter(StudentProfile));
 
 // const styles = theme => ({})
 

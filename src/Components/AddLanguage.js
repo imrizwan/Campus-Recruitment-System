@@ -157,7 +157,7 @@ class AddLanguage extends Component {
             </Button>
             <br />
             <br />
-            {!isEmpty(this.props.profile.language) && <Typography variant="display1" className={classes.title}>
+            {!isEmpty(this.props.profile.language) && <Typography variant="h6" style={{ textAlign: "center" }}>
               Manage
             </Typography>}
             <br />

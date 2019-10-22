@@ -200,9 +200,7 @@ class AddEducation extends Component {
             </Button>
             <br />
             <br />
-            {!isEmpty(this.props.profile.education) && <Typography variant="display1" className={classes.title}>
-              Manage
-            </Typography>}
+            {!isEmpty(this.props.profile.education) && <Typography variant="h6" style={{ textAlign: "center" }}>Manage</Typography>}
             <br />
 
             {this.props.profile.education.map(edu => (

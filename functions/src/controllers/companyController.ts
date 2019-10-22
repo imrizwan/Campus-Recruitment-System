@@ -4,6 +4,7 @@ import * as validateCompanyProjectInput from "../validation/companyproject";
 import * as validateCompanyVaccancyInput from "../validation/companyvaccancy";
 // Load User model
 import * as CompanyProfile from '../models/CompanyProfile';
+import * as Profile from '../models/Profile';
 import * as Verify from '../models/Verify';
 import * as isEmpty from "../validation/is-empty";
 
@@ -86,7 +87,17 @@ export class CompanyAuthController {
   // @access  Private
 
   public getCandidates(req: Request, res: Response) {
-    
+    let errors = {
+      getcandidates: ""
+    }
+
+    if (!req.body) {
+      errors.getcandidates = 'No candidates applied to your job';
+      return res.status(404).json(errors);
+    }
+
+    Profile.find({user: {$in: req.body}})
+    .then((data)=> res.status(200).json(data))
   }
   // @route   GET api/updatevaccancy
   // @desc    updateVaccancy

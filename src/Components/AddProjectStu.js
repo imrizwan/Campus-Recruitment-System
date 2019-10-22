@@ -221,7 +221,7 @@ class AddProjectStu extends Component {
             </Button>
             <br />
             <br />
-            {!isEmpty(this.props.profile.projects) && <Typography variant="display1" className={classes.title}>
+            {!isEmpty(this.props.profile.projects) && <Typography variant="h6" style={{ textAlign: "center" }}>
               Manage
             </Typography>}
             <br />

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import isEmpty from '../validation/is-empty';
 
 // Delete education
 export const deleteProject = (id, getCurrentCompanyProfile) => dispatch => {
@@ -162,4 +163,27 @@ export const addVaccancy = (vaccancyData, history) => dispatch => {
     return {
       type: CLEAR_CURRENT_PROFILE
     };
+  };
+
+  // get candidates
+
+  export const getCandidates = (data) => dispatch => {
+    let newData = []
+    if(!isEmpty(data)){
+        data.forEach(item => {
+          newData.push(item.key.slice(0,24))
+        });
+    }
+
+    if(!isEmpty(newData)){
+      axios
+      .post(URL+'getcandidates', newData)
+      .then(res => dispatch({ type: GET_CANDIDATES, payload: res.data }))
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+    }
   };

@@ -11,7 +11,8 @@ import {
   DELETE_EXPERIENCE,
   DELETE_ACTIVITIES,
   DELETE_PROJECT_COMPANY,
-  DELETE_VACCANCY
+  DELETE_VACCANCY,
+  GET_CANDIDATES
 } from "../Variables";
 
 const initialState = {
@@ -89,6 +90,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         deletevaccancy: action.payload
+      };
+    case GET_CANDIDATES:
+      return {
+        ...state,
+        getcandidates: action.payload
       };
     default:
       return state;
