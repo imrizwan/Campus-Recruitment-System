@@ -14,7 +14,8 @@ import UpdateCompanyProfile from '../Components/Company/UpdateCompanyProfile';
 import MyCompanyProfile from '../Components/Company/MyCompanyProfile';
 import AddProject from '../Components/Company/AddProject';
 import AddVaccancy from '../Components/Company/AddVaccancy';
-// import StudentProfile from '../Components/Company/StudentProfile';
+import StudentProfile from '../Components/Company/StudentProfile';
+import SelectionEmail from '../Components/Company/SelectionEmail';
 import SignIn from '../Components/SignIn';
 import Resend from '../Components/Resend';
 import ForgotPasswordEmail from '../Components/ForgotPasswordEmail';
@@ -107,7 +108,8 @@ class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/companydashboard" userType="company" component={CompanyDashboard} />
           <PrivateRoute exact={true} path="/updatecompanyprofile" userType="company" component={UpdateCompanyProfile} />
           <PrivateRoute exact={true} path="/companyprofile" userType="company" component={MyCompanyProfile} />
-          {/* <PrivateRoute exact={true} path="/studentprofile" userType="company" component={StudentProfile} /> */}
+          <PrivateRoute exact={true} path="/studentprofile/:id" userType="company" component={StudentProfile} />
+          <PrivateRoute exact={true} path="/selectionemail" userType="company" component={SelectionEmail} />
           <PrivateRoute exact={true} path="/createcompanyprofile" userType="company" component={CreateCompanyProfile} />
           <PrivateRoute exact={true} path="/addproject" userType="company" component={AddProject} />
           <PrivateRoute exact={true} path="/addvaccancy" userType="company"  component={AddVaccancy} />

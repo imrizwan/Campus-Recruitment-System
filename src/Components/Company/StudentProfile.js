@@ -4,7 +4,7 @@ import Loader from "../Loader/Loader";
 // import { withStyles } from '@material-ui/core/styles';
 import isEmpty from "../../validation/is-empty";
 import {
-  getCurrentProfile,
+  getProfileById,
   getProfileCreated
 } from "../../Actions/profileActions";
 import { withRouter } from "react-router-dom";
@@ -135,7 +135,8 @@ function StudentProfile(props) {
 
   useEffect(() => {
     if (props.auth.isAuthenticated) {
-      props.getCurrentProfile();
+      // props.getProfileById();
+      props.getProfileById(props.match.params.id)
     }
   }, []);
   return isEmpty(props.profile) ? (
@@ -575,71 +576,6 @@ export default compose(
   // withStyles(styles),
   connect(
     mapStateToProps,
-    { getCurrentProfile, getProfileCreated }
+    { getProfileById, getProfileCreated }
   )
 )(withRouter(StudentProfile));
-
-// const styles = theme => ({})
-
-// class MyProfile extends Component {
-
-//     state = {
-//       errors: {}
-//     }
-
-//     UNSAFE_componentWillReceiveProps(nextProps) {
-//         if (nextProps.errors) {
-//             this.setState({ errors: nextProps.errors });
-//         }
-//     }
-
-//       componentWillMount(){
-//         if (this.props.auth.isAuthenticated) {
-//           this.props.getCurrentProfile();
-//         }
-//       }
-
-//   render() {
-//     const { profile, loading } = this.props.profile;
-//     let profileContent;
-//         if (profile === null || loading) {
-//                 return(
-//                     <Loader />
-//                 )
-//           } else {
-//         profileContent = (
-//         <div>
-//             <ProfileHeader profile={profile} fullname={this.props.auth.user.fullname} />
-//             <ProfileAbout profile={profile} />
-//             <ProfileCreds profile={profile} />
-//         </div>
-//         )
-//     }
-//     return (
-//       <div>
-//           {profileContent}
-//       </div>
-//     );
-//   }
-// }
-
-// MyProfile.propTypes = {
-//     getProfileCreated: PropTypes.func.isRequired,
-//     getCurrentProfile: PropTypes.func.isRequired,
-//     profile: PropTypes.object.isRequired,
-//     auth: PropTypes.object.isRequired,
-//     errors: PropTypes.object.isRequired
-// };
-
-// const mapStateToProps = state => ({
-//     profile: state.profile,
-//     auth: state.auth,
-//     errors: state.errors,
-//     profilecreated: state.profilecreated.profilecreated
-// });
-
-// // export default connect(mapStateToProps, { getCurrentProfile, getProfileCreated })(withStyles(styles)(MyProfile));
-// export default compose(
-//   withStyles(styles),
-//   connect(mapStateToProps, { getCurrentProfile, getProfileCreated })
-// )(withRouter(MyProfile))

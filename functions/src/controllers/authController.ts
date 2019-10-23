@@ -42,7 +42,6 @@ export class AuthController {
   public testing(req: Request, res: Response) {
     res.json("Rozwam");
   }
-
   public addNewUser(req: Request, res: Response) {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check Validation
@@ -447,7 +446,6 @@ export class AuthController {
       };
 
       Profile.findOne({ user: req.params.user_id })
-        .populate("user", ["name", "avatar"])
         .then(profile => {
           if (!profile) {
             errors.noprofile = "There is no profile for this user";

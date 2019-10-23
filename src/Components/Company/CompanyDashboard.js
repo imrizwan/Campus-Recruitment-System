@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import isEmpty from "../../validation/is-empty";
 import Loader from "../Loader/Loader";
 import "./index.css";
+import TimeAgo from "react-timeago";
+import englishStrings from "react-timeago/lib/language-strings/en";
+import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
+import NoIMG from "../../assets/noimg.png"
 import {
   getProfileCreated,
   getCurrentCompanyProfile,
@@ -13,7 +17,7 @@ import {
   updateVaccancy,
   getCandidates
 } from "../../Actions/companyProfileActions";
-
+const formatter = buildFormatter(englishStrings);
 class CompanyDashboard extends Component {
   constructor(props) {
     super(props);
@@ -113,7 +117,6 @@ class CompanyDashboard extends Component {
   render() {
     if (
       isEmpty(this.props.profilecreated) ||
-      isEmpty(this.props.companyprofiles) ||
       isEmpty(this.props.companyprofiles.profile)
     ) {
       return <Loader />;
@@ -208,7 +211,11 @@ class CompanyDashboard extends Component {
                             </div>
                           </div>
                           <div className="card-footer text-muted text-center">
-                            {this.ago(vaccancy.date)}
+                            {/* {this.ago(vaccancy.date)} */}
+                            <TimeAgo
+                              date={vaccancy.date}
+                              formatter={formatter}
+                            />
                           </div>
                         </div>
                         {/* Candidates Modal */}
@@ -550,16 +557,37 @@ class CompanyDashboard extends Component {
                                 {isEmpty(this.props.getcandidates)
                                   ? null
                                   : this.props.getcandidates.map(
-                                      (student, index) => (
-                                        <div key={index} className="row" style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
-                                          <div>
-                                            <p>{student.name}</p>
-                                            <p>{student.phoneNumber}</p>
-                                            <p>{student.mail}</p>
+                                      (student) => (
+                                        <div key={student.user} className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                          <div className="flex-column">
+                                            {student.name}
+                                            <p>
+                                              <small>
+                                                {student.phoneNumber}
+                                              </small>
+                                              <br/>
+                                              <small>{student.location}</small>
+                                            </p>
+                                            <span
+                                              className="badge badge-info badge-pill"
+                                              style={{ padding: 5 }}
+                                            >
+                                              {student.mail}
+                                            </span>
+                                            <div>
+                                            <br/>
+                                            <Link target="_blank" to={`/studentprofile/${student.user}`} className="btn btn-primary"  style={{ marginRight: 5 }}>View Profile</Link>
+                                            <Link target="_blank" to={`/selectionemail?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`} className="btn btn-succcess">Send Email</Link>
+                                            </div>
                                           </div>
-                                          <button className="btn btn-primary btn-small">
-                                            View Profile
-                                          </button>
+                                          <div className="image-parent">
+                                            <img
+                                              style={{ width: 150, height: 150 }}
+                                              src={isEmpty(student.url) ? <NoIMG/> : student.url }
+                                              className="img-fluid"
+                                              alt="quixote"
+                                            />
+                                          </div>
                                         </div>
                                       )
                                     )}

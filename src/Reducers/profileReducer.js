@@ -12,7 +12,8 @@ import {
   DELETE_ACTIVITIES,
   DELETE_PROJECT_COMPANY,
   DELETE_VACCANCY,
-  GET_CANDIDATES
+  GET_CANDIDATES,
+  SELECTION_EMAIL,
 } from "../Variables";
 
 const initialState = {
@@ -95,6 +96,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         getcandidates: action.payload
+      };
+    case SELECTION_EMAIL:
+      return {
+        ...state,
+        selectionemail: action.payload
       };
     default:
       return state;
