@@ -14,6 +14,7 @@ import {
   DELETE_VACCANCY,
   GET_CANDIDATES,
   SELECTION_EMAIL,
+  SHORTLIST_CANDIDATE,
 } from "../Variables";
 
 const initialState = {
@@ -101,6 +102,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         selectionemail: action.payload
+      };
+    case SHORTLIST_CANDIDATE:
+      return {
+        ...state,
+        shortlistcandidate: action.payload
       };
     default:
       return state;

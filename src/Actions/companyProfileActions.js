@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
 import isEmpty from '../validation/is-empty';
 
 // Delete education
@@ -197,6 +197,22 @@ export const addVaccancy = (vaccancyData, history) => dispatch => {
         alert("Email Sent!")
         history.push("companydashboard")
         dispatch({ type: SELECTION_EMAIL, payload: res.status })
+      })
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+    }
+  };
+
+  export const shortlistCandidate = (newData) => dispatch => {
+    if(!isEmpty(newData)){
+      axios
+      .post(URL+'shortlistcandidate', newData)
+      .then(res => {
+        dispatch({ type: SHORTLIST_CANDIDATE, payload: res.status })
       })
       .catch(err =>
         dispatch({

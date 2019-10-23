@@ -6,16 +6,72 @@ import * as validateCompanyVaccancyInput from "../validation/companyvaccancy";
 import * as CompanyProfile from "../models/CompanyProfile";
 import * as Profile from "../models/Profile";
 import * as Verify from "../models/Verify";
+import * as Selected from "../models/Selected";
 import * as isEmpty from "../validation/is-empty";
 import * as keys from "../config/keys";
 import * as nodemailer from "nodemailer";
 export class CompanyAuthController {
+  public shortlistCandidate(req: Request, res: Response) {
+    const errors = {
+      shortlistcandidate: ""
+    };
+    if (!req.body.vaccancyid || !req.body.studentid || !req.body.isChecked) {
+      errors.shortlistcandidate = "Something went wrong";
+      return res.status(404).json(errors);
+    }
+
+    Selected.findOne({ vaccancyid: req.body.vaccancyid }).then(data => {
+      if (isEmpty(data)) {
+        // Save Profile
+        new Selected({
+          vaccancyid: req.body.vaccancyid,
+          selected: [req.body.studentid]
+        })
+          .save()
+          .then(profile => {
+            console.log(profile);
+          })
+          .catch(err => console.log("Error from create Profile: ", err));
+      } else {
+        if (data.selected.find(x => x === req.body.studentid) === req.body.studentid) {
+          if (req.body.isChecked) {
+            data.selected.unshift(req.body.studentid);
+            data
+              .save()
+              .then(profile => res.json(profile))
+              .catch(err => console.log("Error from shortlistCandidate", err));
+          } else {
+            var filtered  = data.selected.filter(e => e !== req.body.studentid)
+            data.selected = filtered;
+            data
+              .save()
+              .then(profile => res.json(profile))
+              .catch(err => console.log("Error from shortlistCandidate", err));
+          }
+        } else {
+          data.selected.unshift(req.body.studentid);
+          data
+            .save()
+            .then(profile => res.json(profile))
+            .catch(err => console.log("Error from shortlistCandidate", err));
+        }
+      }
+    });
+  }
+
   public selectionEmail(req: Request, res: Response) {
-    console.log(req.body)
     const errors = {
       selectionemail: ""
     };
-    if (isEmpty(req.body.date) || isEmpty(req.body.timing) || isEmpty(req.body.info) || isEmpty(req.body.studentemail) || isEmpty(req.body.position) || isEmpty(req.body.company) || isEmpty(req.body.companyemail)) {
+    if (
+      isEmpty(req.body.date) ||
+      isEmpty(req.body.timing) ||
+      isEmpty(req.body.info) ||
+      isEmpty(req.body.studentemail) ||
+      isEmpty(req.body.position) ||
+      isEmpty(req.body.company) ||
+      isEmpty(req.body.companyemail)
+    ) {
       errors.selectionemail = "Something went wrong";
       return res.status(400).json(errors);
     }
@@ -31,11 +87,15 @@ export class CompanyAuthController {
       subject: "Selection Email",
       text:
         "Congratulations,\n\n" +
-        "You have been shortlisted for " + `${req.body.position} in ${req.body.company}` +
+        "You have been shortlisted for " +
+        `${req.body.position} in ${req.body.company}` +
         "\n\nDetails: \n\n" +
-        "Company Email: " + `${req.body.companyemail}\n\n` +
-        "Interview Timing: " + `${req.body.timing}\n\n` +
-        "Interview Date: " + `${req.body.date}\n\n` +
+        "Company Email: " +
+        `${req.body.companyemail}\n\n` +
+        "Interview Timing: " +
+        `${req.body.timing}\n\n` +
+        "Interview Date: " +
+        `${req.body.date}\n\n` +
         `${req.body.info}\n\n` +
         `Thanks`
     };

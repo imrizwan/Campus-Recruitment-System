@@ -10,7 +10,11 @@ import {
   getCompanies,
   applyForVaccancy
 } from "../../Actions/profileActions";
+import TimeAgo from "react-timeago";
+import englishStrings from "react-timeago/lib/language-strings/en";
+import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
 import "./Dashboard.css";
+const formatter = buildFormatter(englishStrings);
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -153,7 +157,11 @@ class Dashboard extends Component {
                             ) : null}
                           </div>
                           <div className="card-footer text-muted text-center">
-                            {this.ago(vaccancy.date)}
+                            {/* {this.ago(vaccancy.date)} */}
+                            <TimeAgo
+                              date={vaccancy.date}
+                              formatter={formatter}
+                            />
                           </div>
                         </div>
                         {/* Modal */}

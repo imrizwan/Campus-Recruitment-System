@@ -9,13 +9,14 @@ import "./index.css";
 import TimeAgo from "react-timeago";
 import englishStrings from "react-timeago/lib/language-strings/en";
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
-import NoIMG from "../../assets/noimg.png"
+import NoIMG from "../../assets/noimg.png";
 import {
   getProfileCreated,
   getCurrentCompanyProfile,
   deleteVaccancy,
   updateVaccancy,
-  getCandidates
+  getCandidates,
+  shortlistCandidate
 } from "../../Actions/companyProfileActions";
 const formatter = buildFormatter(englishStrings);
 class CompanyDashboard extends Component {
@@ -31,7 +32,8 @@ class CompanyDashboard extends Component {
       description: "",
       contactno: "",
       success: "",
-      key: ""
+      key: "",
+      check: new Map()
     };
   }
 
@@ -70,38 +72,17 @@ class CompanyDashboard extends Component {
     window.location.reload();
   };
 
-  ago = created => {
-    let date = new Date();
-    let TodaysDate = `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
-    created = new Date(created);
-    let createdDate = `${created.getDate()} ${created.getMonth()} ${created.getFullYear()}`;
-    if (TodaysDate === createdDate) {
-      return "Published Today";
-    } else {
-      if (
-        date.getDate() === created.getDate() &&
-        date.getMonth() === created.getMonth() &&
-        date.getDate() === created.getDate() &&
-        date.getFullYear() !== created.getFullYear()
-      ) {
-        if (date.getFullYear() - created.getFullYear() === 0) {
-          return `1 year ago`;
-        } else return `${date.getFullYear() - created.getFullYear()} years ago`;
-      } else if (
-        date.getDate() !== created.getDate() &&
-        date.getMonth() === created.getMonth() &&
-        date.getDate() !== created.getDate() &&
-        date.getFullYear() === created.getFullYear()
-      ) {
-        if (date.getMonth() - created.getMonth() === 0) {
-          return `1 month ago`;
-        } else return `${date.getMonth() - created.getMonth()} months ago`;
-      } else {
-        if (date.getDate() - created.getDate() === 0) {
-          return `1 day ago`;
-        } else return `${date.getDate() - created.getDate()} days ago`;
-      }
-    }
+  handleChangeCheck = e => {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    this.props.shortlistCandidate({
+      studentid: item, 
+      isChecked: isChecked, 
+      vaccancyid: this.state.key._id
+    })
+    this.setState(prevState => ({
+      check: prevState.check.set(item, isChecked)
+    }));
   };
 
   handleChange = name => event => {
@@ -204,7 +185,7 @@ class CompanyDashboard extends Component {
                                       ) !== -1
                                   )
                                 );
-                                this.setState({ key: vaccancy });
+                                this.setState({ key: vaccancy, check: new Map() });
                               }}
                             >
                               Candidates
@@ -556,44 +537,81 @@ class CompanyDashboard extends Component {
                               <div className="modal-body">
                                 {isEmpty(this.props.getcandidates)
                                   ? null
-                                  : this.props.getcandidates.map(
-                                      (student) => (
-                                        <div key={student.user} className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                          <div className="flex-column">
-                                            {student.name}
-                                            <p>
-                                              <small>
-                                                {student.phoneNumber}
-                                              </small>
-                                              <br/>
-                                              <small>{student.location}</small>
-                                            </p>
-                                            <span
-                                              className="badge badge-info badge-pill"
-                                              style={{ padding: 5 }}
+                                  : this.props.getcandidates.map(student => (
+                                      <div
+                                        key={student.user}
+                                        className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                      >
+                                        <div className="flex-column">
+                                          {student.name}
+                                          <p>
+                                            <small>{student.phoneNumber}</small>
+                                            <br />
+                                            <small>{student.location}</small>
+                                          </p>
+                                          <span
+                                            className="badge badge-info badge-pill"
+                                            style={{ padding: 5 }}
+                                          >
+                                            {student.mail}
+                                          </span>
+                                          <div>
+                                            <br />
+                                            <Link
+                                              target="_blank"
+                                              to={`/studentprofile/${student.user}`}
+                                              className="btn btn-primary"
+                                              style={{ marginRight: 5 }}
                                             >
-                                              {student.mail}
-                                            </span>
-                                            <div>
-                                            <br/>
-                                            <Link target="_blank" to={`/studentprofile/${student.user}`} className="btn btn-primary"  style={{ marginRight: 5 }}>View Profile</Link>
-                                            <Link target="_blank" to={`/selectionemail?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`} className="btn btn-succcess">Send Email</Link>
+                                              View Profile
+                                            </Link>
+                                            <Link
+                                              target="_blank"
+                                              to={`/selectionemail?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`}
+                                              className="btn btn-success"
+                                            >
+                                              Send Email
+                                            </Link>
+                                            <br />
+                                            <br />
+                                            <div className="custom-control custom-checkbox">
+                                              <input
+                                                name={student.user}
+                                                checked={this.state.check.get(student.user)}
+                                                onChange={this.handleChangeCheck}
+                                                type="checkbox"
+                                                className="custom-control-input"
+                                                id={student.user}
+                                              />
+                                              <label
+                                                className="custom-control-label"
+                                                htmlFor={student.user}
+                                              >
+                                                Shortlist this candidate
+                                              </label>
                                             </div>
                                           </div>
-                                          <div className="image-parent">
-                                            <img
-                                              style={{ width: 150, height: 150 }}
-                                              src={isEmpty(student.url) ? <NoIMG/> : student.url }
-                                              className="img-fluid"
-                                              alt="quixote"
-                                            />
-                                          </div>
                                         </div>
-                                      )
-                                    )}
+                                        <div className="image-parent">
+                                          <img
+                                            style={{ width: 150, height: 150 }}
+                                            src={
+                                              isEmpty(student.url) ? (
+                                                <NoIMG />
+                                              ) : (
+                                                student.url
+                                              )
+                                            }
+                                            className="img-fluid"
+                                            alt="quixote"
+                                          />
+                                        </div>
+                                      </div>
+                                    ))}
                               </div>
                               <div className="modal-footer">
                                 <button
+                                  onClick={()=> this.setState({ check: new Map() })}
                                   type="button"
                                   className="btn btn-secondary"
                                   data-dismiss="modal"
@@ -633,7 +651,8 @@ const mapStateToProps = state => ({
   errors: state.errors,
   profilecreated: state.profilecreated.profilecreated,
   success: state.profilecreated.success,
-  getcandidates: state.profile.getcandidates
+  getcandidates: state.profile.getcandidates,
+  shortlistcandidate: state.profile.shortlistcandidate,
 });
 
 // export default connect(mapStateToProps)(CompanyDashboard);
@@ -645,7 +664,8 @@ export default compose(
       getCurrentCompanyProfile,
       deleteVaccancy,
       updateVaccancy,
-      getCandidates
+      getCandidates,
+      shortlistCandidate
     }
   )
 )(withRouter(CompanyDashboard));

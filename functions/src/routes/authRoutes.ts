@@ -37,6 +37,7 @@ export class Routes {
         app.post('/api/applyforvaccancy', passport.authenticate("jwt", { session: false }), this.authController.applyForVaccancy)
         // Company Routes
         app.post('/api/selectionemail', passport.authenticate("jwt", { session: false }), this.companycontroller.selectionEmail)
+        app.post('/api/shortlistcandidate', passport.authenticate("jwt", { session: false }), this.companycontroller.shortlistCandidate)
         app.post('/api/createcompanyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.createcompanyprofile)
         app.get('/api/companyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.currentCompanyProfile)
         app.post('/api/getcandidates', passport.authenticate("jwt", { session: false }), this.companycontroller.getCandidates)
