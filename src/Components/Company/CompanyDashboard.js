@@ -536,7 +536,7 @@ class CompanyDashboard extends Component {
                               </div>
                               <div className="modal-body">
                                 {isEmpty(this.props.getcandidates)
-                                  ? null
+                                  ? <h6 style={{ textAlign: "center" }}>No one applied yet</h6>
                                   : this.props.getcandidates.map(student => (
                                       <div
                                         key={student.user}
@@ -597,7 +597,7 @@ class CompanyDashboard extends Component {
                                             style={{ width: 150, height: 150 }}
                                             src={
                                               isEmpty(student.url) ? (
-                                                <NoIMG />
+                                                NoIMG
                                               ) : (
                                                 student.url
                                               )

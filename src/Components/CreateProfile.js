@@ -216,7 +216,7 @@ class CreateProfile extends React.Component {
         this.props.profilecreated.profilecreated ? (
         <div>
           <br />
-          <Typography variant="display1" className={classes.title}>
+          <Typography variant="h6" style={{ textAlign: "center" }}>
             You have made profile, Go to{" "}
             <Link to="/updateprofile">Update Profile</Link> for Changes
           </Typography>

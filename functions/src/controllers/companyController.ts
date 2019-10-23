@@ -12,51 +12,90 @@ import * as keys from "../config/keys";
 import * as nodemailer from "nodemailer";
 export class CompanyAuthController {
   public shortlistCandidate(req: Request, res: Response) {
+    const { vaccancyid, studentid, isChecked } = req.body;
     const errors = {
       shortlistcandidate: ""
     };
-    if (!req.body.vaccancyid || !req.body.studentid || !req.body.isChecked) {
+    if (!vaccancyid || !studentid) {
       errors.shortlistcandidate = "Something went wrong";
       return res.status(404).json(errors);
     }
 
-    Selected.findOne({ vaccancyid: req.body.vaccancyid }).then(data => {
-      if (isEmpty(data)) {
-        // Save Profile
-        new Selected({
-          vaccancyid: req.body.vaccancyid,
-          selected: [req.body.studentid]
-        })
-          .save()
-          .then(profile => {
-            console.log(profile);
-          })
-          .catch(err => console.log("Error from create Profile: ", err));
-      } else {
-        if (data.selected.find(x => x === req.body.studentid) === req.body.studentid) {
-          if (req.body.isChecked) {
-            data.selected.unshift(req.body.studentid);
-            data
-              .save()
-              .then(profile => res.json(profile))
-              .catch(err => console.log("Error from shortlistCandidate", err));
+    Selected.findOne({ vaccancyid })
+    .then((data)=> {
+      if(!isEmpty(data)){
+        // find studentid in selected array
+        // if studentid found
+        if(data.selected.includes(studentid)){
+          if(isChecked){
+            console.log("Do nothing");
           } else {
-            var filtered  = data.selected.filter(e => e !== req.body.studentid)
-            data.selected = filtered;
+            // Delete Item
+            let valueToRemove = studentid
+            data.selected = data.selected.filter(item => item !== valueToRemove)
             data
               .save()
-              .then(profile => res.json(profile))
+              .then(deleted => res.status(200).json(deleted))
               .catch(err => console.log("Error from shortlistCandidate", err));
           }
         } else {
-          data.selected.unshift(req.body.studentid);
-          data
-            .save()
-            .then(profile => res.json(profile))
-            .catch(err => console.log("Error from shortlistCandidate", err));
+          // if studentid not found
+          // add studentid in selected array
+          data.selected.push(studentid);
+            data
+              .save()
+              .then(profile => res.status(200).json(profile))
+              .catch(err => console.log("Error from shortlistCandidate", err));
         }
+      } else {
+          let selected = [studentid]
+          new Selected({
+            vaccancyid,
+            selected
+          })
+            .save()
+            .then(student => res.status(200).json(student))
+            .catch(err => console.log("Error from shortlistCandidate: ", err));
       }
-    });
+    })
+
+    // Selected.findOne({ vaccancyid: req.body.vaccancyid }).then(data => {
+    //   if (isEmpty(data)) {
+    //     // Save Profile
+    //     new Selected({
+    //       vaccancyid: req.body.vaccancyid,
+    //       selected: [req.body.studentid]
+    //     })
+    //       .save()
+    //       .then(profile => {
+    //         console.log(profile);
+    //       })
+    //       .catch(err => console.log("Error from create Profile: ", err));
+    //   } else {
+    //     if (data.selected.find(x => x === req.body.studentid) === req.body.studentid) {
+    //       if (req.body.isChecked) {
+    //         data.selected.unshift(req.body.studentid);
+    //         data
+    //           .save()
+    //           .then(profile => res.json(profile))
+    //           .catch(err => console.log("Error from shortlistCandidate", err));
+    //       } else {
+    //         var filtered  = data.selected.filter(e => e !== req.body.studentid)
+    //         data.selected = filtered;
+    //         data
+    //           .save()
+    //           .then(profile => res.json(profile))
+    //           .catch(err => console.log("Error from shortlistCandidate", err));
+    //       }
+    //     } else {
+    //       data.selected.unshift(req.body.studentid);
+    //       data
+    //         .save()
+    //         .then(profile => res.json(profile))
+    //         .catch(err => console.log("Error from shortlistCandidate", err));
+    //     }
+    //   }
+    // });
   }
 
   public selectionEmail(req: Request, res: Response) {

@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
-import Img from "../../assets/img.jpeg";
+import Img from "../../assets/noimg.png";
 
 function Copyright() {
   return (
@@ -206,7 +206,7 @@ function StudentProfile(props) {
                     }}
                     alt="profile"
                     src={
-                      isEmpty(props.profile.url) ? <Img /> : props.profile.url
+                      isEmpty(props.profile.url) ? Img : props.profile.url
                     }
                   />
                 </div>

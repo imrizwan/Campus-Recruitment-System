@@ -212,7 +212,7 @@ class CreateCompanyProfile extends React.Component {
                 !isEmpty(this.props.profilecreated) && this.props.profilecreated.profilecreated ?
                     <div>
                         <br />
-                        <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>You have made profile, Go to <Link to="/updatecompanyprofile">Update Profile</Link> for Changes</Typography>
+                        <Typography variant="h6" style={{ textAlign: "center" }}>You have made profile, Go to <Link to="/updatecompanyprofile">Update Profile</Link> for Changes</Typography>
                     </div>
                     :
                     <div>
