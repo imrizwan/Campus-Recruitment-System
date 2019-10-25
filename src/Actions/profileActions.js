@@ -13,8 +13,26 @@ import {
   DELETE_LANGUAGE,
   DELETE_PROJECT,
   DELETE_EXPERIENCE,
-  DELETE_ACTIVITIES
+  DELETE_ACTIVITIES,
+  GET_ALL_VACCANCIES,
 } from "../Variables";
+
+export const getAllVaccancies = () => dispatch => {
+  axios
+  .get(URL + `getallvaccancies`)
+  .then(res => {
+    dispatch({
+      type: GET_ALL_VACCANCIES,
+      payload: res.data
+    });
+  })
+  .catch(err =>
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    })
+  );
+}
 
 export const upload = (selectedImage, history) => dispatch => {
   axios

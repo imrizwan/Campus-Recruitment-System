@@ -112,7 +112,7 @@ class CompanyDashboard extends Component {
   render() {
     if (
       isEmpty(this.props.profilecreated) ||
-      isEmpty(this.props.companyprofiles.profile)
+      isEmpty(this.props.companyprofiles)
     ) {
       return <Loader />;
     } else {
@@ -587,6 +587,15 @@ class CompanyDashboard extends Component {
                                           >
                                             Send Email
                                             </Link>
+                                            <br />
+                                            <br />
+                                          <Link
+                                            target="_blank"
+                                            to={`/appointmentletter?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`}
+                                            className="btn btn-success"
+                                          >
+                                            Send Appointment Letter
+                                            </Link>
                                           <br />
                                           <br />
                                           <div>
@@ -617,14 +626,14 @@ class CompanyDashboard extends Component {
                                   ))}
                               </div>
                               <div className="modal-footer">
-                                <Link 
-                                target="_blank"
-                                to={{
-                                  pathname: `/sendemail/${this.state.key._id}`,
-                                  state: {
-                                    emails: this.props.getshortlisted
-                                  }
-                                }}
+                                <Link
+                                  target="_blank"
+                                  to={{
+                                    pathname: `/sendemail/${this.state.key._id}`,
+                                    state: {
+                                      emails: this.props.getshortlisted
+                                    }
+                                  }}
                                 >
                                   <button
                                     // onClick={() => this.setState({ check: new Map() })}

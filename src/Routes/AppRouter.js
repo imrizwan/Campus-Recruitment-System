@@ -16,6 +16,7 @@ import AddProject from '../Components/Company/AddProject';
 import AddVaccancy from '../Components/Company/AddVaccancy';
 import StudentProfile from '../Components/Company/StudentProfile';
 import SelectionEmail from '../Components/Company/SelectionEmail';
+import AppointmentLetter from '../Components/Company/AppointmentLetter';
 import SendEmail from '../Components/Company/SendEmail';
 import SignIn from '../Components/SignIn';
 import Resend from '../Components/Resend';
@@ -111,6 +112,7 @@ class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/companyprofile" userType="company" component={MyCompanyProfile} />
           <PrivateRoute exact={true} path="/studentprofile/:id" userType="company" component={StudentProfile} />
           <PrivateRoute exact={true} path="/selectionemail" userType="company" component={SelectionEmail} />
+          <PrivateRoute exact={true} path="/appointmentletter" userType="company" component={AppointmentLetter} />
           <PrivateRoute exact={true} path="/sendemail/:vaccancyid" userType="company" component={SendEmail} />
           <PrivateRoute exact={true} path="/createcompanyprofile" userType="company" component={CreateCompanyProfile} />
           <PrivateRoute exact={true} path="/addproject" userType="company" component={AddProject} />

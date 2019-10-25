@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Loader from "../Loader/Loader";
-// import { withStyles } from '@material-ui/core/styles';
 import isEmpty from "../../validation/is-empty";
 import {
   getCurrentProfile,
@@ -18,24 +17,11 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Hidden from "@material-ui/core/Hidden";
-// import Link from '@material-ui/core/Link';
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
-// import { PropTypes } from 'prop-types';
-// import ProfileHeader from "./ProfileHeader";
-// import ProfileAbout from "./ProfileAbout";
-// import ProfileCreds from "./ProfileCreds";
-// import IconButton from '@material-ui/core/IconButton';
-// import SearchIcon from '@material-ui/icons/Search';
-// import Markdown from './Markdown';
-// import post1 from './blog-post.1.md';
 import Img from "../../assets/img.jpeg";
-// import post2 from './blog-post.2.md';
-// import post3 from './blog-post.3.md';
 
 function Copyright() {
   return (

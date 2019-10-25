@@ -85,6 +85,57 @@ export class CompanyAuthController {
     .catch(err => res.status(404).json(err))
   }
 
+  public appointmentLetter(req: Request, res: Response) {
+    const errors = {
+      appointmentletter: ""
+    };
+    if (
+      isEmpty(req.body.date) ||
+      isEmpty(req.body.timing) ||
+      isEmpty(req.body.info) ||
+      isEmpty(req.body.studentemail) ||
+      isEmpty(req.body.position) ||
+      isEmpty(req.body.company) ||
+      isEmpty(req.body.companyemail)
+    ) {
+      errors.appointmentletter = "Something went wrong";
+      return res.status(400).json(errors);
+    }
+
+    // Send the email
+    var transporter = nodemailer.createTransport({
+      service: keys.service,
+      auth: { user: keys.user, pass: keys.pass }
+    });
+    var mailOptions = {
+      from: "no-reply@localhost.com",
+      to: req.body.studentemail,
+      subject: "Appointment Letter",
+      text:
+        "Congratulations,\n\n" +
+        "You have been selected for " +
+        `${req.body.position} in ${req.body.company}` +
+        "\n\nDetails: \n\n" +
+        "Company Email: " +
+        `${req.body.companyemail}\n\n` +
+        "Office Timing: " +
+        `${req.body.timing}\n\n` +
+        "Starts from: " +
+        `${req.body.date}\n\n` +
+        `${req.body.info}\n\n` +
+        `Thanks`
+    };
+    transporter.sendMail(mailOptions, function(err) {
+      if (err) {
+        return res.status(500).send({ msg: err.message });
+      }
+
+      res.status(200).send({
+        success: "An email has been sent to " + req.body.studentemail + "."
+      });
+    });
+  }
+
   public selectionEmail(req: Request, res: Response) {
     console.log(req.body)
     const errors = {
@@ -359,19 +410,23 @@ export class CompanyAuthController {
   // @desc    getCompanies
   // @access  Public
 
-  public getAllCompanies(req: Request, res: Response) {
+  public getAllVaccancies(req: Request, res: Response) {
     const errors = {
       noprofile: ""
     };
 
-    CompanyProfile.find({ vaccancy: { $exists: true, $not: { $size: 0 } } })
+    CompanyProfile.find({})
       .then(profiles => {
         if (!profiles) {
           errors.noprofile = "Sorry, Companies are unavailable";
           return res.status(404).json(errors);
         }
-
-        res.json(profiles);
+        let updatedProfile = [];
+        profiles.map((data)=>(
+          updatedProfile.push(data.vaccancy)
+        ))
+        updatedProfile = updatedProfile.reduce((acc, val) => acc.concat(val), []);
+        return res.json(updatedProfile);
       })
       .catch(err => console.log("Error from getCompanies", err));
   }

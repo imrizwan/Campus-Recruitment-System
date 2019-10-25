@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import {
   getProfileCreated,
-  selectionEmail
+  appointmentLetter
 } from "../../Actions/companyProfileActions";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
@@ -39,7 +39,7 @@ const styles = theme => ({
   }
 });
 
-class SelectionEmail extends Component {
+class AppointmentLetter extends Component {
   state = {
     info: "",
     timing: "",
@@ -98,11 +98,11 @@ class SelectionEmail extends Component {
       this.setState({ errors });
     } else if (isEmpty(this.state.date)) {
       let errors = {};
-      errors.date = "Interview Date is required";
+      errors.date = "Starting Date is required";
       this.setState({ errors });
     } else if (isEmpty(this.state.timing)) {
       let errors = {};
-      errors.timing = "Interview Timing is required";
+      errors.timing = "Office Timing is required";
       this.setState({ errors });
     } else {
       const data = {
@@ -115,7 +115,7 @@ class SelectionEmail extends Component {
         date: this.state.date
       };
       this.setState({ selectionLoader: true, errors: {} });
-      this.props.selectionEmail(data, this.props.history);
+      this.props.appointmentLetter(data, this.props.history);
     }
   };
 
@@ -152,7 +152,7 @@ class SelectionEmail extends Component {
             ) : null}
             <TextField
               id="date"
-              label="Interview Date"
+              label="Starting Date"
               className={classes.textField}
               margin="normal"
               type="date"
@@ -168,7 +168,7 @@ class SelectionEmail extends Component {
             <TextField
               id="select-timing"
               select
-              label="Select Interview Timing"
+              label="Select Office Timing"
               className={classes.textField}
               value={this.state.timing}
               onChange={this.handleChangeInput("timing")}
@@ -181,41 +181,20 @@ class SelectionEmail extends Component {
             >
               {[
                 {
-                  value: "9am"
+                  value: "7am to 4pm"
                 },
                 {
-                  value: "10am"
+                  value: "8am to 5pm"
                 },
                 {
-                  value: "11am"
+                  value: "9am to 6pm"
                 },
                 {
-                  value: "12pm"
+                  value: "10am to 7pm"
                 },
                 {
-                  value: "1pm"
+                  value: "11am to 8pm"
                 },
-                {
-                  value: "2pm"
-                },
-                {
-                  value: "3pm"
-                },
-                {
-                  value: "4pm"
-                },
-                {
-                  value: "5pm"
-                },
-                {
-                  value: "6pm"
-                },
-                {
-                  value: "7pm"
-                },
-                {
-                  value: "8pm"
-                }
               ].map(option => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.value}
@@ -227,7 +206,7 @@ class SelectionEmail extends Component {
             ) : null}
             <br />
             <br />
-            {this.props.selectionemail === 200 ? (
+            {this.props.appointmentletter === 200 ? (
               <p style={{ color: "green" }}>An email has been sent</p>
             ) : this.state.selectionLoader ? (
               <div className="text-center">
@@ -257,13 +236,13 @@ const mapStateToProps = state => ({
   errors: state.errors,
   auth: state.auth,
   profilecreated: state.profilecreated.profilecreated,
-  selectionemail: state.selectionemail
+  appointmentletter: state.appointmentletter
 });
 
 export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { getProfileCreated, selectionEmail }
+    { getProfileCreated, appointmentLetter }
   )
-)(withRouter(SelectionEmail));
+)(withRouter(AppointmentLetter));

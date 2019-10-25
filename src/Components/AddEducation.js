@@ -242,10 +242,6 @@ const mapStateToProps = state => ({
   deleteeducation: state.profile.deleteeducation
 });
 
-// export default connect(mapStateToProps, { addEducation, getCurrentProfile })(
-//     withRouter(withStyles(styles)(AddEducation))
-//   );
-
 export default compose(
   withStyles(styles),
   connect(

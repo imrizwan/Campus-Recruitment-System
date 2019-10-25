@@ -87,7 +87,7 @@ class SendEmail extends Component {
         for (var i = 0; i < vars.length; i++) {
             var pair = vars[i].split("=");
             //[ 'app', 'article' ][ 'act', 'news_content' ][ 'aid', '160990' ]
-            if (pair[0] == variable) {
+            if (pair[0] === variable) {
                 return pair[1];
             }
         }
