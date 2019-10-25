@@ -15,6 +15,7 @@ import {
   GET_CANDIDATES,
   SELECTION_EMAIL,
   SHORTLIST_CANDIDATE,
+  GET_SHORTLISTED
 } from "../Variables";
 
 const initialState = {
@@ -107,6 +108,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         shortlistcandidate: action.payload
+      };
+    case GET_SHORTLISTED:
+      return {
+        ...state,
+        getshortlisted: action.payload
       };
     default:
       return state;

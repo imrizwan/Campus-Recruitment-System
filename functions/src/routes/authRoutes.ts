@@ -36,6 +36,7 @@ export class Routes {
         app.post('/api/changepassword', this.authController.changePassword);
         app.post('/api/applyforvaccancy', passport.authenticate("jwt", { session: false }), this.authController.applyForVaccancy)
         // Company Routes
+        app.get('/api/getshortlisted/:vaccancyid', passport.authenticate("jwt", { session: false }), this.companycontroller.getShortlisted)
         app.post('/api/selectionemail', passport.authenticate("jwt", { session: false }), this.companycontroller.selectionEmail)
         app.post('/api/shortlistcandidate', passport.authenticate("jwt", { session: false }), this.companycontroller.shortlistCandidate)
         app.post('/api/createcompanyprofile', passport.authenticate("jwt", { session: false }), this.companycontroller.createcompanyprofile)
@@ -48,6 +49,7 @@ export class Routes {
         app.post('/api/updatevaccancy', passport.authenticate("jwt", { session: false }), this.companycontroller.updateVaccancy)        
         // It will be used by student
         app.get('/api/getcompanies', passport.authenticate("jwt", { session: false }), this.companycontroller.getCompanies)
+        app.get('/api/getallcompanies', this.companycontroller.getAllCompanies)
         
     }
 }

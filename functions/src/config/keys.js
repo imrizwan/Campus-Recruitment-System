@@ -1,5 +1,6 @@
 module.exports = {
   // mongoURI: "mongodb://localhost:27017/cms",
+  // % nc -w 3 -v ds012345.mlab.com 51554
   mongoURI: "mongodb://rizwan1:rizwan1@ds151554.mlab.com:51554/cms-fyp",
   secretOrKey: "secret",
   user: "immrizwanss@gmail.com",

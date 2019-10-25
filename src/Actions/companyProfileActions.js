@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { GET_SHORTLISTED, SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
 import isEmpty from '../validation/is-empty';
 
 // Delete education
@@ -195,7 +195,7 @@ export const addVaccancy = (vaccancyData, history) => dispatch => {
       .post(URL+'selectionemail', newData)
       .then(res => {
         alert("Email Sent!")
-        history.push("companydashboard")
+        history.push("/companydashboard")
         dispatch({ type: SELECTION_EMAIL, payload: res.status })
       })
       .catch(err =>
@@ -207,12 +207,39 @@ export const addVaccancy = (vaccancyData, history) => dispatch => {
     }
   };
 
-  export const shortlistCandidate = (newData) => dispatch => {
+  export const getShortlisted = (vaccancyid) => dispatch => {
+    if(!isEmpty(vaccancyid)){
+      axios
+      .get(URL+`getshortlisted/${vaccancyid}`)
+      .then(res => {
+        dispatch({ type: GET_SHORTLISTED, payload: res.data })
+      })
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+    }
+  }
+
+  export const shortlistCandidate = (newData, currentTarget) => dispatch => {
     if(!isEmpty(newData)){
       axios
       .post(URL+'shortlistcandidate', newData)
       .then(res => {
-        dispatch({ type: SHORTLIST_CANDIDATE, payload: res.status })
+        if(res.data.msg === "deleted"){
+          currentTarget.style.backgroundColor = "#007bff";
+          currentTarget.style.borderColor = "#007bff";
+          currentTarget.style.color = "white";
+          currentTarget.innerHTML = "Shortlist this candidate";
+        } else if(res.data.msg === "added"){
+          currentTarget.style.backgroundColor = "#DC3545";
+          currentTarget.style.borderColor = "#DC3545";
+          currentTarget.style.color = "white";
+          currentTarget.innerHTML = "Remove from shortlist";
+        }
+        dispatch({ type: SHORTLIST_CANDIDATE, payload: res.data })
       })
       .catch(err =>
         dispatch({

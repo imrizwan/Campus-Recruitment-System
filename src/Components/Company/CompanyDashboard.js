@@ -16,8 +16,18 @@ import {
   deleteVaccancy,
   updateVaccancy,
   getCandidates,
-  shortlistCandidate
+  shortlistCandidate,
+  getShortlisted
 } from "../../Actions/companyProfileActions";
+
+const setter = (data) => {
+  let newData = new Map();
+  data.selected.map((item, index) => (
+    newData.set(item, true)
+  ))
+
+  return newData;
+}
 const formatter = buildFormatter(englishStrings);
 class CompanyDashboard extends Component {
   constructor(props) {
@@ -33,7 +43,9 @@ class CompanyDashboard extends Component {
       contactno: "",
       success: "",
       key: "",
-      check: new Map()
+      studentMail: "",
+      isChecked: "",
+      check: isEmpty(this.props.getshortlisted) ? new Map() : setter(this.props.getshortlisted)
     };
   }
 
@@ -72,17 +84,19 @@ class CompanyDashboard extends Component {
     window.location.reload();
   };
 
-  handleChangeCheck = e => {
-    const item = e.target.name;
-    const isChecked = e.target.checked;
+  handleChangeCheck = (e, isChecked) => {
+    console.log("isChecked", isChecked)
+    let currentTarget = e.currentTarget;
+    // const item = e.target.name;
+    // const isChecked = e.target.checked;
     this.props.shortlistCandidate({
-      studentid: item, 
-      isChecked: isChecked, 
-      vaccancyid: this.state.key._id
-    })
-    this.setState(prevState => ({
-      check: prevState.check.set(item, isChecked)
-    }));
+      studentMail: e.currentTarget.id,
+      isChecked,
+      vaccancyid: this.state.key._id,
+    }, currentTarget)
+    // this.setState(prevState => ({
+    //   check: prevState.check.set(item, isChecked)
+    // }), ()=> console.log(`=============>`,this.state.check));
   };
 
   handleChange = name => event => {
@@ -110,8 +124,8 @@ class CompanyDashboard extends Component {
               isEmpty(this.props.companyprofiles.profile.vaccancy) ? (
                 <h4 className="text-center">No Vaccancies</h4>
               ) : (
-                <h4 className="text-center">Your Vaccancies</h4>
-              )
+                  <h4 className="text-center">Your Vaccancies</h4>
+                )
             ) : null
           ) : null}
           <br />
@@ -186,6 +200,7 @@ class CompanyDashboard extends Component {
                                   )
                                 );
                                 this.setState({ key: vaccancy, check: new Map() });
+                                this.props.getShortlisted(vaccancy._id);
                               }}
                             >
                               Candidates
@@ -232,8 +247,8 @@ class CompanyDashboard extends Component {
                                     {this.state.errors.deletevaccany}
                                   </div>
                                 ) : (
-                                  "Are you sure?"
-                                )}
+                                    "Are you sure?"
+                                  )}
                               </div>
                               <div className="modal-footer">
                                 <button
@@ -480,8 +495,8 @@ class CompanyDashboard extends Component {
                                     {this.state.errors.deletevaccany}
                                   </div>
                                 ) : (
-                                  "Are you sure?"
-                                )}
+                                    "Are you sure?"
+                                  )}
                               </div>
                               <div className="modal-footer">
                                 <button
@@ -538,80 +553,89 @@ class CompanyDashboard extends Component {
                                 {isEmpty(this.props.getcandidates)
                                   ? <h6 style={{ textAlign: "center" }}>No one applied yet</h6>
                                   : this.props.getcandidates.map(student => (
-                                      <div
-                                        key={student.user}
-                                        className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                                      >
-                                        <div className="flex-column">
-                                          {student.name}
-                                          <p>
-                                            <small>{student.phoneNumber}</small>
-                                            <br />
-                                            <small>{student.location}</small>
-                                          </p>
-                                          <span
-                                            className="badge badge-info badge-pill"
-                                            style={{ padding: 5 }}
+                                    <div
+                                      key={student.mail}
+                                      className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                    >
+                                      <div className="flex-column">
+                                        {student.name}
+                                        <p>
+                                          <small>{student.phoneNumber}</small>
+                                          <br />
+                                          <small>{student.location}</small>
+                                        </p>
+                                        <span
+                                          className="badge badge-info badge-pill"
+                                          style={{ padding: 5 }}
+                                        >
+                                          {student.mail}
+                                        </span>
+                                        <div>
+                                          <br />
+                                          <Link
+                                            target="_blank"
+                                            to={`/studentprofile/${student.user}`}
+                                            className="btn btn-primary"
+                                            style={{ marginRight: 5 }}
                                           >
-                                            {student.mail}
-                                          </span>
+                                            View Profile
+                                            </Link>
+                                          <Link
+                                            target="_blank"
+                                            to={`/selectionemail?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`}
+                                            className="btn btn-success"
+                                          >
+                                            Send Email
+                                            </Link>
+                                          <br />
+                                          <br />
                                           <div>
-                                            <br />
-                                            <Link
-                                              target="_blank"
-                                              to={`/studentprofile/${student.user}`}
-                                              className="btn btn-primary"
-                                              style={{ marginRight: 5 }}
-                                            >
-                                              View Profile
-                                            </Link>
-                                            <Link
-                                              target="_blank"
-                                              to={`/selectionemail?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`}
-                                              className="btn btn-success"
-                                            >
-                                              Send Email
-                                            </Link>
-                                            <br />
-                                            <br />
-                                            <div className="custom-control custom-checkbox">
-                                              <input
-                                                name={student.user}
-                                                checked={this.state.check.get(student.user)}
-                                                onChange={this.handleChangeCheck}
-                                                type="checkbox"
-                                                className="custom-control-input"
-                                                id={student.user}
-                                              />
-                                              <label
-                                                className="custom-control-label"
-                                                htmlFor={student.user}
-                                              >
-                                                Shortlist this candidate
-                                              </label>
-                                            </div>
+                                            <button
+                                              onClick={(e) => this.handleChangeCheck(e, isEmpty(this.props.getshortlisted) ? false : this.props.getshortlisted.selected.includes(student.mail))}
+                                              type="button"
+                                              className={isEmpty(this.props.getshortlisted) ? "btn btn-primary" : this.props.getshortlisted.selected.includes(student.mail) ? "btn btn-danger" : "btn btn-primary"}
+                                              id={student.mail}
+                                            >{isEmpty(this.props.getshortlisted) ? "Shortlist this candidate" : this.props.getshortlisted.selected.includes(student.mail) ? "Remove from shortlist" : "Shortlist this candidate"}</button>
                                           </div>
                                         </div>
-                                        <div className="image-parent">
-                                          <img
-                                            style={{ width: 150, height: 150 }}
-                                            src={
-                                              isEmpty(student.url) ? (
-                                                NoIMG
-                                              ) : (
+                                      </div>
+                                      <div className="image-parent">
+                                        <img
+                                          style={{ width: 150, height: 150 }}
+                                          src={
+                                            isEmpty(student.url) ? (
+                                              NoIMG
+                                            ) : (
                                                 student.url
                                               )
-                                            }
-                                            className="img-fluid"
-                                            alt="quixote"
-                                          />
-                                        </div>
+                                          }
+                                          className="img-fluid"
+                                          alt="quixote"
+                                        />
                                       </div>
-                                    ))}
+                                    </div>
+                                  ))}
                               </div>
                               <div className="modal-footer">
+                                <Link 
+                                target="_blank"
+                                to={{
+                                  pathname: `/sendemail/${this.state.key._id}`,
+                                  state: {
+                                    emails: this.props.getshortlisted
+                                  }
+                                }}
+                                >
+                                  <button
+                                    // onClick={() => this.setState({ check: new Map() })}
+                                    type="button"
+                                    className="btn btn-secondary"
+                                  >
+                                    Send email to shortlisted candidates
+                                </button>
+                                </Link>
                                 <button
-                                  onClick={()=> this.setState({ check: new Map() })}
+                                  onClick={() => this.setState({ check: new Map() })}
                                   type="button"
                                   className="btn btn-secondary"
                                   data-dismiss="modal"
@@ -628,12 +652,12 @@ class CompanyDashboard extends Component {
                   }
                 )
               ) : (
-                <h4 className="text-center">No vaccancy</h4>
-              )}
+                  <h4 className="text-center">No vaccancy</h4>
+                )}
             </div>
           ) : (
-            <h4 className="text-center">No vaccancy</h4>
-          )}
+              <h4 className="text-center">No vaccancy</h4>
+            )}
           <br />
         </div>
       );
@@ -653,6 +677,7 @@ const mapStateToProps = state => ({
   success: state.profilecreated.success,
   getcandidates: state.profile.getcandidates,
   shortlistcandidate: state.profile.shortlistcandidate,
+  getshortlisted: state.profile.getshortlisted,
 });
 
 // export default connect(mapStateToProps)(CompanyDashboard);
@@ -665,7 +690,8 @@ export default compose(
       deleteVaccancy,
       updateVaccancy,
       getCandidates,
-      shortlistCandidate
+      shortlistCandidate,
+      getShortlisted
     }
   )
 )(withRouter(CompanyDashboard));
