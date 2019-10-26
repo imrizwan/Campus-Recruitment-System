@@ -1,7 +1,24 @@
 import axios from 'axios';
-import { APPOINTMENT_LETTER,GET_SHORTLISTED, SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { GET_COMPANY_PROFILE_BY_ID, APPOINTMENT_LETTER,GET_SHORTLISTED, SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
 import isEmpty from '../validation/is-empty';
 
+// Delete education
+export const getCompanyProfileById = (id) => dispatch => {
+  axios
+    .get(URL + `companyprofile/${id}`)
+    .then(res => {
+      dispatch({
+        type: GET_COMPANY_PROFILE_BY_ID,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
 // Delete education
 export const deleteProject = (id, getCurrentCompanyProfile) => dispatch => {
   axios

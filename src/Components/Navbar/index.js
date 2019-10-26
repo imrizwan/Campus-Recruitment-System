@@ -169,7 +169,7 @@ class Navbar extends React.Component {
                       to={
                         this.props.auth.user.userType === "student"
                           ? "/profile"
-                          : "/companyprofile"
+                          : `/companyprofile/${this.props.auth.user.id}`
                       }
                     >
                       My Profile

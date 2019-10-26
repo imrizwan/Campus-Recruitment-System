@@ -17,7 +17,8 @@ import {
   SHORTLIST_CANDIDATE,
   GET_SHORTLISTED,
   GET_ALL_VACCANCIES,
-  APPOINTMENT_LETTER
+  APPOINTMENT_LETTER,
+  GET_COMPANY_PROFILE_BY_ID
 } from "../Variables";
 
 const initialState = {
@@ -125,6 +126,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         getallvaccancies: action.payload
+      };
+    case GET_COMPANY_PROFILE_BY_ID:
+      return {
+        ...state,
+        getcompanyprofilebyid: action.payload
       };
     default:
       return state;

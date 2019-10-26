@@ -106,10 +106,10 @@ class AppRouter extends React.Component {
           <Route path="/unauthorized" component={UnAuthorized} />
           <Route exact={true} path="/profile/:id" component={Profile} />
           <Route exact={true} path="/" component={PublicDashboard} />
+          <Route exact={true} path="/companyprofile/:id" component={MyCompanyProfile} />
       <Switch>
           <PrivateRoute exact={true} path="/companydashboard" userType="company" component={CompanyDashboard} />
           <PrivateRoute exact={true} path="/updatecompanyprofile" userType="company" component={UpdateCompanyProfile} />
-          <PrivateRoute exact={true} path="/companyprofile" userType="company" component={MyCompanyProfile} />
           <PrivateRoute exact={true} path="/studentprofile/:id" userType="company" component={StudentProfile} />
           <PrivateRoute exact={true} path="/selectionemail" userType="company" component={SelectionEmail} />
           <PrivateRoute exact={true} path="/appointmentletter" userType="company" component={AppointmentLetter} />

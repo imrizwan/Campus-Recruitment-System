@@ -119,8 +119,8 @@ class CompanyDashboard extends Component {
       return (
         <div className="container">
           <br />
-          {this.props.companyprofiles ? (
-            this.props.companyprofiles.profile ? (
+          {!isEmpty(this.props.companyprofiles) ? (
+            !isEmpty(this.props.companyprofiles.profile) ? (
               isEmpty(this.props.companyprofiles.profile.vaccancy) ? (
                 <h4 className="text-center">No Vaccancies</h4>
               ) : (
