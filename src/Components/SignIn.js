@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { loginUser } from "../Actions/authActions";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
-import compose from 'recompose/compose'
+import { withRouter } from "react-router-dom";
+import compose from "recompose/compose";
 //Tabs
 
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 //TextField
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 import "./index.css";
 //import { } from '../Variables';
@@ -29,24 +29,24 @@ function TabContainer(props) {
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
+    width: "100%",
+    backgroundColor: theme.palette.background.paper
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   textField: {
-    width: "100%",
+    width: "100%"
   },
   button: {
     width: "100%"
@@ -58,7 +58,6 @@ const styles = theme => ({
 });
 
 class RenderForm extends React.Component {
-
   state = {
     emailStudent: "",
     passwordStudent: "",
@@ -72,101 +71,164 @@ class RenderForm extends React.Component {
 
   handleChangeInput = name => event => {
     this.setState({
-      [name]: event.target.value,
+      [name]: event.target.value
     });
   };
 
-  UNSAFE_componentWillReceiveProps(nextProps){
-    if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "student"){
-        this.props.history.push('/studentdashboard');
-    } else if(nextProps.auth.isAuthenticated && nextProps.auth.user.userType === "company"){
-      this.props.history.push('/companydashboard');
-    }
-    
-    if(nextProps.errors){
-        this.setState({ errors: nextProps.errors });
-      }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.userType === "student"
+    ) {
+      this.props.history.push("/studentdashboard");
+    } else if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.userType === "company"
+    ) {
+      this.props.history.push("/companydashboard");
+    }  else if (
+      nextProps.auth.isAuthenticated &&
+      nextProps.auth.user.userType === "admin"
+    ) {
+      this.props.history.push("/admindashboard");
     }
 
-    
-  componentDidMount(){
-    if(this.props.auth.isAuthenticated && this.props.auth.user.userType === "student"){
-      this.props.history.push('/studentdashboard');
-  } else if(this.props.auth.isAuthenticated && this.props.auth.user.userType === "company"){
-    this.props.history.push('/companydashboard');
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
+
+  componentDidMount() {
+    if (
+      this.props.auth.isAuthenticated &&
+      this.props.auth.user.userType === "student"
+    ) {
+      this.props.history.push("/studentdashboard");
+    } else if (
+      this.props.auth.isAuthenticated &&
+      this.props.auth.user.userType === "company"
+    ) {
+      this.props.history.push("/companydashboard");
+    } else if (
+      this.props.auth.isAuthenticated &&
+      this.props.auth.user.userType === "admin"
+    ) {
+      this.props.history.push("/admindashboard");
+    }
   }
 
-  onClick = (value) => {
-    const { emailAdmin, emailCompany, emailStudent, passwordStudent, passwordCompany, passwordAdmin } = this.state;
+  onClick = value => {
+    const {
+      emailAdmin,
+      emailCompany,
+      emailStudent,
+      passwordStudent,
+      passwordCompany,
+      passwordAdmin
+    } = this.state;
 
-    const newuser = value === "admin" ? {
-      email: emailAdmin,
-      password: passwordAdmin, 
-      userType: value
-    } : value === "student" ? {
-      email: emailStudent,
-      password: passwordStudent, 
-      userType: value
-    } : {
-      email: emailCompany,
-      password: passwordCompany, 
-      userType: value
-    }
-
+    const newuser =
+      value === "admin"
+        ? {
+            email: emailAdmin,
+            password: passwordAdmin,
+            userType: value
+          }
+        : value === "student"
+        ? {
+            email: emailStudent,
+            password: passwordStudent,
+            userType: value
+          }
+        : {
+            email: emailCompany,
+            password: passwordCompany,
+            userType: value
+          };
     this.props.loginUser(newuser);
-  }
+  };
 
   render() {
     const { classes, value } = this.props;
     const { errors } = this.state;
-    return(
+    return (
       <TabContainer>
-            <div className={classes.center}>
-            {
-              errors.userType ? <div style={{ color: "red" }}>{ this.state.errors.userType }</div> : null
+        <div className={classes.center}>
+          {errors.userType ? (
+            <div style={{ color: "red" }}>{this.state.errors.userType}</div>
+          ) : null}
+          <TextField
+            id="outlined-name"
+            label="Email"
+            className={classes.textField}
+            value={
+              value === "admin"
+                ? this.state.emailAdmin
+                : value === "student"
+                ? this.state.emailStudent
+                : this.state.emailCompany
             }
-            <TextField
-              id="outlined-name"
-              label="Email"
-              className={classes.textField}
-              value={value === "admin" ? this.state.emailAdmin : value === "student" ? this.state.emailStudent : this.state.emailCompany}
-              onChange={value === "admin" ? this.handleChangeInput('emailAdmin'): value === "student" ? this.handleChangeInput('emailStudent') : this.handleChangeInput('emailCompany')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            {
-              errors.email ? <div style={{ color: "red" }}>{ this.state.errors.email }</div> : null
+            onChange={
+              value === "admin"
+                ? this.handleChangeInput("emailAdmin")
+                : value === "student"
+                ? this.handleChangeInput("emailStudent")
+                : this.handleChangeInput("emailCompany")
             }
-             {
-              errors.resend ? <div style={{ color: "black" }}><Link to="/resend">{ this.state.errors.resend }</Link></div> : null
-            }
-            <br />
-            <TextField
-              id="outlined-password-input"
-              label="Password"
-              className={classes.textField}
-              type="password"
-              autoComplete="current-password"
-              value={value === "admin" ? this.state.passwordAdmin : value === "student" ? this.state.passwordStudent : this.state.passwordCompany}
-              onChange={value === "admin" ? this.handleChangeInput('passwordAdmin'): value === "student" ? this.handleChangeInput('passwordStudent') : this.handleChangeInput('passwordCompany')}
-              margin="normal"
-              variant="outlined"
-            />
-            <br />
-            {
-              errors.password ? <div style={{ color: "red" }}>{ this.state.errors.password }</div> : null
-            }
-            <br />
-            <Button variant="contained" color="primary" className={classes.button} onClick={ () => this.onClick(value) } >
-              Login &nbsp;
-        <FontAwesomeIcon icon="sign-in-alt" />
-            </Button>
+            margin="normal"
+            variant="outlined"
+          />
+          <br />
+          {errors.email ? (
+            <div style={{ color: "red" }}>{this.state.errors.email}</div>
+          ) : null}
+          {errors.resend ? (
+            <div style={{ color: "black" }}>
+              <Link to="/resend">{this.state.errors.resend}</Link>
             </div>
-          </TabContainer>
-    )
-}
+          ) : null}
+          <br />
+          <TextField
+            id="outlined-password-input"
+            label="Password"
+            className={classes.textField}
+            type="password"
+            autoComplete="current-password"
+            value={
+              value === "admin"
+                ? this.state.passwordAdmin
+                : value === "student"
+                ? this.state.passwordStudent
+                : this.state.passwordCompany
+            }
+            onChange={
+              value === "admin"
+                ? this.handleChangeInput("passwordAdmin")
+                : value === "student"
+                ? this.handleChangeInput("passwordStudent")
+                : this.handleChangeInput("passwordCompany")
+            }
+            margin="normal"
+            variant="outlined"
+          />
+          <br />
+          {errors.password ? (
+            <div style={{ color: "red" }}>{this.state.errors.password}</div>
+          ) : null}
+          <br />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.onClick(value)}
+          >
+            Login &nbsp;
+            <FontAwesomeIcon icon="sign-in-alt" />
+          </Button>
+        </div>
+      </TabContainer>
+    );
+  }
 }
 
 class SignIn extends React.Component {
@@ -174,7 +236,7 @@ class SignIn extends React.Component {
     value: 0
   };
 
-    handleChangeTabs = (event, value) => {
+  handleChangeTabs = (event, value) => {
     this.setState({ value });
   };
 
@@ -184,9 +246,15 @@ class SignIn extends React.Component {
 
     return (
       <div className={classes.root}>
-        <br/>
+        <br />
         {/* <Typography variant="display2" className={classes.title}>Sign In</Typography> */}
-        <Typography variant="h3" style={{ textAlign: "center" }} className={classes.title}>Sign In</Typography>
+        <Typography
+          variant="h3"
+          style={{ textAlign: "center" }}
+          className={classes.title}
+        >
+          Sign In
+        </Typography>
         <Tabs
           value={value}
           onChange={this.handleChangeTabs}
@@ -195,16 +263,50 @@ class SignIn extends React.Component {
           textColor="primary"
           centered
         >
-          <Tab label="Student" icon={<FontAwesomeIcon icon="graduation-cap" />} />
+          <Tab
+            label="Student"
+            icon={<FontAwesomeIcon icon="graduation-cap" />}
+          />
           <Tab label="Company" icon={<FontAwesomeIcon icon="building" />} />
           <Tab label="Admin" icon={<FontAwesomeIcon icon="lock" />} />
         </Tabs>
-        {value === 0 && <RenderForm classes={classes} value="student" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser} />}
-        {value === 1 && <RenderForm classes={classes} value="company" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser}/>}
-        {value === 2 && <RenderForm classes={classes} value="admin" auth={this.props.auth} errors={this.props.errors} history={this.props.history} loginUser={this.props.loginUser}/>}
+        {value === 0 && (
+          <RenderForm
+            classes={classes}
+            value="student"
+            auth={this.props.auth}
+            errors={this.props.errors}
+            history={this.props.history}
+            loginUser={this.props.loginUser}
+          />
+        )}
+        {value === 1 && (
+          <RenderForm
+            classes={classes}
+            value="company"
+            auth={this.props.auth}
+            errors={this.props.errors}
+            history={this.props.history}
+            loginUser={this.props.loginUser}
+          />
+        )}
+        {value === 2 && (
+          <RenderForm
+            classes={classes}
+            value="admin"
+            auth={this.props.auth}
+            errors={this.props.errors}
+            history={this.props.history}
+            loginUser={this.props.loginUser}
+          />
+        )}
 
-          <p className="para">Create an account: <Link to="/signup">Signup</Link></p>
-          <p className="para"><Link to="/forgotpassword">Forgot Password?</Link></p>
+        <p className="para">
+          Create an account: <Link to="/signup">Signup</Link>
+        </p>
+        <p className="para">
+          <Link to="/forgotpassword">Forgot Password?</Link>
+        </p>
       </div>
     );
   }
@@ -217,7 +319,7 @@ SignIn.propTypes = {
   errors: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors
 });
@@ -225,5 +327,8 @@ const mapStateToProps = (state) => ({
 // export default connect(mapStateToProps, { loginUser })(withStyles(styles)(SignIn));
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { loginUser })
-)(withRouter(SignIn))
+  connect(
+    mapStateToProps,
+    { loginUser }
+  )
+)(withRouter(SignIn));

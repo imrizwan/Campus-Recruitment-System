@@ -111,9 +111,9 @@ class Navbar extends React.Component {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={
-                  window.location.pathname === "/publicdashboard" ? "active" : null
+                  window.location.pathname === "/" ? "active" : null
                 }
-                to="/publicdashboard"
+                to="/"
               >
                 Dashboard
               </NavLink>
@@ -271,6 +271,8 @@ class Navbar extends React.Component {
             {this.props.profilecreated &&
             this.props.auth.isAuthenticated &&
             !this.props.profilecreated.profilecreated ? (
+              this.props.auth.user.userType === "admin" ?
+              null : 
               <NavLink
                 className="nav-item nav-link"
                 activeClassName={

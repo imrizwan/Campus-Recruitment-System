@@ -39,8 +39,14 @@ import store from "../Store/configureStore";
 import setAuthToken from "../utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "../Actions/authActions";
 import PrivateRoute from "./PrivateRoute";
+import AdminPrivateRoute from "./AdminPrivateRoute";
+// Admin Imports
+import AdminDashboard from '../Components/Admin/AdminDashboard';
+
+// History Import
 import {createBrowserHistory} from 'history';
 export const history = createBrowserHistory();
+
 
 if(localStorage.jwtToken){
   setAuthToken(localStorage.jwtToken);
@@ -126,6 +132,8 @@ class AppRouter extends React.Component {
           <PrivateRoute exact={true} path="/addeducation" userType="student" component={AddEducation} />
           <PrivateRoute exact={true} path="/addexperience" userType="student" component={AddExperience} />
           <PrivateRoute exact={true} path="/addlanguage" userType="student" component={AddLanguage} />
+          {/* Admin Routes */}
+          <AdminPrivateRoute exact={true} path="/admindashboard" component={AdminDashboard} />
       </Switch>
       </div>
       </Router>
