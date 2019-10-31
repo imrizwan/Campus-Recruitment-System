@@ -1,29 +1,21 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import {
-  createProfile,
+  updateProfile,
   getProfileCreatedById,
-  upload,
+  uploadbyid,
   getProfileById
 } from "../../Actions/profileActions";
 import { connect } from "react-redux";
 import Loader from "../Loader/Loader";
 import isEmpty from "../../validation/is-empty";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserMd,
-  faSchool,
-  faLanguage,
-  faProjectDiagram,
-  faRunning
-} from "@fortawesome/free-solid-svg-icons";
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -189,7 +181,7 @@ class AdminUpdateStudentProfile extends React.Component {
     const profileData = {
       name: this.state.name,
       title: this.state.title,
-      mail: this.props.auth.user.email,
+      mail: this.state.mail,
       phoneNumber: this.state.phoneNumber,
       website: this.state.website,
       description: this.state.description,
@@ -205,14 +197,13 @@ class AdminUpdateStudentProfile extends React.Component {
       instagram: this.state.instagram
     };
 
-    this.props.createProfile(profileData, this.props.history);
+    this.props.updateProfile(profileData, this.props.history, this.props.match.params.id);
   };
 
   uploadPicture = () => {
     var formData = new FormData();
     formData.append("selectedImage", this.state.file);
-    console.log(formData);
-    this.props.upload(formData);
+    this.props.uploadbyid(formData, this.props.history, this.props.match.params.id);
   };
 
   render() {
@@ -310,7 +301,7 @@ class AdminUpdateStudentProfile extends React.Component {
               <Typography variant="h3" style={{ textAlign: "center" }}>
                 Update Profile
               </Typography>
-              <br />
+              {/* <br />
               <div className="row">
                 <div className="col-md-6 col-sm-12">
                   <Link
@@ -361,7 +352,8 @@ class AdminUpdateStudentProfile extends React.Component {
                 Activities
               </Link>
               <br />
-              <br />
+              <br /> */}
+              <br/>
               <button
                 className="btn btn-primary btn-block"
                 data-toggle="modal"
@@ -475,7 +467,6 @@ class AdminUpdateStudentProfile extends React.Component {
                 value={this.props.auth.user.email}
                 onChange={this.handleChange("mail")}
                 placeholder="Enter your Mail"
-                disabled
               />
               {errors.mail ? (
                 <div style={{ color: "red" }}>{errors.mail}</div>
@@ -626,14 +617,14 @@ class AdminUpdateStudentProfile extends React.Component {
   }
 }
 
-AdminUpdateStudentProfile.propTypes = {
-  getProfileCreatedById: PropTypes.func.isRequired,
-  getProfileById: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
-};
+// AdminUpdateStudentProfile.propTypes = {
+//   getProfileCreatedById: PropTypes.func.isRequired,
+//   getProfileById: PropTypes.func.isRequired,
+//   classes: PropTypes.object.isRequired,
+//   errors: PropTypes.object.isRequired,
+//   profile: PropTypes.object.isRequired,
+//   auth: PropTypes.object.isRequired
+// };
 
 const mapStateToProps = state => ({
   errors: state.errors,
@@ -649,6 +640,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { createProfile, getProfileById, getProfileCreatedById, upload }
+    { updateProfile, getProfileById, getProfileCreatedById, uploadbyid }
   )
 )(withRouter(AdminUpdateStudentProfile));

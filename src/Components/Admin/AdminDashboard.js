@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllProfiles } from "../../Actions/adminActions";
+import { getAllProfiles, deleteUser } from "../../Actions/adminActions";
 import isEmpty from "../../validation/is-empty";
 import Loader from "../Loader/Loader";
 import Typography from "@material-ui/core/Typography";
@@ -35,6 +35,9 @@ const styles = theme => ({
 });
 
 class AdminDashboard extends React.Component {
+  state = {
+    id: ""
+  }
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -46,6 +49,10 @@ class AdminDashboard extends React.Component {
     if (this.props.auth.isAuthenticated) {
       this.props.getAllProfiles();
     }
+  }
+
+  deleteUser = (id) => {
+    this.props.deleteUser(id)
   }
 
   render() {
@@ -90,6 +97,9 @@ class AdminDashboard extends React.Component {
                       <Link to={`/adminviewstudentprofile/${item._id}`} className="btn btn-primary">
                         View Profile
                       </Link>
+                      <button className="btn btn-danger mx-2" onClick={()=>this.deleteUser(item._id)}>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -128,6 +138,9 @@ class AdminDashboard extends React.Component {
                       <Link to={`/adminviewcompanyprofile/${item._id}`} className="btn btn-primary">
                         View Profile
                       </Link>
+                      <button className="btn btn-danger mx-2" onClick={()=>this.deleteUser(item._id)}>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -141,6 +154,7 @@ const mapStateToProps = state => ({
   // profile: state.profile.profile,
   errors: state.errors,
   getallprofiles: state.admin.getallprofiles,
+  deleteuser: state.admin.deleteuser,
   auth: state.auth
 });
 
@@ -148,6 +162,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { getAllProfiles }
+    { getAllProfiles, deleteUser }
   )
 )(withRouter(AdminDashboard));

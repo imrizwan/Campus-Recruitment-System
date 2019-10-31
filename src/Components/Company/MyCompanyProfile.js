@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Loader from "../Loader/Loader";
-// import { withStyles } from '@material-ui/core/styles';
 import isEmpty from "../../validation/is-empty";
 import { getProfileCreated } from "../../Actions/profileActions";
 import { getCompanyProfileById } from "../../Actions/companyProfileActions";
@@ -105,30 +104,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// const monthNames = [
-//   "January",
-//   "February",
-//   "March",
-//   "April",
-//   "May",
-//   "June",
-//   "July",
-//   "August",
-//   "September",
-//   "October",
-//   "November",
-//   "December"
-// ];
-
 function MyCompanyProfile(props) {
   const classes = useStyles();
-
-  // const getDate = date => {
-  //   date = new Date(date);
-  //   return `${date.getDate()}/${
-  //     monthNames[date.getMonth()]
-  //   }/${date.getFullYear()}`;
-  // };
 
   useEffect(() => {
     props.getCompanyProfileById(props.match.params.id);

@@ -28,7 +28,7 @@ const multer = require("multer");
 
 // Load User model
 import * as User from "../models/User";
-import * as Upload from "../models/Upload";
+// import * as Upload from "../models/Upload";
 // Load Profile Model
 const Profile = require("../models/Profile");
 // Load User Profile Verification Model
@@ -42,6 +42,13 @@ export class AuthController {
   public testing(req: Request, res: Response) {
     res.json("Rozwam");
   }
+
+  public deleteUser(req: Request, res: Response) {
+    User.deleteOne({ _id: req.params.id })
+    .then((data) => res.status(200).json({ success: "deleted" }))
+    .catch((err)=> console.log("error from deleteUser", err))
+  }
+
   public addNewUser(req: Request, res: Response) {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check Validation
@@ -191,6 +198,81 @@ export class AuthController {
         // });
         Profile.findOneAndUpdate(
           { user: req.user.id },
+          { $set: { url: req.file.secure_url } },
+          { new: true }
+        )
+          .then(() => {
+            return res.status(200).json({ success: true });
+          })
+          .catch(err => {
+            console.log(err);
+            errors.url = "Something went wrong";
+            return res.status(404).json(errors);
+          });
+        //save the image
+        // profile.update((err, user) => {
+        //   if (err) {
+        //     console.log(err);
+        //     return res.send({
+        //       success: false,
+        //       message: err
+        //     });
+        //   }
+        //   return res.send({
+        //     success: true,
+        //     message: "Success!!!"
+        //   });
+        // });
+      }
+    });
+  }
+
+  public uploadPictureById(req: Request, res: Response) {
+    const errors = {
+      url: ""
+    };
+    let storage = cloudinaryStorage({
+      cloudinary,
+      folder: "folder",
+      allowedFormats: ["jpg", "png"],
+      filename(req, file, cb) {
+        cb(undefined, file.fieldname + "-" + req.params.id);
+      }
+    });
+
+    const upload = multer({ storage }).single("selectedImage");
+
+    upload(req, res, function (err) {
+      // need to check if the req.file is set.
+      if (req.file == null || req.file == undefined || req.file == "") {
+        //redirect to the same url
+        errors.url = "Image Not Found: Server error!!!";
+        return res.status(404).json(errors);
+        // return res.send({
+        //   success: false,
+        //   message: "Image Not Found: Server error!!!"
+        // });
+      }
+      // An error occurred when uploading
+      if (err) {
+        console.log(err);
+      } else {
+        // Everything went fine
+        //define what to do with the params
+        //both the req.body and req.file(s) are accessble here
+        //console.log(req.file);
+
+        //store the file name to mongodb
+        //we use the model to store the file.
+        // const picture = new Upload({
+        //   url: req.file.secure_url
+        // });
+
+        // cloudinary.uploader.upload(req.file, function (result) {
+        //     console.log("Cloudinary: ", result)
+        // });
+        Profile.findOneAndUpdate(
+          { user: req.params.id },
           { $set: { url: req.file.secure_url } },
           { new: true }
         )
@@ -997,6 +1079,109 @@ export class AuthController {
               if (profile) {
                 Verify.findOneAndUpdate(
                   { user: req.user.id },
+                  { $set: { profilecreated: true } },
+                  { new: true }
+                )
+                  .then(success => res.json(profile))
+                  .catch(err => console.log("Error from verify: ", err));
+              }
+            })
+            .catch(err => console.log("Error from create Profile 2: ", err));
+        }
+      })
+      .catch(err => console.log("Error from create Profile 3: ", err));
+  }
+
+  public updateprofile(req: Request, res: Response) {
+    const { errors, isValid } = validateProfileInput(req.body);
+    const profileFields = {
+      user: "",
+      name: "",
+      title: "",
+      mail: "",
+      phoneNumber: "",
+      website: "",
+      description: "",
+      batch: "",
+      location: "",
+      skills: "",
+      interests: "",
+      social: {
+        youtube: "",
+        twitter: "",
+        facebook: "",
+        linkedin: "",
+        instagram: "",
+        github: ""
+      }
+    };
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    // Get fields
+    profileFields.user = req.params.id;
+    // if (req.body.username) profileFields.username = req.body.username;
+    if (req.body.name) profileFields.name = req.body.name;
+    if (req.body.title) profileFields.title = req.body.title;
+    if (req.body.mail) profileFields.mail = req.body.mail;
+    if (req.body.phoneNumber) profileFields.phoneNumber = req.body.phoneNumber;
+    if (req.body.website) profileFields.website = req.body.website;
+    if (req.body.description) profileFields.description = req.body.description;
+    if (req.body.batch) profileFields.batch = req.body.batch;
+    if (req.body.location) profileFields.location = req.body.location;
+    // Skills - Spilt into array
+    if (typeof req.body.skills !== "undefined") {
+      profileFields.skills = req.body.skills.split(",");
+    }
+    // Interests - Spilt into array
+    if (typeof req.body.interests !== "undefined") {
+      profileFields.interests = req.body.interests.split(",");
+    }
+
+    // Social
+    if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
+    if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
+    if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
+    if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
+    if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+    if (req.body.github) profileFields.social.github = req.body.github;
+
+    Profile.findOne({ user: req.params.id })
+      .then(profile => {
+        if (profile) {
+          User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: {
+              email: profileFields.mail,
+              fullname: profileFields.name,
+            } },
+            { new: true }
+          )
+            .then(profile => console.log(profile))
+            .catch(err => console.log("Error from create Profile 1: ", err));
+          // Update
+          Profile.findOneAndUpdate(
+            { user: req.params.id },
+            { $set: profileFields },
+            { new: true }
+          )
+            .then(profile => res.json(profile))
+            .catch(err => console.log("Error from create Profile 1: ", err));
+        
+        } else {
+          // Create
+
+          // Save Profile
+          new Profile(profileFields)
+            .save()
+            .then(profile => {
+              if (profile) {
+                Verify.findOneAndUpdate(
+                  { user: req.params.id },
                   { $set: { profilecreated: true } },
                   { new: true }
                 )

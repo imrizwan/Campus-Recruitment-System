@@ -10,6 +10,7 @@ import * as Selected from "../models/Selected";
 import * as isEmpty from "../validation/is-empty";
 import * as keys from "../config/keys";
 import * as nodemailer from "nodemailer";
+import * as User from "../models/User";
 export class CompanyAuthController {
   public shortlistCandidate(req: Request, res: Response) {
     const { vaccancyid, studentMail, isChecked } = req.body;
@@ -257,6 +258,96 @@ export class CompanyAuthController {
             if (profile) {
               Verify.findOneAndUpdate(
                 { user: req.user.id },
+                { $set: { profilecreated: true } },
+                { new: true }
+              )
+                .then(success => res.json(profile))
+                .catch(err => console.log("Error from verify: ", err));
+            }
+          })
+          .catch(err => console.log("Error from create Profile: ", err));
+      }
+    });
+  }
+
+  public updatecompanyprofile(req: Request, res: Response) {
+    const { errors, isValid } = validateCompanyProfileInput(req.body);
+    const profileFields = {
+      company: "",
+      website: "",
+      location: "",
+      user: "",
+      industrytype: "",
+      description: "",
+      githubusername: "",
+      numberofemployee: "",
+      social: {
+        youtube: "",
+        twitter: "",
+        facebook: "",
+        linkedin: "",
+        instagram: ""
+      }
+    };
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    // Get fields
+    profileFields.user = req.params.id;
+    if (req.body.company) profileFields.company = req.body.company;
+    if (req.body.website) profileFields.website = req.body.website;
+    if (req.body.location) profileFields.location = req.body.location;
+    if (req.body.industrytype)
+      profileFields.industrytype = req.body.industrytype;
+    if (req.body.description) profileFields.description = req.body.description;
+    if (req.body.numberofemployee)
+      profileFields.numberofemployee = req.body.numberofemployee;
+    if (req.body.githubusername)
+      profileFields.githubusername = req.body.githubusername;
+
+    // Social
+    // profileFields.social = {};
+    if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
+    if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
+    if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
+    if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
+    if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+
+    CompanyProfile.findOne({ user: req.params.id }).then(profile => {
+      if (profile) {
+        User.findOneAndUpdate(
+          { _id: req.params.id },
+          { $set: {
+            fullname: profileFields.company
+          } },
+          { new: true }
+        )
+          .then(profile => console.log(profile))
+          .catch(err => console.log("Error from create Profile 1: ", err));
+        // Update
+        CompanyProfile.findOneAndUpdate(
+          { user: req.params.id },
+          { $set: profileFields },
+          { new: true }
+        )
+          .then(profile => res.json(profile))
+          .catch(err =>
+            console.log("Error from create company Profile: ", err)
+          );
+      } else {
+        // Create
+
+        // Save Profile
+        new CompanyProfile(profileFields)
+          .save()
+          .then(profile => {
+            if (profile) {
+              Verify.findOneAndUpdate(
+                { user: req.params.id },
                 { $set: { profilecreated: true } },
                 { new: true }
               )

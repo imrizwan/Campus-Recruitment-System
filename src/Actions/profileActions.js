@@ -43,11 +43,20 @@ export const upload = (selectedImage, history) => dispatch => {
     })
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
+export const uploadbyid = (selectedImage, history, id) => dispatch => {
+  axios
+    .post(`${URL}uploadbyid/${id}`, selectedImage)
+    .then(data => {
+      alert("Successful");
+      dispatch({ type: PICTURE, payload: data });
+    })
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
 
 export const getProfileCreated = () => dispatch => {
   // dispatch(getProfileLoading());
   axios
-    .get(URL + `profilecreated`)
+    .get(`${URL}profilecreated`)
     .then(res => {
       dispatch({
         type: GET_PROFILE_CREATED,
@@ -56,10 +65,10 @@ export const getProfileCreated = () => dispatch => {
     })
     .catch(err => console.log(err));
 };
-export const getProfileCreatedById = () => dispatch => {
+export const getProfileCreatedById = (id) => dispatch => {
   // dispatch(getProfileLoading());
   axios
-    .get(URL + `profilecreatedbyid`)
+    .get(`${URL}profilecreatedbyid/${id}`)
     .then(res => {
       dispatch({
         type: GET_PROFILE_CREATED,
@@ -147,7 +156,20 @@ export const createProfile = (profileData, history) => dispatch => {
   axios
     .post(URL + "createprofile", profileData)
     .then(res => {
-      history.push("/profile");
+      history.push("/");
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+export const updateProfile = (profileData, history, id) => dispatch => {
+  axios
+    .post(`${URL}updateprofile/${id}`, profileData)
+    .then(res => {
+      history.push("/admindashboard");
     })
     .catch(err => {
       dispatch({

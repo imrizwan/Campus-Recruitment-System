@@ -45,6 +45,7 @@ import AdminDashboard from '../Components/Admin/AdminDashboard';
 import AdminViewStudentProfile from '../Components/Admin/AdminViewStudentProfile';
 import AdminViewCompanyProfile from '../Components/Admin/AdminViewCompanyProfile';
 import AdminUpdateStudentProfile from '../Components/Admin/AdminUpdateStudentProfile';
+import AdminUpdateCompanyProfile from '../Components/Admin/AdminUpdateCompanyProfile';
 
 // History Import
 import {createBrowserHistory} from 'history';
@@ -139,6 +140,7 @@ class AppRouter extends React.Component {
           <AdminPrivateRoute exact={true} path="/adminviewstudentprofile/:id" component={AdminViewStudentProfile} />
           <AdminPrivateRoute exact={true} path="/adminviewcompanyprofile/:id" component={AdminViewCompanyProfile} />
           <AdminPrivateRoute exact={true} path="/adminupdatestudentprofile/:id" component={AdminUpdateStudentProfile} />
+          <AdminPrivateRoute exact={true} path="/adminupdatecompanyprofile/:id" component={AdminUpdateCompanyProfile} />
           <AdminPrivateRoute exact={true} path="/admindashboard" component={AdminDashboard} />
       </Switch>
       </div>

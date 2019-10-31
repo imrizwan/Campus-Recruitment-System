@@ -5,7 +5,7 @@ import isEmpty from '../validation/is-empty';
 // Delete education
 export const getCompanyProfileById = (id) => dispatch => {
   axios
-    .get(URL + `companyprofile/${id}`)
+    .get(`${URL}companyprofile/${id}`)
     .then(res => {
       dispatch({
         type: GET_COMPANY_PROFILE_BY_ID,
@@ -121,6 +121,24 @@ export const createCompanyProfile = (profileData, history) => dispatch => {
           payload: err.response.data
         })
     );
+}
+
+export const updateCompanyProfile = (profileData, history, id) => dispatch => {
+  axios
+  .post(`${URL}updatecompanyprofile/${id}`, profileData)
+  .then(res => {
+    // const profilecreated = JSON.parse(localStorage.getItem('profilecreated'));
+    // if(!profilecreated){
+    //   localStorage.setItem('profilecreated', !profilecreated);
+    // }
+    history.push('/admindashboard')
+    })
+  .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+  );
 }
 
 // Get current profile
