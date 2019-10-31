@@ -7,33 +7,10 @@ import AuthReducer from "../Reducers/AuthReducer";
 import errorReducer from "../Reducers/errorReducer";
 import profileReducer from "../Reducers/profileReducer";
 import profileCreatedReducer from "../Reducers/profileCreatedReducer";
-
-// export default function configureStore(preloadedState) {
-//   const middlewares = [loggerMiddleware, thunkMiddleware];
-//   const middlewareEnhancer = composeWithDevTools(
-//     applyMiddleware(...middlewares)
-//   );
-
-//   const enhancers = [middlewareEnhancer, monitorReducersEnhancer];
-//   const composedEnhancers = compose(...enhancers);
-
-//   const store = createStore(
-//     combineReducers({
-//       auth: AuthReducer,
-//       errors: errorReducer,
-//       profile: profileReducer,
-//       profilecreated: profileCreatedReducer
-//     }),
-//     preloadedState,
-//     composedEnhancers
-//   );
-
-//   return store;
-// }
+import AdminReducer from "../Reducers/AdminReducer";
 
 const initialState = {};
 
-// const middleware = [thunk];
 const middlewares = [loggerMiddleware, thunkMiddleware];
   const middlewareEnhancer = composeWithDevTools(
     applyMiddleware(...middlewares)
@@ -44,6 +21,7 @@ const middlewares = [loggerMiddleware, thunkMiddleware];
 
 const store = createStore(
   combineReducers({
+    admin: AdminReducer,
     auth: AuthReducer,
     errors: errorReducer,
     profile : profileReducer,

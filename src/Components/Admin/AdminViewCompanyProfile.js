@@ -120,7 +120,7 @@ const useStyles = makeStyles(theme => ({
 //   "December"
 // ];
 
-function MyCompanyProfile(props) {
+function AdminViewCompanyProfile(props) {
   const classes = useStyles();
 
   // const getDate = date => {
@@ -336,4 +336,4 @@ export default compose(
     mapStateToProps,
     { getCompanyProfileById, getProfileCreated }
   )
-)(withRouter(MyCompanyProfile));
+)(withRouter(AdminViewCompanyProfile));

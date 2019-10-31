@@ -56,6 +56,18 @@ export const getProfileCreated = () => dispatch => {
     })
     .catch(err => console.log(err));
 };
+export const getProfileCreatedById = () => dispatch => {
+  // dispatch(getProfileLoading());
+  axios
+    .get(URL + `profilecreatedbyid`)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE_CREATED,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
 
 // Apply for vaccancy
 export const applyForVaccancy = vaccancy => dispatch => {

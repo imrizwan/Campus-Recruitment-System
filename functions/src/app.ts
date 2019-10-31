@@ -27,7 +27,8 @@ class App {
   private configDatabase(): void {
     connect(
       keys.mongoURI,
-      { useNewUrlParser: true, useUnifiedTopology: true }
+      // { useNewUrlParser: true, useUnifiedTopology: true }
+      { useNewUrlParser: true }
     );
 
     const db: any = connection;

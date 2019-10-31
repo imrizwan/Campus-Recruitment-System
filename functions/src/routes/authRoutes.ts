@@ -27,7 +27,7 @@ export class Routes {
         app.get('/api/createprofile/deleteactivities', passport.authenticate("jwt", { session: false }), this.authController.deleteActivities)
         app.get('/api/user/:user_id', this.authController.user)
         app.get('/api/username/:username', this.authController.username)
-        app.get('/api/all/', this.authController.all)
+        app.get('/api/all/', passport.authenticate("jwt", { session: false }), this.authController.all)
         app.get('/api/profile', passport.authenticate("jwt", { session: false }), this.authController.currentUserProfile)
         app.get('/api/profilecreated', passport.authenticate("jwt", { session: false }), this.authController.profilecreated)
         app.post('/api/confirmation/:token', this.authController.confirmationPost);
@@ -52,6 +52,7 @@ export class Routes {
         // It will be used by student
         app.get('/api/getcompanies', passport.authenticate("jwt", { session: false }), this.companycontroller.getCompanies)
         app.get('/api/getallvaccancies', this.companycontroller.getAllVaccancies)
+        app.get('/api/profilecreatedbyid/:id', passport.authenticate("jwt", { session: false }), this.authController.profilecreatedbyid)
         
     }
 }

@@ -400,7 +400,7 @@ export class AuthController {
       noprofile: ""
     };
 
-    Profile.find()
+    User.find()
       .populate("user", ["name", "avatar"])
       .then(profiles => {
         if (!profiles) {
@@ -906,6 +906,11 @@ export class AuthController {
 
   public profilecreated(req: Request, res: Response) {
     Verify.findOne({ user: req.user.id })
+      .then(data => res.json(data))
+      .catch(err => console.log("Error from create Profile: ", err));
+  }
+  public profilecreatedbyid(req: Request, res: Response) {
+    Verify.findOne({ user: req.params.id })
       .then(data => res.json(data))
       .catch(err => console.log("Error from create Profile: ", err));
   }
