@@ -48,6 +48,17 @@ export class AuthController {
     .then((data) => res.status(200).json({ success: "deleted" }))
     .catch((err)=> console.log("error from deleteUser", err))
   }
+  public verifyUser(req: Request, res: Response) {
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { isVerified: true } },
+      { new: true }
+    )
+      .then((data) => res.status(200).json({ success: "verified" }))
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   public addNewUser(req: Request, res: Response) {
     const { errors, isValid } = validateRegisterInput(req.body);

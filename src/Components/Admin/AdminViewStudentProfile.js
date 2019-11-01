@@ -140,7 +140,18 @@ function AdminViewStudentProfile(props) {
     }
   }, []);
   return isEmpty(props.profile) ? (
-    <Loader />
+    isEmpty(props.profile) ? <Typography
+      component="h2"
+      variant="h5"
+      color="inherit"
+      align="center"
+      noWrap
+      style={{ marginTop: 20 }}
+      className={classes.toolbarTitle}
+    >
+      User has not created his profile yet
+  </Typography> :
+      <Loader />
   ) : (
       <React.Fragment>
         <CssBaseline />

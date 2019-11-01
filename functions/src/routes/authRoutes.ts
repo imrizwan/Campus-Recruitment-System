@@ -56,6 +56,7 @@ export class Routes {
         app.post('/api/updateprofile/:id', passport.authenticate("jwt", { session: false }), this.authController.updateprofile)
         app.post('/api/updatecompanyprofile/:id', passport.authenticate("jwt", { session: false }), this.companycontroller.updatecompanyprofile)
         app.get('/api/deleteuser/:id', passport.authenticate("jwt", { session: false }), this.authController.deleteUser)
+        app.get('/api/verifyuser/:id', passport.authenticate("jwt", { session: false }), this.authController.verifyUser)
         app.post('/api/uploadbyid/:id', passport.authenticate("jwt", { session: false }), this.authController.uploadPictureById)
         
     }

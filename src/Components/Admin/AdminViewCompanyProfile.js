@@ -112,7 +112,18 @@ function AdminViewCompanyProfile(props) {
     props.getCompanyProfileById(props.match.params.id);
   }, []);
   return isEmpty(props.getcompanyprofilebyid) || isEmpty(props.profilecreated) ? (
-    <Loader />
+    isEmpty(props.getcompanyprofilebyid) ? <Typography
+    style={{ marginTop: 20 }}
+      component="h2"
+      variant="h5"
+      color="inherit"
+      align="center"
+      noWrap
+      className={classes.toolbarTitle}
+    >
+      User has not created his profile yet
+  </Typography> :
+      <Loader />
   ) : (
       props.profilecreated.profilecreated ?
         <React.Fragment>

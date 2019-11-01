@@ -42,6 +42,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 // Admin Imports
 import AdminDashboard from '../Components/Admin/AdminDashboard';
+import AddUser from '../Components/Admin/AddUser';
 import AdminViewStudentProfile from '../Components/Admin/AdminViewStudentProfile';
 import AdminViewCompanyProfile from '../Components/Admin/AdminViewCompanyProfile';
 import AdminUpdateStudentProfile from '../Components/Admin/AdminUpdateStudentProfile';
@@ -141,6 +142,7 @@ class AppRouter extends React.Component {
           <AdminPrivateRoute exact={true} path="/adminviewcompanyprofile/:id" component={AdminViewCompanyProfile} />
           <AdminPrivateRoute exact={true} path="/adminupdatestudentprofile/:id" component={AdminUpdateStudentProfile} />
           <AdminPrivateRoute exact={true} path="/adminupdatecompanyprofile/:id" component={AdminUpdateCompanyProfile} />
+          <AdminPrivateRoute exact={true} path="/adduser" component={AddUser} />
           <AdminPrivateRoute exact={true} path="/admindashboard" component={AdminDashboard} />
       </Switch>
       </div>

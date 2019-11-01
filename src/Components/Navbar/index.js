@@ -34,44 +34,44 @@ class Navbar extends React.Component {
   }
 
   render() {
-      if (this.props.auth.isAuthenticated && !this.props.profilecreated) {
-        return <Loader />;
-      }
+    if (this.props.auth.isAuthenticated && !this.props.profilecreated) {
+      return <Loader />;
+    }
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         {this.props.auth.isAuthenticated &&
-        this.props.auth.user.userType === "student" ? (
-          <NavLink
-            className="navbar-brand"
-            activeClassName={
-              window.location.pathname === "/" ? "active" : null
-            }
-            to="/"
-          >
-            Talent Pool
+          this.props.auth.user.userType === "student" ? (
+            <NavLink
+              className="navbar-brand"
+              activeClassName={
+                window.location.pathname === "/" ? "active" : null
+              }
+              to="/"
+            >
+              Talent Pool
           </NavLink>
-        ) : this.props.auth.isAuthenticated &&
-          this.props.auth.user.userType === "company" ? (
-          <NavLink
-            className="navbar-brand"
-            activeClassName={
-              window.location.pathname === "/" ? "active" : null
-            }
-            to="/"
-          >
-            Talent Pool
+          ) : this.props.auth.isAuthenticated &&
+            this.props.auth.user.userType === "company" ? (
+              <NavLink
+                className="navbar-brand"
+                activeClassName={
+                  window.location.pathname === "/" ? "active" : null
+                }
+                to="/"
+              >
+                Talent Pool
           </NavLink>
-        ) : (
-          <NavLink
-            className="navbar-brand"
-            activeClassName={
-              window.location.pathname === "/" ? "active" : null
-            }
-            to="/"
-          >
-            Talent Pool
+            ) : (
+              <NavLink
+                className="navbar-brand"
+                activeClassName={
+                  window.location.pathname === "/" ? "active" : null
+                }
+                to="/"
+              >
+                Talent Pool
           </NavLink>
-        )}
+            )}
         <button
           className="navbar-toggler"
           type="button"
@@ -86,38 +86,38 @@ class Navbar extends React.Component {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
             {this.props.auth.isAuthenticated &&
-            this.props.auth.user.userType === "student" ? (
-              <NavLink
-                className="nav-item nav-link"
-                activeClassName={
-                  window.location.pathname === "/studentdashboard" ? "active" : null
-                }
-                to="/studentdashboard"
-              >
-                Dashboard
+              this.props.auth.user.userType === "student" ? (
+                <NavLink
+                  className="nav-item nav-link"
+                  activeClassName={
+                    window.location.pathname === "/studentdashboard" ? "active" : null
+                  }
+                  to="/studentdashboard"
+                >
+                  Dashboard
               </NavLink>
-            ) : this.props.auth.isAuthenticated &&
-              this.props.auth.user.userType === "company" ? (
-              <NavLink
-                className="nav-item nav-link"
-                activeClassName={
-                  window.location.pathname === "/companydashboard" ? "active" : null
-                }
-                to="/companydashboard"
-              >
-                Dashboard
+              ) : this.props.auth.isAuthenticated &&
+                this.props.auth.user.userType === "company" ? (
+                  <NavLink
+                    className="nav-item nav-link"
+                    activeClassName={
+                      window.location.pathname === "/companydashboard" ? "active" : null
+                    }
+                    to="/companydashboard"
+                  >
+                    Dashboard
               </NavLink>
-            ) : (
-              <NavLink
-                className="nav-item nav-link"
-                activeClassName={
-                  window.location.pathname === "/admindashboard" ? "active" : null
-                }
-                to="/admindashboard"
-              >
-                Dashboard
+                ) : (
+                  <NavLink
+                    className="nav-item nav-link"
+                    activeClassName={
+                      window.location.pathname === "/admindashboard" ? "active" : null
+                    }
+                    to="/admindashboard"
+                  >
+                    Dashboard
               </NavLink>
-            )}
+                )}
             {!this.props.auth.isAuthenticated && (
               <NavLink
                 className="nav-item nav-link"
@@ -140,158 +140,174 @@ class Navbar extends React.Component {
                 Sign In
               </NavLink>
             )}
+            {
+              this.props.profilecreated &&
+              this.props.auth.isAuthenticated &&
+              (!this.props.profilecreated.profilecreated ? null : (
+                this.props.auth.user.userType === "admin" ?
+                  <NavLink
+                    className="nav-item nav-link"
+                    activeClassName={
+                      window.location.pathname === "/adduser" ? "active" : null
+                    }
+                    to="/adduser"
+                  >
+                    Add User
+              </NavLink> : null
+              ))
+            }
             {this.props.profilecreated &&
               this.props.auth.isAuthenticated &&
               (!this.props.profilecreated.profilecreated ? null : (
                 this.props.auth.user.userType === "admin" ?
-                null : 
-                <div className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    id="navbarDropdownMenuLink"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Profile
+                  null :
+                  <div className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle"
+                      id="navbarDropdownMenuLink"
+                      role="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      Profile
                   </a>
-                  <div
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdownMenuLink"
-                  >
-                    <NavLink
-                      className="dropdown-item"
-                      activeClassName={
-                        window.location.pathname === "/profile" ||
-                        window.location.pathname === "/companyprofile"
-                          ? "active"
-                          : null
-                      }
-                      to={
-                        this.props.auth.user.userType === "student"
-                          ? "/profile"
-                          : `/companyprofile/${this.props.auth.user.id}`
-                      }
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="navbarDropdownMenuLink"
                     >
-                      My Profile
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          window.location.pathname === "/profile" ||
+                            window.location.pathname === "/companyprofile"
+                            ? "active"
+                            : null
+                        }
+                        to={
+                          this.props.auth.user.userType === "student"
+                            ? "/profile"
+                            : `/companyprofile/${this.props.auth.user.id}`
+                        }
+                      >
+                        My Profile
                     </NavLink>
-                    <NavLink
-                      className="dropdown-item"
-                      activeClassName={
-                        window.location.pathname === "/updateprofile" ||
-                        window.location.pathname === "/updatecompanyprofile"
-                          ? "active"
-                          : null
-                      }
-                      to={
-                        this.props.auth.user.userType === "student"
-                          ? "/updateprofile"
-                          : "/updatecompanyprofile"
-                      }
-                    >
-                      Update Profile
+                      <NavLink
+                        className="dropdown-item"
+                        activeClassName={
+                          window.location.pathname === "/updateprofile" ||
+                            window.location.pathname === "/updatecompanyprofile"
+                            ? "active"
+                            : null
+                        }
+                        to={
+                          this.props.auth.user.userType === "student"
+                            ? "/updateprofile"
+                            : "/updatecompanyprofile"
+                        }
+                      >
+                        Update Profile
                     </NavLink>
-                    {this.props.auth.user.userType === "student" ? (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addeducation" ? "active" : null
-                        }
-                        to="/addeducation"
-                      >
-                        Add Education
+                      {this.props.auth.user.userType === "student" ? (
+                        <NavLink
+                          className="dropdown-item"
+                          activeClassName={
+                            window.location.pathname === "/addeducation" ? "active" : null
+                          }
+                          to="/addeducation"
+                        >
+                          Add Education
                       </NavLink>
-                    ) : null}
-                    {this.props.auth.user.userType === "student" ? (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addexperience" ? "active" : null
-                        }
-                        to="/addexperience"
-                      >
-                        Add Experience
+                      ) : null}
+                      {this.props.auth.user.userType === "student" ? (
+                        <NavLink
+                          className="dropdown-item"
+                          activeClassName={
+                            window.location.pathname === "/addexperience" ? "active" : null
+                          }
+                          to="/addexperience"
+                        >
+                          Add Experience
                       </NavLink>
-                    ) : null}
-                    {this.props.auth.user.userType === "student" ? (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addlanguage" ? "active" : null
-                        }
-                        to="/addlanguage"
-                      >
-                        Add Language
+                      ) : null}
+                      {this.props.auth.user.userType === "student" ? (
+                        <NavLink
+                          className="dropdown-item"
+                          activeClassName={
+                            window.location.pathname === "/addlanguage" ? "active" : null
+                          }
+                          to="/addlanguage"
+                        >
+                          Add Language
                       </NavLink>
-                    ) : (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addvaccancy" ? "active" : null
-                        }
-                        to="/addvaccancy"
-                      >
-                        Add Vaccancy
+                      ) : (
+                          <NavLink
+                            className="dropdown-item"
+                            activeClassName={
+                              window.location.pathname === "/addvaccancy" ? "active" : null
+                            }
+                            to="/addvaccancy"
+                          >
+                            Add Vaccancy
                       </NavLink>
-                    )}
-                    {this.props.auth.user.userType === "student" ? (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addprojectstu" ? "active" : null
-                        }
-                        to="/addprojectstu"
-                      >
-                        Add Project
+                        )}
+                      {this.props.auth.user.userType === "student" ? (
+                        <NavLink
+                          className="dropdown-item"
+                          activeClassName={
+                            window.location.pathname === "/addprojectstu" ? "active" : null
+                          }
+                          to="/addprojectstu"
+                        >
+                          Add Project
                       </NavLink>
-                    ) : (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addproject" ? "active" : null
-                        }
-                        to="/addproject"
-                      >
-                        Add Project
+                      ) : (
+                          <NavLink
+                            className="dropdown-item"
+                            activeClassName={
+                              window.location.pathname === "/addproject" ? "active" : null
+                            }
+                            to="/addproject"
+                          >
+                            Add Project
                       </NavLink>
-                    )}
-                     {this.props.auth.user.userType === "student" ? (
-                      <NavLink
-                        className="dropdown-item"
-                        activeClassName={
-                          window.location.pathname === "/addextracurricularactivities" ? "active" : null
-                        }
-                        to="/addextracurricularactivities"
-                      >
-                        Add Extracurricular Activities
+                        )}
+                      {this.props.auth.user.userType === "student" ? (
+                        <NavLink
+                          className="dropdown-item"
+                          activeClassName={
+                            window.location.pathname === "/addextracurricularactivities" ? "active" : null
+                          }
+                          to="/addextracurricularactivities"
+                        >
+                          Add Extracurricular Activities
                       </NavLink>
-                    ) : null}
+                      ) : null}
+                    </div>
                   </div>
-                </div>
               ))}
             {this.props.profilecreated &&
-            this.props.auth.isAuthenticated &&
-            !this.props.profilecreated.profilecreated ? (
-              this.props.auth.user.userType === "admin" ?
-              null : 
-              <NavLink
-                className="nav-item nav-link"
-                activeClassName={
-                  window.location.pathname === "/createprofile" ||
-                  window.location.pathname === "/createcompanyprofile"
-                    ? "active"
-                    : null
-                }
-                to={
-                  this.props.auth.user.userType === "student"
-                    ? "/createprofile"
-                    : "/createcompanyprofile"
-                }
-              >
-                Create Profile
+              this.props.auth.isAuthenticated &&
+              !this.props.profilecreated.profilecreated ? (
+                this.props.auth.user.userType === "admin" ?
+                  null :
+                  <NavLink
+                    className="nav-item nav-link"
+                    activeClassName={
+                      window.location.pathname === "/createprofile" ||
+                        window.location.pathname === "/createcompanyprofile"
+                        ? "active"
+                        : null
+                    }
+                    to={
+                      this.props.auth.user.userType === "student"
+                        ? "/createprofile"
+                        : "/createcompanyprofile"
+                    }
+                  >
+                    Create Profile
               </NavLink>
-            ) : null}
+              ) : null}
             {this.props.auth.isAuthenticated && (
               <a
                 className="nav-item nav-link btn btn-outline-danger btnLogout"
@@ -302,7 +318,7 @@ class Navbar extends React.Component {
             )}
             {this.props.auth.isAuthenticated && this.props.auth.user.userType === "student" && this.props.profilecreated && this.props.profilecreated.profilecreated && (
               //  
-               <Link style={{ marginLeft: 20 }} to={`//${cvDomain}/?url=${cvURL}&id=${this.props.auth.user.id}`} className="btn btn-outline-success" target="_blank">Generate CV</Link>
+              <Link style={{ marginLeft: 20 }} to={`//${cvDomain}/?url=${cvURL}&id=${this.props.auth.user.id}`} className="btn btn-outline-success" target="_blank">Generate CV</Link>
             )}
           </div>
         </div>

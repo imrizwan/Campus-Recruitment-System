@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllProfiles, deleteUser } from "../../Actions/adminActions";
+import { getAllProfiles, deleteUser, verifyUser } from "../../Actions/adminActions";
 import isEmpty from "../../validation/is-empty";
 import Loader from "../Loader/Loader";
 import Typography from "@material-ui/core/Typography";
@@ -54,6 +54,9 @@ class AdminDashboard extends React.Component {
   deleteUser = (id) => {
     this.props.deleteUser(id)
   }
+  verifyUser = (id) => {
+    this.props.verifyUser(id)
+  }
 
   render() {
     const { classes } = this.props;
@@ -100,6 +103,9 @@ class AdminDashboard extends React.Component {
                       <button className="btn btn-danger mx-2" onClick={()=>this.deleteUser(item._id)}>
                         Delete
                       </button>
+                      {
+                        !item.isVerified && <button className="btn btn-success mx-2" onClick={() => this.verifyUser(item._id)}>Verify</button>
+                      }
                     </div>
                   </div>
                 ))}
@@ -141,6 +147,9 @@ class AdminDashboard extends React.Component {
                       <button className="btn btn-danger mx-2" onClick={()=>this.deleteUser(item._id)}>
                         Delete
                       </button>
+                      {
+                        !item.isVerified && <button className="btn btn-success mx-2" onClick={() => this.verifyUser(item._id)}>Verify</button>
+                      }
                     </div>
                   </div>
                 ))}
@@ -162,6 +171,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { getAllProfiles, deleteUser }
+    { getAllProfiles, deleteUser, verifyUser }
   )
 )(withRouter(AdminDashboard));

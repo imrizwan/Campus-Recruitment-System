@@ -36,3 +36,20 @@ export const deleteUser = (id) => dispatch => {
       });
     });
 };
+export const verifyUser = (id) => dispatch => {
+  axios
+    .get(`${URL}verifyuser/${id}`)
+    .then(res =>{
+      // dispatch({
+      //   type: VERIFY_USER,
+      //   payload: res.data
+      // })
+      window.location.reload();
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};

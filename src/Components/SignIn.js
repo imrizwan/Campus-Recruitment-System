@@ -324,7 +324,6 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-// export default connect(mapStateToProps, { loginUser })(withStyles(styles)(SignIn));
 export default compose(
   withStyles(styles),
   connect(
