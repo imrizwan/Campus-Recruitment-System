@@ -240,7 +240,7 @@ class AddProject extends Component {
               </Button>
               <br/>
               <br />
-            {!isEmpty(this.props.profile.project) && <Typography variant="display1" className={classes.title}>
+            {!isEmpty(this.props.profile.project) && <Typography variant="h3" style={{ textAlign: "center", marginTop: 20 }}>
               Manage
             </Typography>}
             <br />

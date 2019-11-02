@@ -37,7 +37,7 @@ class PublicDashboard extends React.Component {
                     <div className="row mx-4 my-4">
                         {
                             this.props.getallvaccancies.slice(0,10).map((data, index) => (
-                                <div className="col-sm-6" key={index}>
+                                <div className="col-sm-6 my-4" key={index}>
                                     <div className="card">
                                         <div className="card-body">
                                             <h5 className="card-title">{data.position}</h5>

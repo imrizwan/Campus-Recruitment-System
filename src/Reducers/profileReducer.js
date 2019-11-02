@@ -18,7 +18,8 @@ import {
   GET_SHORTLISTED,
   GET_ALL_VACCANCIES,
   APPOINTMENT_LETTER,
-  GET_COMPANY_PROFILE_BY_ID
+  GET_COMPANY_PROFILE_BY_ID,
+  RESET_GET_CANDIDATES
 } from "../Variables";
 
 const initialState = {
@@ -132,6 +133,12 @@ export default function (state = initialState, action) {
         ...state,
         getcompanyprofilebyid: action.payload
       };
+      case RESET_GET_CANDIDATES: {
+        return {
+          ...state,
+          getcandidates: []
+        };
+      }
     default:
       return state;
   }

@@ -54,6 +54,8 @@ export class Routes {
         app.get('/api/getallvaccancies', this.companycontroller.getAllVaccancies)
         app.get('/api/profilecreatedbyid/:id', passport.authenticate("jwt", { session: false }), this.authController.profilecreatedbyid)
         app.post('/api/updateprofile/:id', passport.authenticate("jwt", { session: false }), this.authController.updateprofile)
+        app.post('/api/recommend/:id', passport.authenticate("jwt", { session: false }), this.authController.recommend)
+        app.get('/api/getallprofilecreated', passport.authenticate("jwt", { session: false }), this.authController.getAllProfileCreated)
         app.post('/api/updatecompanyprofile/:id', passport.authenticate("jwt", { session: false }), this.companycontroller.updatecompanyprofile)
         app.get('/api/deleteuser/:id', passport.authenticate("jwt", { session: false }), this.authController.deleteUser)
         app.get('/api/verifyuser/:id', passport.authenticate("jwt", { session: false }), this.authController.verifyUser)

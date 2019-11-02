@@ -52,6 +52,17 @@ const batch = [
   { value: "Fall 2019" }
 ];
 
+const semester = [
+  { value: "1", label: "1st semester" },
+  { value: "2", label: "2nd semester" },
+  { value: "3", label: "3rd semester" },
+  { value: "4", label: "4th semester" },
+  { value: "5", label: "5th semester" },
+  { value: "6", label: "6th semester" },
+  { value: "7", label: "7th semester" },
+  { value: "8", label: "8th semester" },
+]
+
 class CreateProfile extends React.Component {
   state = {
     file: null,
@@ -63,6 +74,7 @@ class CreateProfile extends React.Component {
     website: "",
     description: "",
     batch: "",
+    semester: "",
     location: "",
     skills: "",
     interests: "",
@@ -107,6 +119,7 @@ class CreateProfile extends React.Component {
         ? profile.description
         : "";
       profile.batch = !isEmpty(profile.batch) ? profile.batch : "";
+      profile.semester = !isEmpty(profile.semester) ? profile.semester : "";
       profile.location = !isEmpty(profile.location) ? profile.location : "";
       // profile.skills = !isEmpty(profile.skills) ? profile.skills : '';
       // profile.interests = !isEmpty(profile.interests) ? profile.interests : '';
@@ -140,6 +153,7 @@ class CreateProfile extends React.Component {
         website: profile.website,
         description: profile.description,
         batch: profile.batch,
+        semester: profile.semester,
         location: profile.location,
         skills: skillsCSV,
         interests: interestsCSV,
@@ -187,6 +201,7 @@ class CreateProfile extends React.Component {
       website: this.state.website,
       description: this.state.description,
       batch: this.state.batch,
+      semester: this.state.semester,
       location: this.state.location,
       skills: this.state.skills,
       interests: this.state.interests,
@@ -204,7 +219,6 @@ class CreateProfile extends React.Component {
   uploadPicture = () => {
     var formData = new FormData();
     formData.append("selectedImage", this.state.file);
-    console.log(formData);
     this.props.upload(formData);
   };
 
@@ -512,6 +526,30 @@ class CreateProfile extends React.Component {
               </TextField>
               {errors.batch ? (
                 <div style={{ color: "red" }}>{errors.batch}</div>
+              ) : null}
+              <TextField
+                id="select-semester"
+                select
+                label="Select"
+                className={classes.textField}
+                value={this.state.semester}
+                onChange={this.handleChange("semester")}
+                SelectProps={{
+                  MenuProps: {
+                    className: classes.menu
+                  }
+                }}
+                helperText="Please select your semester"
+                margin="normal"
+              >
+                {semester.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {errors.semester ? (
+                <div style={{ color: "red" }}>{errors.semester}</div>
               ) : null}
               <TextField
                 id="outlined-website"

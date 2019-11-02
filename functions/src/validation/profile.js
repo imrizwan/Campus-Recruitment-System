@@ -6,6 +6,7 @@ module.exports = function validateProfileInput(data) {
 
   // data.username = !isEmpty(data.username) ? data.username : '';
   data.batch = !isEmpty(data.batch) ? data.batch : '';
+  data.semester = !isEmpty(data.semester) ? data.semester : '';
   data.skills = !isEmpty(data.skills) ? data.skills : '';
 
   // if (!Validator.isLength(data.username, { min: 2, max: 40 })) {
@@ -40,7 +41,10 @@ module.exports = function validateProfileInput(data) {
   }
 
   if (Validator.isEmpty(data.batch)) {
-    errors.batch = 'Batch field is required';
+    errors.batch = 'Batch is required';
+  }
+  if (Validator.isEmpty(data.semester)) {
+    errors.semester = 'Semester is required';
   }
 
   if (Validator.isEmpty(data.location)) {

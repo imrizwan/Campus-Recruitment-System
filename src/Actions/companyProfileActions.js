@@ -1,6 +1,10 @@
 import axios from 'axios';
-import { GET_COMPANY_PROFILE_BY_ID, APPOINTMENT_LETTER,GET_SHORTLISTED, SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
+import { RESET_GET_CANDIDATES, GET_COMPANY_PROFILE_BY_ID, APPOINTMENT_LETTER,GET_SHORTLISTED, SHORTLIST_CANDIDATE ,SELECTION_EMAIL, GET_CANDIDATES ,DELETE_PROJECT_COMPANY, UPDATE_VACCANCY, DELETE_VACCANCY, URL,GET_ERRORS, GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_PROFILE_CREATED } from "../Variables";
 import isEmpty from '../validation/is-empty';
+
+export const clearGetCandidates = () => dispatch => {
+  dispatch({ type: RESET_GET_CANDIDATES });
+}
 
 // Delete education
 export const getCompanyProfileById = (id) => dispatch => {
@@ -209,7 +213,6 @@ export const addVaccancy = (vaccancyData, history) => dispatch => {
           newData.push(item.key.slice(0,24))
         });
     }
-
     if(!isEmpty(newData)){
       axios
       .post(URL+'getcandidates', newData)

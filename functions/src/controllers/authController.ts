@@ -45,8 +45,8 @@ export class AuthController {
 
   public deleteUser(req: Request, res: Response) {
     User.deleteOne({ _id: req.params.id })
-    .then((data) => res.status(200).json({ success: "deleted" }))
-    .catch((err)=> console.log("error from deleteUser", err))
+      .then(data => res.status(200).json({ success: "deleted" }))
+      .catch(err => console.log("error from deleteUser", err));
   }
   public verifyUser(req: Request, res: Response) {
     User.findOneAndUpdate(
@@ -54,7 +54,7 @@ export class AuthController {
       { $set: { isVerified: true } },
       { new: true }
     )
-      .then((data) => res.status(200).json({ success: "verified" }))
+      .then(data => res.status(200).json({ success: "verified" }))
       .catch(err => {
         console.log(err);
       });
@@ -132,7 +132,7 @@ export class AuthController {
                         token.token +
                         "\n"
                     };
-                    transporter.sendMail(mailOptions, function (err) {
+                    transporter.sendMail(mailOptions, function(err) {
                       if (err) {
                         return res.status(500).send({ msg: err.message });
                       }
@@ -178,7 +178,7 @@ export class AuthController {
 
     const upload = multer({ storage }).single("selectedImage");
 
-    upload(req, res, function (err) {
+    upload(req, res, function(err) {
       // need to check if the req.file is set.
       if (req.file == null || req.file == undefined || req.file == "") {
         //redirect to the same url
@@ -253,7 +253,7 @@ export class AuthController {
 
     const upload = multer({ storage }).single("selectedImage");
 
-    upload(req, res, function (err) {
+    upload(req, res, function(err) {
       // need to check if the req.file is set.
       if (req.file == null || req.file == undefined || req.file == "") {
         //redirect to the same url
@@ -431,7 +431,7 @@ export class AuthController {
               // Add to company profilecreated applied array
               Verify.findOne({ user: req.body.companyid })
                 .then(company => {
-                  console.log("Company", company)
+                  console.log("Company", company);
                   if (!company) {
                     errors.applyforvaccancy = "Company does not exist";
                     return res.status(404).json(errors);
@@ -443,7 +443,9 @@ export class AuthController {
                   company
                     .save()
                     .then(com => console.log("Updated Company Applied"))
-                    .catch(err => console.log("Error from applyForVaccancy3", err));
+                    .catch(err =>
+                      console.log("Error from applyForVaccancy3", err)
+                    );
                 })
                 .catch(err =>
                   console.log("err from applyforVaccancy4 Company", err)
@@ -623,56 +625,55 @@ export class AuthController {
   public deleteEducation(req: Request, res: Response) {
     Profile.updateOne(
       { user: req.user.id },
-      { $pull: { "education": { _id: req.query.id } } },
+      { $pull: { education: { _id: req.query.id } } },
       { multi: true }
     )
-      .then((data) => res.status(200).json({ success: 200 }))
-      .catch((err) => console.log("err from delete education", err))
+      .then(data => res.status(200).json({ success: 200 }))
+      .catch(err => console.log("err from delete education", err));
   }
 
   // delete language
   public deleteLanguage(req: Request, res: Response) {
     Profile.updateOne(
       { user: req.user.id },
-      { $pull: { "language": { _id: req.query.id } } },
+      { $pull: { language: { _id: req.query.id } } },
       { multi: true }
     )
-      .then((data) => res.status(200).json({ success: 200 }))
-      .catch((err) => console.log("err from delete language", err))
+      .then(data => res.status(200).json({ success: 200 }))
+      .catch(err => console.log("err from delete language", err));
   }
 
   // deleteExperience
   public deleteExperience(req: Request, res: Response) {
     Profile.updateOne(
       { user: req.user.id },
-      { $pull: { "experience": { _id: req.query.id } } },
+      { $pull: { experience: { _id: req.query.id } } },
       { multi: true }
     )
-      .then((data) => res.status(200).json({ success: 200 }))
-      .catch((err) => console.log("err from delete experience", err))
+      .then(data => res.status(200).json({ success: 200 }))
+      .catch(err => console.log("err from delete experience", err));
   }
   // deleteActivities
   public deleteActivities(req: Request, res: Response) {
     Profile.updateOne(
       { user: req.user.id },
-      { $pull: { "activities": { _id: req.query.id } } },
+      { $pull: { activities: { _id: req.query.id } } },
       { multi: true }
     )
-      .then((data) => res.status(200).json({ success: 200 }))
-      .catch((err) => console.log("err from delete deleteActivities", err))
+      .then(data => res.status(200).json({ success: 200 }))
+      .catch(err => console.log("err from delete deleteActivities", err));
   }
 
   // delete project
   public deleteProject(req: Request, res: Response) {
     Profile.updateOne(
       { user: req.user.id },
-      { $pull: { "projects": { _id: req.query.id } } },
+      { $pull: { projects: { _id: req.query.id } } },
       { multi: true }
     )
-      .then((data) => res.status(200).json({ success: 200 }))
-      .catch((err) => console.log("err from delete project", err))
+      .then(data => res.status(200).json({ success: 200 }))
+      .catch(err => console.log("err from delete project", err));
   }
-
 
   // education
 
@@ -781,7 +782,7 @@ export class AuthController {
           .compare(password, user.password)
           .then(isMatch => {
             if (isMatch) {
-              Token.findOne({ token: req.params.token }, function (err, token) {
+              Token.findOne({ token: req.params.token }, function(err, token) {
                 if (err) {
                   return res.status(500).send({ msg: err.message });
                 }
@@ -795,7 +796,7 @@ export class AuthController {
                 // If we found a token, find a matching user
                 User.findOne(
                   { _id: token.user, email: req.body.email },
-                  function (err, user) {
+                  function(err, user) {
                     if (err) {
                       return res.status(500).send({ msg: err.message });
                     }
@@ -811,7 +812,7 @@ export class AuthController {
 
                     // Verify and save the user
                     user.isVerified = true;
-                    user.save(function (err) {
+                    user.save(function(err) {
                       if (err) {
                         return res.status(500).send({ msg: err.message });
                       }
@@ -836,7 +837,7 @@ export class AuthController {
   public resendTokenPost(req: Request, res: Response) {
     const { errors } = validateResend(req.body);
 
-    User.findOne({ email: req.body.email }, function (err, user) {
+    User.findOne({ email: req.body.email }, function(err, user) {
       if (err) {
         return res.status(500).send({ msg: err.message });
       }
@@ -856,7 +857,7 @@ export class AuthController {
       });
 
       // Save the token
-      token.save(function (err) {
+      token.save(function(err) {
         if (err) {
           return res.status(500).send({ msg: err.message });
         }
@@ -878,7 +879,7 @@ export class AuthController {
             token.token +
             "\n"
         };
-        transporter.sendMail(mailOptions, function (err) {
+        transporter.sendMail(mailOptions, function(err) {
           if (err) {
             return res.status(500).send({ msg: err.message });
           }
@@ -948,7 +949,7 @@ export class AuthController {
   public forgotPasswordEmail(req: Request, res: Response) {
     const { errors } = validateResend(req.body);
 
-    User.findOne({ email: req.body.email }, function (err, user) {
+    User.findOne({ email: req.body.email }, function(err, user) {
       if (!user)
         return res
           .status(400)
@@ -962,7 +963,7 @@ export class AuthController {
       });
 
       // Save the token
-      passwordtoken.save(function (err) {
+      passwordtoken.save(function(err) {
         if (err) {
           return res.status(500).send({ msg: err.message });
         }
@@ -984,7 +985,7 @@ export class AuthController {
             passwordtoken.token +
             ".\n"
         };
-        transporter.sendMail(mailOptions, function (err) {
+        transporter.sendMail(mailOptions, function(err) {
           if (err) {
             return res.status(500).send({ msg: err.message });
           }
@@ -1022,6 +1023,7 @@ export class AuthController {
       website: "",
       description: "",
       batch: "",
+      semester: "",
       location: "",
       skills: "",
       interests: "",
@@ -1051,6 +1053,7 @@ export class AuthController {
     if (req.body.website) profileFields.website = req.body.website;
     if (req.body.description) profileFields.description = req.body.description;
     if (req.body.batch) profileFields.batch = req.body.batch;
+    if (req.body.semester) profileFields.semester = req.body.semester;
     if (req.body.location) profileFields.location = req.body.location;
     // Skills - Spilt into array
     if (typeof req.body.skills !== "undefined") {
@@ -1103,6 +1106,26 @@ export class AuthController {
       .catch(err => console.log("Error from create Profile 3: ", err));
   }
 
+  public getAllProfileCreated(req: Request, res: Response) {
+    Verify.find()
+    .then((data) => res.status(200).json(data))
+    .catch((err) => console.log("err from getAllProfileCreated", err))
+  }
+
+  public recommend(req: Request, res: Response) {
+    Verify.findOneAndUpdate(
+      { user: req.params.id },
+      {
+        $set: {
+          recommend: !req.body.isChecked
+        }
+      },
+      { new: true }
+    )
+      .then(profile => res.status(200).json({ success: "Recommended" }))
+      .catch(err => res.status(404).json(err));
+  }
+
   public updateprofile(req: Request, res: Response) {
     const { errors, isValid } = validateProfileInput(req.body);
     const profileFields = {
@@ -1114,6 +1137,7 @@ export class AuthController {
       website: "",
       description: "",
       batch: "",
+      semester: "",
       location: "",
       skills: "",
       interests: "",
@@ -1143,6 +1167,7 @@ export class AuthController {
     if (req.body.website) profileFields.website = req.body.website;
     if (req.body.description) profileFields.description = req.body.description;
     if (req.body.batch) profileFields.batch = req.body.batch;
+    if (req.body.semester) profileFields.semester = req.body.semester;
     if (req.body.location) profileFields.location = req.body.location;
     // Skills - Spilt into array
     if (typeof req.body.skills !== "undefined") {
@@ -1166,10 +1191,12 @@ export class AuthController {
         if (profile) {
           User.findOneAndUpdate(
             { _id: req.params.id },
-            { $set: {
-              email: profileFields.mail,
-              fullname: profileFields.name,
-            } },
+            {
+              $set: {
+                email: profileFields.mail,
+                fullname: profileFields.name
+              }
+            },
             { new: true }
           )
             .then(profile => console.log(profile))
@@ -1182,7 +1209,6 @@ export class AuthController {
           )
             .then(profile => res.json(profile))
             .catch(err => console.log("Error from create Profile 1: ", err));
-        
         } else {
           // Create
 

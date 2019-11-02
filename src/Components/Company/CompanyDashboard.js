@@ -17,17 +17,16 @@ import {
   updateVaccancy,
   getCandidates,
   shortlistCandidate,
-  getShortlisted
+  getShortlisted,
+  clearGetCandidates
 } from "../../Actions/companyProfileActions";
 
-const setter = (data) => {
+const setter = data => {
   let newData = new Map();
-  data.selected.map((item, index) => (
-    newData.set(item, true)
-  ))
+  data.selected.map((item, index) => newData.set(item, true));
 
   return newData;
-}
+};
 const formatter = buildFormatter(englishStrings);
 class CompanyDashboard extends Component {
   constructor(props) {
@@ -45,7 +44,9 @@ class CompanyDashboard extends Component {
       key: "",
       studentMail: "",
       isChecked: "",
-      check: isEmpty(this.props.getshortlisted) ? new Map() : setter(this.props.getshortlisted)
+      check: isEmpty(this.props.getshortlisted)
+        ? new Map()
+        : setter(this.props.getshortlisted)
     };
   }
 
@@ -85,15 +86,18 @@ class CompanyDashboard extends Component {
   };
 
   handleChangeCheck = (e, isChecked) => {
-    console.log("isChecked", isChecked)
+    console.log("isChecked", isChecked);
     let currentTarget = e.currentTarget;
     // const item = e.target.name;
     // const isChecked = e.target.checked;
-    this.props.shortlistCandidate({
-      studentMail: e.currentTarget.id,
-      isChecked,
-      vaccancyid: this.state.key._id,
-    }, currentTarget)
+    this.props.shortlistCandidate(
+      {
+        studentMail: e.currentTarget.id,
+        isChecked,
+        vaccancyid: this.state.key._id
+      },
+      currentTarget
+    );
     // this.setState(prevState => ({
     //   check: prevState.check.set(item, isChecked)
     // }), ()=> console.log(`=============>`,this.state.check));
@@ -124,8 +128,8 @@ class CompanyDashboard extends Component {
               isEmpty(this.props.companyprofiles.profile.vaccancy) ? (
                 <h4 className="text-center">No Vaccancies</h4>
               ) : (
-                  <h4 className="text-center">Your Vaccancies</h4>
-                )
+                <h4 className="text-center">Your Vaccancies</h4>
+              )
             ) : null
           ) : null}
           <br />
@@ -199,7 +203,10 @@ class CompanyDashboard extends Component {
                                       ) !== -1
                                   )
                                 );
-                                this.setState({ key: vaccancy, check: new Map() });
+                                this.setState({
+                                  key: vaccancy,
+                                  check: new Map()
+                                });
                                 this.props.getShortlisted(vaccancy._id);
                               }}
                             >
@@ -247,8 +254,8 @@ class CompanyDashboard extends Component {
                                     {this.state.errors.deletevaccany}
                                   </div>
                                 ) : (
-                                    "Are you sure?"
-                                  )}
+                                  "Are you sure?"
+                                )}
                               </div>
                               <div className="modal-footer">
                                 <button
@@ -284,7 +291,7 @@ class CompanyDashboard extends Component {
                             <div className="modal-content">
                               <div className="modal-header">
                                 <h5 className="modal-title" id="editmodallabel">
-                                  New message
+                                  Update vaccancy
                                 </h5>
                                 <button
                                   type="button"
@@ -495,8 +502,8 @@ class CompanyDashboard extends Component {
                                     {this.state.errors.deletevaccany}
                                   </div>
                                 ) : (
-                                    "Are you sure?"
-                                  )}
+                                  "Are you sure?"
+                                )}
                               </div>
                               <div className="modal-footer">
                                 <button
@@ -521,6 +528,7 @@ class CompanyDashboard extends Component {
                         {/* Modal End */}
                         {/* Check Candidates Start */}
                         <div
+                          data-backdrop="static" data-keyboard="false"
                           className="modal fade"
                           id="candidatesModal"
                           tabIndex="-1"
@@ -545,14 +553,21 @@ class CompanyDashboard extends Component {
                                   className="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
+                                  onClick={() =>{
+                                    this.setState({ check: new Map() })
+                                    this.props.clearGetCandidates()
+                                  }}
                                 >
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
                               <div className="modal-body">
-                                {isEmpty(this.props.getcandidates)
-                                  ? <h6 style={{ textAlign: "center" }}>No one applied yet</h6>
-                                  : this.props.getcandidates.map(student => (
+                                {isEmpty(this.props.getcandidates) ? (
+                                  <h6 style={{ textAlign: "center" }}>
+                                    No one applied yet
+                                  </h6>
+                                ) : (
+                                  this.props.getcandidates.map(student => (
                                     <div
                                       key={student.mail}
                                       className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -579,32 +594,63 @@ class CompanyDashboard extends Component {
                                             style={{ marginRight: 5 }}
                                           >
                                             View Profile
-                                            </Link>
+                                          </Link>
                                           <Link
                                             target="_blank"
                                             to={`/selectionemail?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`}
                                             className="btn btn-success"
                                           >
                                             Send Email
-                                            </Link>
-                                            <br />
-                                            <br />
+                                          </Link>
+                                          <br />
+                                          <br />
                                           <Link
                                             target="_blank"
                                             to={`/appointmentletter?mail=${student.mail}&position=${this.state.key.position}&company=${this.props.auth.user.fullname}&companyemail=${this.props.auth.user.email}`}
                                             className="btn btn-success"
                                           >
                                             Send Appointment Letter
-                                            </Link>
+                                          </Link>
                                           <br />
                                           <br />
                                           <div>
                                             <button
-                                              onClick={(e) => this.handleChangeCheck(e, isEmpty(this.props.getshortlisted) ? false : this.props.getshortlisted.selected.includes(student.mail))}
+                                              onClick={e =>
+                                                this.handleChangeCheck(
+                                                  e,
+                                                  isEmpty(
+                                                    this.props.getshortlisted
+                                                  )
+                                                    ? false
+                                                    : this.props.getshortlisted.selected.includes(
+                                                        student.mail
+                                                      )
+                                                )
+                                              }
                                               type="button"
-                                              className={isEmpty(this.props.getshortlisted) ? "btn btn-primary" : this.props.getshortlisted.selected.includes(student.mail) ? "btn btn-danger" : "btn btn-primary"}
+                                              className={
+                                                isEmpty(
+                                                  this.props.getshortlisted
+                                                )
+                                                  ? "btn btn-primary"
+                                                  : this.props.getshortlisted.selected.includes(
+                                                      student.mail
+                                                    )
+                                                  ? "btn btn-danger"
+                                                  : "btn btn-primary"
+                                              }
                                               id={student.mail}
-                                            >{isEmpty(this.props.getshortlisted) ? "Shortlist this candidate" : this.props.getshortlisted.selected.includes(student.mail) ? "Remove from shortlist" : "Shortlist this candidate"}</button>
+                                            >
+                                              {isEmpty(
+                                                this.props.getshortlisted
+                                              )
+                                                ? "Shortlist this candidate"
+                                                : this.props.getshortlisted.selected.includes(
+                                                    student.mail
+                                                  )
+                                                ? "Remove from shortlist"
+                                                : "Shortlist this candidate"}
+                                            </button>
                                           </div>
                                         </div>
                                       </div>
@@ -612,39 +658,43 @@ class CompanyDashboard extends Component {
                                         <img
                                           style={{ width: 150, height: 150 }}
                                           src={
-                                            isEmpty(student.url) ? (
-                                              NoIMG
-                                            ) : (
-                                                student.url
-                                              )
+                                            isEmpty(student.url)
+                                              ? NoIMG
+                                              : student.url
                                           }
                                           className="img-fluid"
                                           alt="quixote"
                                         />
                                       </div>
                                     </div>
-                                  ))}
+                                  ))
+                                )}
                               </div>
                               <div className="modal-footer">
-                                <Link
-                                  target="_blank"
-                                  to={{
-                                    pathname: `/sendemail/${this.state.key._id}`,
-                                    state: {
-                                      emails: this.props.getshortlisted
-                                    }
-                                  }}
-                                >
-                                  <button
-                                    // onClick={() => this.setState({ check: new Map() })}
-                                    type="button"
-                                    className="btn btn-secondary"
+                                {isEmpty(this.props.getcandidates) ? null : (
+                                  <Link
+                                    target="_blank"
+                                    to={{
+                                      pathname: `/sendemail/${this.state.key._id}`,
+                                      state: {
+                                        emails: this.props.getshortlisted
+                                      }
+                                    }}
                                   >
-                                    Send email to shortlisted candidates
-                                </button>
-                                </Link>
+                                    <button
+                                      // onClick={() => this.setState({ check: new Map() })}
+                                      type="button"
+                                      className="btn btn-secondary"
+                                    >
+                                      Send email to shortlisted candidates
+                                    </button>
+                                  </Link>
+                                )}
                                 <button
-                                  onClick={() => this.setState({ check: new Map() })}
+                                  onClick={() =>{
+                                    this.setState({ check: new Map() })
+                                    this.props.clearGetCandidates()
+                                  }}
                                   type="button"
                                   className="btn btn-secondary"
                                   data-dismiss="modal"
@@ -661,12 +711,12 @@ class CompanyDashboard extends Component {
                   }
                 )
               ) : (
-                  <h4 className="text-center">No vaccancy</h4>
-                )}
+                <h4 className="text-center">No vaccancy</h4>
+              )}
             </div>
           ) : (
-              <h4 className="text-center">No vaccancy</h4>
-            )}
+            <h4 className="text-center">No vaccancy</h4>
+          )}
           <br />
         </div>
       );
@@ -686,7 +736,7 @@ const mapStateToProps = state => ({
   success: state.profilecreated.success,
   getcandidates: state.profile.getcandidates,
   shortlistcandidate: state.profile.shortlistcandidate,
-  getshortlisted: state.profile.getshortlisted,
+  getshortlisted: state.profile.getshortlisted
 });
 
 // export default connect(mapStateToProps)(CompanyDashboard);
@@ -700,7 +750,8 @@ export default compose(
       updateVaccancy,
       getCandidates,
       shortlistCandidate,
-      getShortlisted
+      getShortlisted,
+      clearGetCandidates,
     }
   )
 )(withRouter(CompanyDashboard));

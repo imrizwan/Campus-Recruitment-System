@@ -50,6 +50,17 @@ const batch = [
   { value: "Fall 2019" }
 ];
 
+const semester = [
+  { value: "1", label: "1st semester" },
+  { value: "2", label: "2nd semester" },
+  { value: "3", label: "3rd semester" },
+  { value: "4", label: "4th semester" },
+  { value: "5", label: "5th semester" },
+  { value: "6", label: "6th semester" },
+  { value: "7", label: "7th semester" },
+  { value: "8", label: "8th semester" },
+]
+
 class AdminUpdateStudentProfile extends React.Component {
   state = {
     file: null,
@@ -61,6 +72,7 @@ class AdminUpdateStudentProfile extends React.Component {
     website: "",
     description: "",
     batch: "",
+    semester: "",
     location: "",
     skills: "",
     interests: "",
@@ -105,6 +117,7 @@ class AdminUpdateStudentProfile extends React.Component {
         ? profile.description
         : "";
       profile.batch = !isEmpty(profile.batch) ? profile.batch : "";
+      profile.semester = !isEmpty(profile.semester) ? profile.semester : "";
       profile.location = !isEmpty(profile.location) ? profile.location : "";
       // profile.skills = !isEmpty(profile.skills) ? profile.skills : '';
       // profile.interests = !isEmpty(profile.interests) ? profile.interests : '';
@@ -138,6 +151,7 @@ class AdminUpdateStudentProfile extends React.Component {
         website: profile.website,
         description: profile.description,
         batch: profile.batch,
+        semester: profile.semester,
         location: profile.location,
         skills: skillsCSV,
         interests: interestsCSV,
@@ -186,6 +200,7 @@ class AdminUpdateStudentProfile extends React.Component {
       website: this.state.website,
       description: this.state.description,
       batch: this.state.batch,
+      semester: this.state.semester,
       location: this.state.location,
       skills: this.state.skills,
       interests: this.state.interests,
@@ -301,58 +316,6 @@ class AdminUpdateStudentProfile extends React.Component {
               <Typography variant="h3" style={{ textAlign: "center" }}>
                 Update Profile
               </Typography>
-              {/* <br />
-              <div className="row">
-                <div className="col-md-6 col-sm-12">
-                  <Link
-                    to="/addexperience"
-                    className="btn btn-primary cardMain"
-                    target="_blank"
-                  >
-                    <FontAwesomeIcon icon={faUserMd} /> &nbsp; Add Experience
-                  </Link>
-                </div>
-                <div className="col-md-6 col-sm-12">
-                  <Link
-                    to="/addeducation"
-                    className="btn btn-primary cardMain"
-                    target="_blank"
-                  >
-                    <FontAwesomeIcon icon={faSchool} /> &nbsp; Add Education
-                  </Link>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6 col-sm-12">
-                  <Link
-                    to="/addlanguage"
-                    className="btn btn-primary cardMain"
-                    target="_blank"
-                  >
-                    <FontAwesomeIcon icon={faLanguage} /> &nbsp; Add Language
-                  </Link>
-                </div>
-                <div className="col-md-6 col-sm-12">
-                  <Link
-                    to="/addprojectstu"
-                    className="btn btn-primary cardMain"
-                    target="_blank"
-                  >
-                    <FontAwesomeIcon icon={faProjectDiagram} /> &nbsp; Add
-                    Project
-                  </Link>
-                </div>
-              </div>
-              <Link
-                to="/addextracurricularactivities"
-                className="btn btn-primary cardMain"
-                target="_blank"
-              >
-                <FontAwesomeIcon icon={faRunning} /> &nbsp; Add Extracurricular
-                Activities
-              </Link>
-              <br />
-              <br /> */}
               <br/>
               <button
                 className="btn btn-primary btn-block"
@@ -516,6 +479,30 @@ class AdminUpdateStudentProfile extends React.Component {
                 {batch.map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {errors.batch ? (
+                <div style={{ color: "red" }}>{errors.batch}</div>
+              ) : null}
+              <TextField
+                id="select-semester"
+                select
+                label="Select"
+                className={classes.textField}
+                value={this.state.semester}
+                onChange={this.handleChange("semester")}
+                SelectProps={{
+                  MenuProps: {
+                    className: classes.menu
+                  }
+                }}
+                helperText="Please select your semester"
+                margin="normal"
+              >
+                {semester.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
                   </MenuItem>
                 ))}
               </TextField>

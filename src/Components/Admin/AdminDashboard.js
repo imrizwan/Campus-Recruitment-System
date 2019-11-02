@@ -1,5 +1,11 @@
 import React from "react";
-import { getAllProfiles, deleteUser, verifyUser } from "../../Actions/adminActions";
+import {
+  getAllProfiles,
+  deleteUser,
+  verifyUser,
+  recommend,
+  getAllProfileCreated
+} from "../../Actions/adminActions";
 import isEmpty from "../../validation/is-empty";
 import Loader from "../Loader/Loader";
 import Typography from "@material-ui/core/Typography";
@@ -37,7 +43,7 @@ const styles = theme => ({
 class AdminDashboard extends React.Component {
   state = {
     id: ""
-  }
+  };
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -48,19 +54,34 @@ class AdminDashboard extends React.Component {
     //its gonna fetch the profile
     if (this.props.auth.isAuthenticated) {
       this.props.getAllProfiles();
+      this.props.getAllProfileCreated();
     }
   }
 
-  deleteUser = (id) => {
-    this.props.deleteUser(id)
-  }
-  verifyUser = (id) => {
-    this.props.verifyUser(id)
-  }
+  recommend = id => {
+    this.props.recommend(id);
+  };
+  deleteUser = id => {
+    this.props.deleteUser(id);
+  };
+  verifyUser = id => {
+    this.props.verifyUser(id);
+  };
+
+  handleChangeCheck = (e, id, isChecked) => {
+    let currentTarget = e.currentTarget;
+    this.props.recommend({
+      id,
+      isChecked
+    }, currentTarget);
+  };
 
   render() {
     const { classes } = this.props;
-    if (isEmpty(this.props.getallprofiles)) {
+    if (
+      isEmpty(this.props.getallprofiles) ||
+      isEmpty(this.props.getallprofilecreated)
+    ) {
       return <Loader />;
     } else {
       return (
@@ -97,15 +118,58 @@ class AdminDashboard extends React.Component {
                           Unverified
                         </div>
                       )}
-                      <Link to={`/adminviewstudentprofile/${item._id}`} className="btn btn-primary">
+                      <Link
+                        to={`/adminviewstudentprofile/${item._id}`}
+                        className="btn btn-primary"
+                      >
                         View Profile
                       </Link>
-                      <button className="btn btn-danger mx-2" onClick={()=>this.deleteUser(item._id)}>
+                      <button
+                        className="btn btn-danger mx-2"
+                        onClick={() => this.deleteUser(item._id)}
+                      >
                         Delete
                       </button>
-                      {
-                        !item.isVerified && <button className="btn btn-success mx-2" onClick={() => this.verifyUser(item._id)}>Verify</button>
-                      }
+                      <button
+                        onClick={e =>
+                          this.handleChangeCheck(
+                            e,
+                            item._id,
+                            isEmpty(this.props.getallprofilecreated)
+                              ? false
+                              : this.props.getallprofilecreated.find(
+                                  x => x.user === item._id
+                                ).recommend
+                          )
+                        }
+                        type="button"
+                        className={
+                          isEmpty(this.props.getallprofilecreated)
+                            ? "btn btn-success"
+                            : this.props.getallprofilecreated.find(
+                                x => x.user === item._id
+                              ).recommend
+                            ? "btn btn-danger"
+                            : "btn btn-success"
+                        }
+                        id={item._id}
+                      >
+                        {isEmpty(this.props.getallprofilecreated)
+                          ? "Recommend"
+                          : this.props.getallprofilecreated.find(
+                              x => x.user === item._id
+                            ).recommend
+                          ? "Recommended"
+                          : "Recommend"}
+                      </button>
+                      {!item.isVerified && (
+                        <button
+                          className="btn btn-success mx-2"
+                          onClick={() => this.verifyUser(item._id)}
+                        >
+                          Verify
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -141,15 +205,26 @@ class AdminDashboard extends React.Component {
                           Unverified
                         </div>
                       )}
-                      <Link to={`/adminviewcompanyprofile/${item._id}`} className="btn btn-primary">
+                      <Link
+                        to={`/adminviewcompanyprofile/${item._id}`}
+                        className="btn btn-primary"
+                      >
                         View Profile
                       </Link>
-                      <button className="btn btn-danger mx-2" onClick={()=>this.deleteUser(item._id)}>
+                      <button
+                        className="btn btn-danger mx-2"
+                        onClick={() => this.deleteUser(item._id)}
+                      >
                         Delete
                       </button>
-                      {
-                        !item.isVerified && <button className="btn btn-success mx-2" onClick={() => this.verifyUser(item._id)}>Verify</button>
-                      }
+                      {!item.isVerified && (
+                        <button
+                          className="btn btn-success mx-2"
+                          onClick={() => this.verifyUser(item._id)}
+                        >
+                          Verify
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -164,6 +239,8 @@ const mapStateToProps = state => ({
   errors: state.errors,
   getallprofiles: state.admin.getallprofiles,
   deleteuser: state.admin.deleteuser,
+  recommenduser: state.admin.recommenduser,
+  getallprofilecreated: state.admin.getallprofilecreated,
   auth: state.auth
 });
 
@@ -171,6 +248,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    { getAllProfiles, deleteUser, verifyUser }
+    { getAllProfiles, deleteUser, verifyUser, recommend, getAllProfileCreated }
   )
 )(withRouter(AdminDashboard));

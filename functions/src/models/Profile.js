@@ -43,6 +43,10 @@ const StudentProfileSchema = new Schema({
     type: String,
     required: true
   },
+  semester: {
+    type: String,
+    required: true
+  },
   skills: {
     type: [String],
     required: true

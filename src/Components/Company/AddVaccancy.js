@@ -217,7 +217,7 @@ class AddVaccancy extends Component {
               Add Vaccancy
                 </Button>
             <br />
-            {!isEmpty(this.props.profile.vaccancy) && <Typography variant="display1" className={classes.title}>
+            {!isEmpty(this.props.profile.vaccancy) && <Typography variant="h3" style={{ textAlign: "center", marginTop: 20 }}>
               Manage
             </Typography>}
             <br />
