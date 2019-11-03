@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "server": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "watch": "nodemon --exec ts-node -- ./dist/index.js",
     "build": "tsc",
-    "dist": "nodemon ./dist/index.js"
+    "start": "nodemon ./dist/index.js"
   },
   "author": "Muhammad Rizwan",
   "license": "MIT",
