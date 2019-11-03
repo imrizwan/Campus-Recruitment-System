@@ -237,8 +237,8 @@ class AddVaccancy extends Component {
                         {skill}
                       </li>)}
                   </ul>
-                  <a
-                    href={null}
+                  <button
+                    // href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
@@ -246,7 +246,7 @@ class AddVaccancy extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}

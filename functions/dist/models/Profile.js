@@ -1,13 +1,29 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
 const StudentProfileSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: "users"
     },
-    company: {
+    name: {
         type: String
+    },
+    title: {
+        type: String
+    },
+    title: {
+        type: String
+    },
+    url: {
+        type: String
+    },
+    mail: {
+        type: String
+    },
+    phoneNumber: {
+        type: String,
+        required: true
     },
     website: {
         type: String
@@ -15,7 +31,18 @@ const StudentProfileSchema = new Schema({
     location: {
         type: String
     },
-    status: {
+    imagePath: {
+        type: String
+    },
+    description: {
+        type: String,
+        required: true //careerProfile
+    },
+    batch: {
+        type: String,
+        required: true
+    },
+    semester: {
         type: String,
         required: true
     },
@@ -23,11 +50,21 @@ const StudentProfileSchema = new Schema({
         type: [String],
         required: true
     },
-    bio: {
-        type: String
-    },
-    githubusername: {
-        type: String
+    language: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            level: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    interests: {
+        type: [String],
+        required: true
     },
     experience: [
         {
@@ -43,7 +80,7 @@ const StudentProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            location: {
+            companyLink: {
                 type: String
             },
             from: {
@@ -58,6 +95,9 @@ const StudentProfileSchema = new Schema({
                 default: false
             },
             description: {
+                type: String
+            },
+            companyShortDetail: {
                 type: String
             }
         }
@@ -76,10 +116,6 @@ const StudentProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            fieldofstudy: {
-                type: String,
-                required: true
-            },
             from: {
                 type: Date,
                 required: true
@@ -90,10 +126,41 @@ const StudentProfileSchema = new Schema({
             current: {
                 type: Boolean,
                 default: false
+            }
+        }
+    ],
+    activities: [
+        {
+            title: {
+                type: String,
+                required: true
             },
             description: {
-                type: String
-            }
+                type: String,
+            },
+        }
+    ],
+    projects: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            list: [
+                {
+                    url: {
+                        type: String
+                    },
+                    title: {
+                        type: String,
+                        required: true
+                    },
+                    description: {
+                        type: String,
+                        required: true
+                    }
+                }
+            ]
         }
     ],
     social: {
@@ -111,16 +178,15 @@ const StudentProfileSchema = new Schema({
         },
         instagram: {
             type: String
+        },
+        github: {
+            type: String
         }
     },
     date: {
         type: Date,
         default: Date.now
-    },
-    batch: {
-        type: String,
-        required: true
     }
 });
-module.exports = StudentProfile = mongoose.model('studentprofile', StudentProfileSchema);
+module.exports = StudentProfile = mongoose.model("studentprofile", StudentProfileSchema);
 //# sourceMappingURL=Profile.js.map

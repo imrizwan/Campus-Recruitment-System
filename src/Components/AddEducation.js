@@ -212,8 +212,8 @@ class AddEducation extends Component {
                     {this.getDate(edu.from)} -{" "}
                     {edu.current ? "PRESENT" : this.getDate(edu.to)}
                   </p>
-                  <a
-                    href={null}
+                  <button
+                    // href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
@@ -221,7 +221,7 @@ class AddEducation extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}

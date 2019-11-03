@@ -141,7 +141,7 @@ class AddExtracurricularActivities extends Component {
                   <p className="card-text">
                     {act.description}
                   </p>
-                  <a
+                  <button
                     href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
@@ -150,7 +150,7 @@ class AddExtracurricularActivities extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}

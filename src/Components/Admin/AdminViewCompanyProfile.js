@@ -236,6 +236,7 @@ function AdminViewCompanyProfile(props) {
                   {props.getcompanyprofilebyid.social.youtube ? (
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`//www.youtube.com/user/${props.getcompanyprofilebyid.social.youtube}`}
                       style={{ marginRight: "5px" }}
                     >
@@ -245,6 +246,7 @@ function AdminViewCompanyProfile(props) {
                   {props.getcompanyprofilebyid.social.twitter ? (
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`//www.twitter.com/${props.getcompanyprofilebyid.social.twitter}`}
                       style={{ marginRight: "5px" }}
                     >
@@ -254,6 +256,7 @@ function AdminViewCompanyProfile(props) {
                   {props.getcompanyprofilebyid.social.facebook ? (
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`//www.facebook.com/${props.getcompanyprofilebyid.social.facebook}`}
                       style={{ marginRight: "5px" }}
                     >
@@ -263,6 +266,7 @@ function AdminViewCompanyProfile(props) {
                   {props.getcompanyprofilebyid.social.linkedin ? (
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`//www.linkedin.com/in/${props.getcompanyprofilebyid.social.linkedin}`}
                       style={{ marginRight: "5px" }}
                     >
@@ -272,6 +276,7 @@ function AdminViewCompanyProfile(props) {
                   {props.getcompanyprofilebyid.social.instagram ? (
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`//www.instagram.com/${props.getcompanyprofilebyid.social.instagram}`}
                       style={{ marginRight: "5px" }}
                     >
@@ -281,6 +286,7 @@ function AdminViewCompanyProfile(props) {
                   {props.getcompanyprofilebyid.social.github ? (
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`//www.github.com/${props.getcompanyprofilebyid.social.github}`}
                       style={{ marginRight: "5px" }}
                     >

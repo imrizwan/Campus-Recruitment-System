@@ -230,8 +230,8 @@ class AddProjectStu extends Component {
               <div className="card" key={proj._id} style={{ marginBottom: 20 }}>
                 <div className="card-header">{`Projects of ${proj.name}`}</div>
                 <div className="card-body">
-                  <a
-                    href={null}
+                  <button
+                    // href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
@@ -239,7 +239,7 @@ class AddProjectStu extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}

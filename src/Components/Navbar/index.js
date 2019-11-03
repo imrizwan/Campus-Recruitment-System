@@ -82,7 +82,7 @@ class Navbar extends React.Component {
             {this.props.auth.isAuthenticated &&
             this.props.auth.user.userType === "student" ? (
               <NavLink
-                className="nav-item nav-link"
+                className="btn nav-item nav-link"
                 activeClassName={
                   window.location.pathname === "/studentdashboard"
                     ? "active"
@@ -95,7 +95,7 @@ class Navbar extends React.Component {
             ) : this.props.auth.isAuthenticated &&
               this.props.auth.user.userType === "company" ? (
               <NavLink
-                className="nav-item nav-link"
+                className="btn nav-item nav-link"
                 activeClassName={
                   window.location.pathname === "/companydashboard"
                     ? "active"
@@ -107,7 +107,7 @@ class Navbar extends React.Component {
               </NavLink>
             ) : (
               <NavLink
-                className="nav-item nav-link"
+                className="btn nav-item nav-link"
                 activeClassName={
                   window.location.pathname === "/admindashboard"
                     ? "active"
@@ -173,16 +173,16 @@ class Navbar extends React.Component {
               (!this.props.profilecreated.profilecreated ? null : this.props
                   .auth.user.userType === "admin" ? null : (
                 <div className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
+                  <button
+                    className="btn nav-link dropdown-toggle"
                     id="navbarDropdownMenuLink"
-                    role="button"
+                    // role="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
                     Profile
-                  </a>
+                  </button>
                   <div
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdownMenuLink"
@@ -335,12 +335,12 @@ class Navbar extends React.Component {
               )
             ) : null}
             {this.props.auth.isAuthenticated && (
-              <a
+              <button
                 className="nav-item nav-link btn btn-outline-danger btnLogout"
                 onClick={this.onLogoutClick}
               >
                 Logout
-              </a>
+              </button>
             )}
             {this.props.auth.isAuthenticated &&
               this.props.auth.user.userType === "student" &&

@@ -487,6 +487,7 @@ function StudentProfile(props) {
               {props.profile.social.youtube ? (
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`//www.youtube.com/user/${props.profile.social.youtube}`}
                   style={{ marginRight: "5px" }}
                 >
@@ -496,6 +497,7 @@ function StudentProfile(props) {
               {props.profile.social.twitter ? (
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`//www.twitter.com/${props.profile.social.twitter}`}
                   style={{ marginRight: "5px" }}
                 >
@@ -505,6 +507,7 @@ function StudentProfile(props) {
               {props.profile.social.facebook ? (
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`//www.facebook.com/${props.profile.social.facebook}`}
                   style={{ marginRight: "5px" }}
                 >
@@ -514,6 +517,7 @@ function StudentProfile(props) {
               {props.profile.social.linkedin ? (
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`//www.linkedin.com/in/${props.profile.social.linkedin}`}
                   style={{ marginRight: "5px" }}
                 >
@@ -523,6 +527,7 @@ function StudentProfile(props) {
               {props.profile.social.instagram ? (
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`//www.instagram.com/${props.profile.social.instagram}`}
                   style={{ marginRight: "5px" }}
                 >
@@ -532,6 +537,7 @@ function StudentProfile(props) {
               {props.profile.social.github ? (
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`//www.github.com/${props.profile.social.github}`}
                   style={{ marginRight: "5px" }}
                 >

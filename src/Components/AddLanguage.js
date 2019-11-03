@@ -166,8 +166,8 @@ class AddLanguage extends Component {
               <div className="card" key={lang._id} style={{ marginBottom: 20 }}>
                 <div className="card-header">{lang.name} - {lang.level}</div>
                 <div className="card-body">
-                  <a
-                    href={null}
+                  <button
+                    // href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
@@ -175,7 +175,7 @@ class AddLanguage extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}

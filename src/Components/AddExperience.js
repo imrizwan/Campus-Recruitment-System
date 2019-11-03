@@ -250,8 +250,8 @@ class AddExperience extends Component {
                     {this.getDate(exp.from)} -{" "}
                     {exp.current ? "PRESENT" : this.getDate(exp.to)}
                   </p>
-                  <a
-                    href={null}
+                  <button
+                    // href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
@@ -259,7 +259,7 @@ class AddExperience extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}

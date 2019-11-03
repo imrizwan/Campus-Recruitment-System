@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { getProfileCreated } from "../Actions/profileActions";
 
 
@@ -34,11 +33,6 @@ const PrivateRoute = ({ component: Component, auth, userType, profilecreated, ..
         />
     )
 };
-
-PrivateRoute.proptypes = {
-    auth: PropTypes.object.isRequired,
-    getProfileCreated: PropTypes.func.isRequired,
-}
 
 const mapStateToProps = (state) => ({
     auth: state.auth,

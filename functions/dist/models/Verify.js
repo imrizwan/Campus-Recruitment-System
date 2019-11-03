@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
 const VerifySchema = new Schema({
@@ -10,6 +10,10 @@ const VerifySchema = new Schema({
         type: Boolean,
         required: true
     },
+    recommend: {
+        type: Boolean,
+        default: false
+    },
     applied: [
         {
             key: {
@@ -18,5 +22,5 @@ const VerifySchema = new Schema({
         }
     ]
 });
-module.exports = Verify = mongoose.model('verify', VerifySchema);
+module.exports = Verify = mongoose.model("verify", VerifySchema);
 //# sourceMappingURL=Verify.js.map

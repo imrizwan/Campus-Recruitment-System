@@ -87,6 +87,7 @@ class ProfileHeader extends React.Component {
                   <a
                     href={profile.social.twitter}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <FontAwesomeIcon className={classes.twitterIcon} icon={['fab', 'twitter']} />
                   </a>
@@ -95,6 +96,7 @@ class ProfileHeader extends React.Component {
                   <a
                     href={profile.social.facebook}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <FontAwesomeIcon className={classes.facebookIcon} icon={['fab', 'facebook']} />
                   </a>
@@ -104,6 +106,7 @@ class ProfileHeader extends React.Component {
                   <a
                     href={profile.social.linkedin}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <FontAwesomeIcon className={classes.linkedinIcon} icon={['fab', 'linkedin']} />
                   </a>
@@ -113,6 +116,7 @@ class ProfileHeader extends React.Component {
                   <a
                     href={profile.social.youtube}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <FontAwesomeIcon className={classes.youtubeIcon} icon={['fab', 'youtube']} />
                   </a>
@@ -122,6 +126,7 @@ class ProfileHeader extends React.Component {
                   <a
                     href={profile.social.instagram}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <FontAwesomeIcon className={classes.instagramIcon} icon={['fab', 'instagram']} />
                   </a>
@@ -135,7 +140,7 @@ class ProfileHeader extends React.Component {
                 )}
 
                 {isEmpty(profile.website) ? null : (
-                  <Typography className={classes.font} gutterBottom><strong>Website: </strong><a href={profile.website} target="_blank">{profile.website}</a></Typography>
+                  <Typography className={classes.font} gutterBottom><strong>Website: </strong><a href={profile.website} target="_blank" rel="noopener noreferrer">{profile.website}</a></Typography>
                 )}
                 </Paper>
                 </Grid>

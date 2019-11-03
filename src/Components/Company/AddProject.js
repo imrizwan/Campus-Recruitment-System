@@ -263,8 +263,8 @@ class AddProject extends Component {
                         {skill}
                       </li>)}
                   </ul>
-                  <a
-                    href={null}
+                  <button
+                    // href={null}
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.preventDefault();
@@ -272,7 +272,7 @@ class AddProject extends Component {
                     }}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}
