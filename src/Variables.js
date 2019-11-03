@@ -1,6 +1,7 @@
 export const URL = "http://localhost:8080/api/";
 export const cvURL = "http://localhost:8080";
-export const cvDomain = "localhost:3001";
+// export const cvDomain = "localhost:3001";
+export const cvDomain = "imrizwan.github.io";
 export const GET_ERRORS = "GET_ERRORS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const GET_PROFILE = "GET_PROFILE";
