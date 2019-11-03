@@ -309,7 +309,7 @@ export class CompanyAuthController {
     if (req.body.githubusername)
       profileFields.githubusername = req.body.githubusername;
 
-    // Social
+    // Social 
     // profileFields.social = {};
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
