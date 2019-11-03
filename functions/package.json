@@ -2,14 +2,18 @@
   "name": "functions",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "server": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "watch": "nodemon --exec ts-node -- ./dist/index.js",
     "build": "tsc",
     "dist": "nodemon ./dist/index.js",
-    "start": "node ./dist/index.js",
-    "postinstall": "npm run build"
+    "build-ts": "tsc",
+    "postinstall": "npm run build-ts",
+    "start": "npm run serve",
+    "serve": "node dist/index.js",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w"
   },
   "author": "Muhammad Rizwan",
   "license": "MIT",
