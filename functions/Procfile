@@ -1,1 +1,1 @@
-web: ts-node-dev --respawn --transpileOnly ./src/index.ts
+web: node --exec ts-node -- ./dist/index.js

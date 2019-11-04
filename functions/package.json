@@ -7,8 +7,8 @@
     "server": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "watch": "nodemon --exec ts-node -- ./dist/index.js",
     "build": "tsc",
-    "start": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
-    "postinstall": "npm run build"
+    "start": "node --exec ts-node -- ./dist/index.js",
+    "postinstall": "npm install"
   },
   "author": "Muhammad Rizwan",
   "license": "MIT",
