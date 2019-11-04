@@ -8,7 +8,7 @@
     "watch": "nodemon --exec ts-node -- ./dist/index.js",
     "build": "tsc",
     "start": "node --exec ts-node -- ./dist/index.js",
-    "postinstall": "npm install"
+    "postinstall": "npm run build"
   },
   "author": "Muhammad Rizwan",
   "license": "MIT",
