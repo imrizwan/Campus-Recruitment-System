@@ -6,13 +6,16 @@
   "scripts": {
     "server": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "watch": "nodemon --exec ts-node -- ./dist/index.js",
-    "build": "tsc",
-    "start": "node --exec ts-node -- ./dist/index.js",
-    "postinstall": "npm run build"
+    "start": "node --exec ts-node -- ./dist/index.js"
   },
   "author": "Muhammad Rizwan",
   "license": "MIT",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "jwt-decode": "^2.2.0",
+    "nodemailer": "^5.1.1",
+    "nodemon": "^1.19.1",
     "@types/node": "^10.9.4",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
@@ -32,11 +35,5 @@
     "ts-node-dev": "^1.0.0-pre.41",
     "typescript": "^3.5.3",
     "validator": "^10.8.0"
-  },
-  "dependencies": {
-    "dotenv": "^8.1.0",
-    "jwt-decode": "^2.2.0",
-    "nodemailer": "^5.1.1",
-    "nodemon": "^1.19.1"
   }
 }
