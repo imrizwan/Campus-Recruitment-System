@@ -507,6 +507,26 @@ export class AuthController {
       })
       .catch(err => res.status(404).json({ profile: "There are no profiles" }));
   }
+  // @route   GET api/getallstudent
+  // @desc    getallstudent
+  // @access  Public
+
+  public getallstudent(req: Request, res: Response) {
+    const errors = {
+      noprofile: ""
+    };
+
+    Profile.find()
+      .then(profiles => {
+        if (!profiles) {
+          errors.noprofile = "There are no profiles";
+          return res.status(404).json(errors);
+        }
+
+        res.json(profiles);
+      })
+      .catch(err => res.status(404).json({ profile: "There are no profiles" }));
+  }
 
   // @route   GET api/profile/username/:username
   // @desc    Get profile by username

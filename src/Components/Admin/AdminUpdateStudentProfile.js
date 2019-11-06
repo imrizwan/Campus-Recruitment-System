@@ -59,6 +59,7 @@ const semester = [
   { value: "6", label: "6th semester" },
   { value: "7", label: "7th semester" },
   { value: "8", label: "8th semester" },
+  { value: "G", label: "Graduated" },
 ]
 
 class AdminUpdateStudentProfile extends React.Component {

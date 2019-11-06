@@ -5,7 +5,8 @@ import {
   GET_ERRORS,
   DELETE_USER,
   RECOMMEND,
-  GET_ALL_PROFILECREATED
+  GET_ALL_PROFILECREATED,
+  GET_ALL_STUDENTS
 } from "../Variables";
 
 // Get current profile
@@ -15,6 +16,22 @@ export const getAllProfiles = () => dispatch => {
     .then(res =>
       dispatch({
         type: GET_ALL_USERS,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+export const getAllStudents = () => dispatch => {
+  axios
+    .get(URL + "getallstudent")
+    .then(res =>
+      dispatch({
+        type: GET_ALL_STUDENTS,
         payload: res.data
       })
     )

@@ -163,7 +163,7 @@ class Navbar extends React.Component {
                   activeClassName={
                     window.location.pathname === "/graduatedirectory" ? "active" : null
                   }
-                  to="/adduser"
+                  to="/graduatedirectory"
                 >
                   Graduate Directory
                 </NavLink>

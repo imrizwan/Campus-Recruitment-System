@@ -1,4 +1,4 @@
-import { GET_ALL_USERS, DELETE_USER, RECOMMEND, GET_ALL_PROFILECREATED } from "../Variables";
+import { GET_ALL_USERS, DELETE_USER, RECOMMEND, GET_ALL_PROFILECREATED, GET_ALL_STUDENTS } from "../Variables";
 
 const inititalState = {};
 
@@ -23,6 +23,11 @@ export default function(state = inititalState, action) {
       return {
         ...state,
         getallprofilecreated: action.payload
+      };
+    case GET_ALL_STUDENTS:
+      return {
+        ...state,
+        getallstudent: action.payload
       };
     default:
       return state;
