@@ -28,6 +28,7 @@ const multer = require("multer");
 
 // Load User model
 import * as User from "../models/User";
+import * as CompanyProfile from "../models/CompanyProfile";
 // import * as Upload from "../models/Upload";
 // Load Profile Model
 const Profile = require("../models/Profile");
@@ -45,7 +46,19 @@ export class AuthController {
 
   public deleteUser(req: Request, res: Response) {
     User.deleteOne({ _id: req.params.id })
-      .then(data => res.status(200).json({ success: "deleted" }))
+      .then(data => {
+        Profile.deleteOne({ user: req.params.id })
+        .then(item =>{
+          console.log(item);
+        })
+        .catch(err => console.log("err from deleteUser", err));
+        CompanyProfile.deleteOne({ user: req.params.id })
+        .then(item =>{
+          console.log(item);
+        })
+        .catch(err => console.log("err from deleteUser", err));
+        return res.status(200).json({ success: "deleted" });
+      })
       .catch(err => console.log("error from deleteUser", err));
   }
   public verifyUser(req: Request, res: Response) {
