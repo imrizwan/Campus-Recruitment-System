@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -58,7 +58,7 @@ const semester = [
   { value: "G", label: "Graduated" },
 ]
 
-class CreateProfile extends React.Component {
+class CreateProfile extends Component {
   state = {
     name: "",
     title: "",

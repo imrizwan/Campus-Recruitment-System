@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import Loader from "../Loader/Loader";
 import isEmpty from "../../validation/is-empty";
@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import Img from "../../assets/noimg.png";
 
-class GraduateDirectory extends React.Component {
+class GraduateDirectory extends Component {
 
   componentDidMount() {
     this.props.getAllStudents()

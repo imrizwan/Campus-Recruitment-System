@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -65,7 +65,7 @@ const styles = theme => ({
   }
 });
 
-class RenderForm extends React.Component {
+class RenderForm extends Component {
 
   state = {
     email: "",

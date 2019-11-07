@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   getAllProfiles,
   deleteUser,
@@ -40,7 +40,7 @@ const styles = theme => ({
   }
 });
 
-class AdminDashboard extends React.Component {
+class AdminDashboard extends Component {
   state = {
     id: ""
   };

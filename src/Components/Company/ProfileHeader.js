@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
@@ -57,7 +57,7 @@ const styles = theme => ({
   //   return string.charAt(0).toUpperCase() + string.slice(1);
   // }
 
-class ProfileHeader extends React.Component{
+class ProfileHeader extends Component{
 
     
     render(){

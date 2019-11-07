@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
@@ -16,7 +16,7 @@ const styles = theme => ({
     },
 });
 
-class AddUser extends React.Component {
+class AddUser extends Component {
 
     state = {
         usernme: "",

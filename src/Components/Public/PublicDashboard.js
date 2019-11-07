@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
 import Image1 from "../../assets/image1.jpg";
@@ -12,7 +12,7 @@ import compose from "recompose/compose";
 import isEmpty from "../../validation/is-empty";
 import Loader from "../Loader/Loader";
 const styles = theme => ({});
-class PublicDashboard extends React.Component {
+class PublicDashboard extends Component {
 
     async componentDidMount() {
         await this.props.getAllVaccancies()

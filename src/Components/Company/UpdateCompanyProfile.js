@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -61,7 +61,7 @@ const styles = theme => ({
     { label: 'Venture Capital', value: 'Venture Capital' },
   ];
 
-class CreateCompanyProfile extends React.Component {
+class CreateCompanyProfile extends Component {
 
       state = {
         company: '',

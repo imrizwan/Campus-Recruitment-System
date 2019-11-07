@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
@@ -63,7 +63,7 @@ const styles = theme => ({
     }
   });
 
-class ProfileAbout extends React.Component {
+class ProfileAbout extends Component {
     render() {
         const { profile, classes } = this.props;
 

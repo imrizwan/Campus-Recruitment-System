@@ -1,6 +1,7 @@
 {
   "name": "cms",
   "version": "0.1.0",
+  "main": "src/index.js",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
@@ -34,10 +35,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "push-server": "git subtree push --prefix functions heroku master",
     "dev": "concurrently  \"npm run start\" \"cd functions && npm run server\" \"cd template && npm run dev\""
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "https://talent-pool-fyp.herokuapp.com/",
   "devDependencies": {
     "jwt-decode": "^2.2.0"
   },

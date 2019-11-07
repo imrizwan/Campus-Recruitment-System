@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../Actions/authActions";
@@ -10,7 +10,7 @@ import compose from "recompose/compose";
 import { cvURL, cvDomain } from "../../Variables";
 // import isEmpty from "../../validation/is-empty"
 
-class Navbar extends React.Component {
+class Navbar extends Component {
   state = {
     errors: {},
     // profilecreated: {},
