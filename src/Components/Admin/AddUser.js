@@ -18,14 +18,17 @@ const styles = theme => ({
 
 class AddUser extends Component {
 
-    state = {
-        usernme: "",
-        fullname: "",
-        email: "",
-        password: "",
-        usertype: "",
-        loader: false,
-        errors: {},
+    constructor(props){
+        super(props);
+        this.state = {
+            usernme: "",
+            fullname: "",
+            email: "",
+            password: "",
+            usertype: "",
+            loader: false,
+            errors: {},
+        }
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {

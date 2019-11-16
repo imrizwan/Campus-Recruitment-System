@@ -134,13 +134,13 @@ export class AuthController {
                       auth: { user: keys.user, pass: keys.pass }
                     });
                     var mailOptions = {
-                      from: "no-reply@rizwanshaikh.me",
+                      from: "no-reply@fyp-rizwan.herokuapp.com",
                       to: user.email,
                       subject: "Account Verification Token",
                       text:
                         "Hello,\n\n" +
                         "Please verify your account by clicking the link: \nhttp://" +
-                        "localhost:3000" +
+                        "fyp-rizwan.herokuapp.com" +
                         "/confirmation/" +
                         token.token +
                         "\n"
@@ -901,13 +901,13 @@ export class AuthController {
           auth: { user: keys.user, pass: keys.pass }
         });
         var mailOptions = {
-          from: "no-reply@localhost.com",
+          from: "no-reply@fyp-rizwan.herokuapp.com",
           to: user.email,
           subject: "Account Verification Token",
           text:
             "Hello,\n\n" +
             "Please verify your account by clicking the link: \nhttp://" +
-            "localhost:3000" +
+            "fyp-rizwan.herokuapp.com" +
             "/confirmation/" +
             token.token +
             "\n"
@@ -1007,13 +1007,13 @@ export class AuthController {
           auth: { user: keys.user, pass: keys.pass }
         });
         var mailOptions = {
-          from: "no-reply@localhost.com",
+          from: "no-reply@fyp-rizwan.herokuapp.com",
           to: user.email,
           subject: "Change Password",
           text:
             "Hello,\n\n" +
             "Please change your account password by clicking the link: \nhttp://" +
-            "localhost:3000" +
+            "fyp-rizwan.herokuapp.com" +
             "/changepassword/" +
             passwordtoken.token +
             ".\n"

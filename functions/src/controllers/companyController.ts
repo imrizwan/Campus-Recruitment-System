@@ -109,7 +109,7 @@ export class CompanyAuthController {
       auth: { user: keys.user, pass: keys.pass }
     });
     var mailOptions = {
-      from: "no-reply@localhost.com",
+      from: "no-reply@fyp-rizwan.herokuapp.com",
       to: req.body.studentemail,
       subject: "Appointment Letter",
       text:
@@ -161,7 +161,7 @@ export class CompanyAuthController {
       auth: { user: keys.user, pass: keys.pass }
     });
     var mailOptions = {
-      from: "no-reply@localhost.com",
+      from: "no-reply@fyp-rizwan.herokuapp.com",
       to: req.body.studentemail,
       subject: "Selection Email",
       text:

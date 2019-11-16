@@ -25,7 +25,7 @@ class GraduateDirectory extends Component {
                 {/* <h5 className="card-header">Featured</h5> */}
                 <div className="card-body" style={{ backgroundColor: "green", color: "white" }}>
                   <div className="row">
-                    <img src={isEmpty(student.url) ? Img : student.url} className="img-thumbnail col-2" />
+                    <img src={isEmpty(student.url) ? Img : student.url} className="img-thumbnail col-2" alt="" />
                     <div className="col-10">
                       <div className="row ml-1">
                         <h5 className="card-title">{student.name}&nbsp;&nbsp;</h5> | <p>&nbsp;&nbsp;{student.phoneNumber}&nbsp;&nbsp;</p> | <p>&nbsp;&nbsp;{student.mail}</p>
