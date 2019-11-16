@@ -1,7 +1,7 @@
-export const URL = "http://localhost:8080/api/";
-// export const URL = "https://talent-pool-fyp.herokuapp.com/api/";
-export const cvURL = "http://localhost:8080";
-// export const cvURL = "https://talent-pool-fyp.herokuapp.com";
+// export const URL = "http://localhost:8080/api/";
+export const URL = "https://talent-pool-fyp.herokuapp.com/api/";
+// export const cvURL = "http://localhost:8080";
+export const cvURL = "https://talent-pool-fyp.herokuapp.com";
 // export const cvDomain = "localhost:3001";
 export const cvDomain = "imrizwan.github.io";
 export const GET_ERRORS = "GET_ERRORS";
