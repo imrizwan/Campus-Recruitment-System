@@ -4,6 +4,7 @@ import * as validateCompanyProjectInput from "../validation/companyproject";
 import * as validateCompanyVaccancyInput from "../validation/companyvaccancy";
 // Load User model
 import * as CompanyProfile from "../models/CompanyProfile";
+import "../../env";
 import * as Profile from "../models/Profile";
 import * as Verify from "../models/Verify";
 import * as Selected from "../models/Selected";
@@ -105,8 +106,8 @@ export class CompanyAuthController {
 
     // Send the email
     var transporter = nodemailer.createTransport({
-      service: keys.service,
-      auth: { user: keys.user, pass: keys.pass }
+      service: process.env.service,
+      auth: { user: process.env.user, pass: process.env.pass }
     });
     var mailOptions = {
       from: "no-reply@fyp-rizwan.herokuapp.com",
@@ -157,8 +158,8 @@ export class CompanyAuthController {
 
     // Send the email
     var transporter = nodemailer.createTransport({
-      service: keys.service,
-      auth: { user: keys.user, pass: keys.pass }
+      service: process.env.service,
+      auth: { user: process.env.user, pass: process.env.pass }
     });
     var mailOptions = {
       from: "no-reply@fyp-rizwan.herokuapp.com",

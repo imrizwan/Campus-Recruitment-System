@@ -3,7 +3,7 @@ import * as gravatar from "gravatar";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import * as keys from "../config/keys";
-
+import "../../env";
 // Verification Token
 import * as crypto from "crypto";
 import * as nodemailer from "nodemailer";
@@ -130,8 +130,8 @@ export class AuthController {
                   .save()
                   .then(() => {
                     var transporter = nodemailer.createTransport({
-                      service: keys.service,
-                      auth: { user: keys.user, pass: keys.pass }
+                      service: process.env.service,
+                      auth: { user: process.env.user, pass: process.env.pass }
                     });
                     var mailOptions = {
                       from: "no-reply@fyp-rizwan.herokuapp.com",
@@ -372,7 +372,7 @@ export class AuthController {
             //Sign Token
             jwt.sign(
               payload,
-              keys.secretOrKey,
+              process.env.secretOrKey,
               { expiresIn: 3600 },
               (err, token) => {
                 Verify.findOne({ user: user.id })
@@ -897,8 +897,8 @@ export class AuthController {
 
         // Send the email
         var transporter = nodemailer.createTransport({
-          service: keys.service,
-          auth: { user: keys.user, pass: keys.pass }
+          service: process.env.service,
+          auth: { user: process.env.user, pass: process.env.pass }
         });
         var mailOptions = {
           from: "no-reply@fyp-rizwan.herokuapp.com",
@@ -1003,8 +1003,8 @@ export class AuthController {
 
         // Send the email
         var transporter = nodemailer.createTransport({
-          service: keys.service,
-          auth: { user: keys.user, pass: keys.pass }
+          service: process.env.service,
+          auth: { user: process.env.user, pass: process.env.pass }
         });
         var mailOptions = {
           from: "no-reply@fyp-rizwan.herokuapp.com",

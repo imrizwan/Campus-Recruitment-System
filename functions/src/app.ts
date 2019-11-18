@@ -7,10 +7,10 @@ const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
 var cloudinary = require('cloudinary');
-
+import "../env";
+console.log(process.env)
 // import { Routes } from "./routes/todoRoutes";
 // importing all routes of todo app
-
 class App {
   // declaring and initializing
   public app: express.Application;
@@ -26,7 +26,7 @@ class App {
 
   private configDatabase(): void {
     connect(
-      keys.mongoURI,
+      process.env.mongoURI,
       { useNewUrlParser: true, useUnifiedTopology: true }
       // { useNewUrlParser: true }
     );
@@ -55,9 +55,9 @@ class App {
     this.app.use(cors());
     
     cloudinary.config({
-      cloud_name: keys.cloud_name,
-      api_key: keys.api_key,
-      api_secret: keys.api_secret
+      cloud_name: process.env.cloud_name,
+      api_key: process.env.api_key,
+      api_secret: process.env.api_secret
     });
 
     this.app.use((req, res, next) => {
