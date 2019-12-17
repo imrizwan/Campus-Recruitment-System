@@ -26,7 +26,7 @@ const PrivateRoute = ({ component: Component, auth, userType, profilecreated, ..
                 } else if(auth.isAuthenticated === true && auth.user.userType !== userType) {
                     return <Redirect to='/unauthorized' />
                 } else if(auth.isAuthenticated === false) {
-                    return <Redirect to='/signin' />
+                    return <Redirect to='/' />
                 }
             }
             }

@@ -70,7 +70,7 @@ if(localStorage.jwtToken){
     // TODO: Clear the current profile
 
     //Redirect to login
-    window.location.href= "/signin";
+    window.location.href= "/";
     //this.props.history.push(`/signin`)
   }
 }

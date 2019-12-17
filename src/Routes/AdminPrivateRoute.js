@@ -12,7 +12,7 @@ const AdminPrivateRoute = ({ component: Component, auth, ...rest }) => {
                 } else if(auth.isAuthenticated === true && auth.user.userType !== "admin") {
                     return <Redirect to='/unauthorized' />
                 } else if(auth.isAuthenticated === false) {
-                    return <Redirect to='/signin' />
+                    return <Redirect to='/' />
                 }
             }
             }

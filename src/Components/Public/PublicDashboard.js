@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
-import Image1 from "../../assets/image1.jpg";
-import Image2 from "../../assets/image2.jpg";
-import Image3 from "../../assets/image3.jpg";
+import Image1 from "../../assets/image1.png";
+import Image2 from "../../assets/image2.png";
+import Image3 from "../../assets/image3.png";
 import { getAllVaccancies } from "../../Actions/profileActions";
 import { connect } from "react-redux"
 import { withStyles } from "@material-ui/core/styles";
